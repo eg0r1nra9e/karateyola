@@ -1,5 +1,6 @@
-import { NextPage } from "next"
-import { TeamForm } from "../../../components/TeamForm/TeamForm";
+import { NextPage } from 'next';
+
+import { TeamFormContainer } from '../../../contaners/TeamFormContainer/TeamFormContainer';
 
 const TeamAdd: NextPage = () => {
     return (
@@ -7,7 +8,7 @@ const TeamAdd: NextPage = () => {
             <h1>
                 Добавление команды
             </h1>
-            <TeamForm />
+            <TeamFormContainer />
         </>
     )
 }
