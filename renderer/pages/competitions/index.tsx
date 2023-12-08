@@ -6,7 +6,7 @@ const Competitions: NextPage = () => {
 
     <>
       <h1>
-        Виды состязаний
+        Виды дисциплин
       </h1>
       <Link href="/competitions/add">Добавить</Link>
       <Link href="/competitions/edit/1">Изменить</Link>

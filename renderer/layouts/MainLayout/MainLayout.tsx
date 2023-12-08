@@ -1,7 +1,7 @@
 import { Layout, theme } from 'antd';
 import React, { FC } from 'react';
 
-import { LeftMenu } from '../../components/Menu/LeftMenu';
+import { LeftMenu } from '../../components/LeftMenu/LeftMenu';
 import { TMainLayoutProps } from './MainLayout.typed';
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -28,13 +28,12 @@ export const MainLayout: FC<TMainLayoutProps> = ({ children = null }) => {
 
       </Sider>
       <Layout>
-        <Header style={{ padding: 0, background: colorBgContainer }} />
         <Content style={{ margin: '24px 16px 0' }}>
           <div style={{ padding: 24, minHeight: 360, background: colorBgContainer }}>
             {children}
           </div>
         </Content>
-        <Footer style={{ textAlign: 'center' }}>Ant Design ©2023 Created by Ant UED</Footer>
+        <Footer style={{ textAlign: 'center' }}>KarateYola ©2023 Created by Egor</Footer>
       </Layout>
     </Layout>
   );

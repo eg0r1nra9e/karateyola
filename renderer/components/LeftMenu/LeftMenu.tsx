@@ -4,8 +4,7 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
 import {
-    ApartmentOutlined, BarsOutlined, HomeOutlined, TeamOutlined, TrophyOutlined, UserOutlined,
-    VideoCameraOutlined
+    BarsOutlined, HomeOutlined, TeamOutlined, TrophyOutlined, UserOutlined
 } from '@ant-design/icons';
 
 const menu = [
@@ -39,7 +38,7 @@ const menu = [
     {
         label: (
             <Link href="/competitions">
-                Виды состязаний
+                Дисциплины
             </Link>
         ),
         key: 'competitions',
@@ -54,7 +53,7 @@ const menu = [
         key: 'games',
         icon: <TrophyOutlined />,
     },
-]
+];
 
 export const LeftMenu = () => {
     const router = useRouter();

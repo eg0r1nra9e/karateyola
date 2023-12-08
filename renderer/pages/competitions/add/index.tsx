@@ -1,10 +1,15 @@
 import { NextPage } from "next"
+import { CompetitionForm } from "../../../components/CompetitionForm/CompetitionForm";
 
 const CompetitionAdd: NextPage = () => {
     return (
-        <h1>
-           Добавление состязания
-        </h1>
+        <>
+            <h1>
+                Добавление дисциплины
+            </h1>
+            <CompetitionForm />
+        </>
+
     )
 }
 
