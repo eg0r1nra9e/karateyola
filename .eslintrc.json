@@ -1,0 +1,35 @@
+{
+  "extends": ["next/core-web-vitals", "plugin:prettier/recommended"],
+  "rules": {
+    "arrow-body-style": "off",
+    "semi": "off",
+    "@typescript-eslint/interface-name-prefix": "off",
+    "react/react-in-jsx-scope": "off",
+    "react/jsx-props-no-spreading": "off",
+    "react/jsx-one-expression-per-line": "off",
+    "sort-keys": "off",
+    "sort-imports": "off",
+    "max-len": "off",
+    "jsx-a11y/anchor-has-content": "off",
+    "react/no-danger": "off",
+    "@typescript-eslint/ban-ts-comment": "off",
+    "no-param-reassign": "off",
+    "no-shadow": "off",
+    "@typescript-eslint/no-shadow": ["off"],
+    "no-underscore-dangle": "off",
+    "no-void": "off",
+    "no-unused-expressions": ["error", { "allowShortCircuit": true }],
+    "react/require-default-props": "off",
+    "react/no-array-index-key": "off",
+    "no-plusplus": "off",
+    "consistent-return": "off",
+    "default-case": "off",
+    "no-nested-ternary": "off",
+    "prettier/prettier": [
+      "error",
+      {
+        "endOfLine": "auto"
+      }
+    ]
+  }
+}

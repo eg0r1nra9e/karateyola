@@ -7,7 +7,11 @@
   "scripts": {
     "dev": "nextron",
     "build": "nextron build",
-    "postinstall": "electron-builder install-app-deps"
+    "postinstall": "electron-builder install-app-deps",
+    "prepare": "husky install"
+  },
+  "husky": {
+    "hooks": {}
   },
   "dependencies": {
     "@electron/remote": "^2.1.1",
@@ -21,6 +25,11 @@
     "antd": "^5.12.1",
     "electron": "^21.3.3",
     "electron-builder": "^23.6.0",
+    "eslint": "^8.56.0",
+    "eslint-config-next": "^14.0.4",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.1.2",
+    "husky": "^8.0.3",
     "next": "^12.3.4",
     "nextron": "^8.7.0",
     "react": "^18.2.0",
