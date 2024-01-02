@@ -1,19 +1,10 @@
 import React from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
-import electron from "electron";
-import {
-  Layout,
-  Form,
-  Select,
-  InputNumber,
-  DatePicker,
-  Switch,
-  Slider,
-  Button,
-} from 'antd'
+import electron from 'electron'
+import { Layout, Form, Select, InputNumber, DatePicker, Switch, Slider, Button } from 'antd'
 
-const ipcRenderer = electron.ipcRenderer;
+const ipcRenderer = electron.ipcRenderer
 
 const { Header, Content } = Layout
 const { Item: FormItem } = Form
@@ -21,8 +12,8 @@ const { Option } = Select
 
 const Home = () => {
   const openWindow = () => {
-    ipcRenderer.send("show-sample");
-  };
+    ipcRenderer.send('show-sample')
+  }
 
   return (
     <React.Fragment>
@@ -40,54 +31,30 @@ const Home = () => {
 
         <a
           onClick={(e) => {
-            window.open(
-              "/next",
-              "_blank",
-              "contextIsolation=no,nodeIntegration=yes"
-            );
-          }}> item
+            window.open('/next', '_blank', 'contextIsolation=no,nodeIntegration=yes')
+          }}
+        >
+          {' '}
+          item
         </a>
       </Header>
 
       <Content style={{ padding: 48 }}>
         <Form layout="horizontal">
-          <FormItem
-            label="Input Number"
-            labelCol={{ span: 22 }}
-            wrapperCol={{ span: 8 }}
-          >
-            <InputNumber
-              size="large"
-              min={1}
-              max={10}
-              style={{ width: 100 }}
-              defaultValue={3}
-              name="inputNumber"
-            />
+          <FormItem label="Input Number" labelCol={{ span: 22 }} wrapperCol={{ span: 8 }}>
+            <InputNumber size="large" min={1} max={10} style={{ width: 100 }} defaultValue={3} name="inputNumber" />
             <a href="#">Link</a>
           </FormItem>
 
-          <FormItem
-            label="Switch"
-            labelCol={{ span: 8 }}
-            wrapperCol={{ span: 8 }}
-          >
+          <FormItem label="Switch" labelCol={{ span: 8 }} wrapperCol={{ span: 8 }}>
             <Switch defaultChecked />
           </FormItem>
 
-          <FormItem
-            label="Slider"
-            labelCol={{ span: 8 }}
-            wrapperCol={{ span: 8 }}
-          >
+          <FormItem label="Slider" labelCol={{ span: 8 }} wrapperCol={{ span: 8 }}>
             <Slider defaultValue={70} />
           </FormItem>
 
-          <FormItem
-            label="Select"
-            labelCol={{ span: 8 }}
-            wrapperCol={{ span: 8 }}
-          >
+          <FormItem label="Select" labelCol={{ span: 8 }} wrapperCol={{ span: 8 }}>
             <Select size="large" defaultValue="lucy" style={{ width: 192 }}>
               <Option value="jack">jack</Option>
               <Option value="lucy">lucy</Option>
@@ -98,17 +65,10 @@ const Home = () => {
             </Select>
           </FormItem>
 
-          <FormItem
-            label="DatePicker"
-            labelCol={{ span: 8 }}
-            wrapperCol={{ span: 8 }}
-          >
+          <FormItem label="DatePicker" labelCol={{ span: 8 }} wrapperCol={{ span: 8 }}>
             <DatePicker name="startDate" />
           </FormItem>
-          <FormItem
-            style={{ marginTop: 48 }}
-            wrapperCol={{ span: 8, offset: 8 }}
-          >
+          <FormItem style={{ marginTop: 48 }} wrapperCol={{ span: 8, offset: 8 }}>
             <Button size="large" type="primary" htmlType="submit">
               OK
             </Button>
