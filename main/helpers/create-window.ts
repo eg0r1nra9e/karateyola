@@ -1,13 +1,14 @@
-import {
-  screen,
-  BrowserWindow,
-} from 'electron';
+import { BrowserWindow, screen } from 'electron';
 import Store from 'electron-store';
+
+import { enable, initialize } from '@electron/remote/main';
 
 import type {
   BrowserWindowConstructorOptions,
   Rectangle
 } from "electron";
+
+initialize()
 
 export default (windowName: string, options: BrowserWindowConstructorOptions): BrowserWindow => {
   const key = 'window-state';
@@ -77,12 +78,15 @@ export default (windowName: string, options: BrowserWindowConstructorOptions): B
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
-     
+
       //devTools: false,
       ...options.webPreferences,
     },
   };
+
   win = new BrowserWindow(browserOptions);
+
+  enable(win.webContents)
 
   win.on('close', saveState);
 
