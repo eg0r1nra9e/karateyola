@@ -1,5 +1,5 @@
 import { NextPage } from "next"
-import { AthleteForm } from "../../../components/AthleteForm/AthleteForm";
+import { AthleteFormContainer } from "../../../contaners/AthleteFormContainer/AthleteFormContainer";
 
 const AthleteAdd: NextPage = () => {
     return (
@@ -7,7 +7,7 @@ const AthleteAdd: NextPage = () => {
             <h1>
             Добавление спортсмена
             </h1>
-            <AthleteForm   />
+            <AthleteFormContainer   />
         </>
     )
 }

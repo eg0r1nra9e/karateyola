@@ -1,4 +1,4 @@
-import { Button, Form, Input, Select, SelectProps } from 'antd';
+import { Button, Form, Input, Select } from 'antd';
 import { FC } from 'react';
 
 type FieldType = {
@@ -11,7 +11,7 @@ export interface ICity {
     city: string
 }
 
-interface TeamFormProps {
+interface ITeamFormProps {
     id?: string;
     name?: string;
     city?: string;
@@ -20,7 +20,7 @@ interface TeamFormProps {
     onFinishFailed: (values: any) => void;
 }
 
-export const TeamForm: FC<TeamFormProps> = (props) => {
+export const TeamForm: FC<ITeamFormProps> = (props) => {
     const {
         id,
         name,
@@ -70,7 +70,5 @@ export const TeamForm: FC<TeamFormProps> = (props) => {
                 </Button>
             </Form.Item>
         </Form>
-
-
     )
 }
