@@ -1,16 +1,15 @@
-import '../styles/global.css';
+import '../styles/global.css'
 import dayjs from 'dayjs'
 import 'dayjs/locale/ru'
 
+import Head from 'next/head'
+import React from 'react'
+import ru from 'antd/locale/ru_RU'
 
-import Head from 'next/head';
-import React from 'react';
-import ru from 'antd/locale/ru_RU';
+import { MainLayout } from '../layouts/MainLayout/MainLayout'
 
-import { MainLayout } from '../layouts/MainLayout/MainLayout';
-
-import type { AppProps } from 'next/app';
-import { ConfigProvider } from 'antd';
+import type { AppProps } from 'next/app'
+import { ConfigProvider } from 'antd'
 
 dayjs.locale('ru')
 

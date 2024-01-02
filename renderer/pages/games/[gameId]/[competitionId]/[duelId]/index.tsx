@@ -1,11 +1,10 @@
-import { NextPage } from "next"
-import Link from "next/link";
-import { useRouter } from "next/router";
-
+import { NextPage } from 'next'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
 
 const Duel: NextPage = () => {
-  const router = useRouter();
-  const { query } = router;
+  const router = useRouter()
+  const { query } = router
 
   return (
     <>
@@ -16,4 +15,4 @@ const Duel: NextPage = () => {
   )
 }
 
-export default Duel;
+export default Duel
