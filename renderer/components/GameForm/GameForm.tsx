@@ -33,7 +33,7 @@ export const GameForm: FC<IGameFormProps> = (props) => {
       autoComplete="off"
     >
       <Form.Item<FieldType> label="Название" name="gameName" rules={[{ required: true, message: 'Введите название' }]}>
-        <Input defaultValue={name} />
+        <Input />
       </Form.Item>
       <Form.Item<FieldType>
         label="Дата начала"
