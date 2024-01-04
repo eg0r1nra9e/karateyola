@@ -1,27 +1,32 @@
+import { useRouter } from 'next/router'
 import { FC } from 'react'
 
 import { TeamForm } from '../../components/TeamForm/TeamForm'
 import cities from '../../data/city.json'
-import { saveData } from '../../utils/file'
+import { useAppDispatch, useAppSelector } from '../../store/hooks'
+import { addTeam, editTeam, selectTeam } from '../../store/slices/teamsSlice'
 
 interface TeamFormProps {
-  id?: string
-  name?: string
-  city?: string
+  teamId?: string
 }
 
 export const TeamFormContainer: FC<TeamFormProps> = (props) => {
-  const { id, name, city } = props
+  const { teamId } = props
+  const { push } = useRouter()
 
-  const onFinish = (values: any) => {
-    saveData(values)
+  const dispatch = useAppDispatch()
+
+  const team = useAppSelector((state) => selectTeam(state, teamId))
+
+  const onFinish = (team: any) => {
+    if (!teamId) {
+      dispatch(addTeam(team))
+    } else {
+      dispatch(editTeam(team))
+    }
+
+    push('/teams/')
   }
 
-  const onFinishFailed = (errorInfo: any) => {
-    console.log('Failed:', errorInfo)
-  }
-
-  return (
-    <TeamForm id={id} name={name} city={city} cities={cities} onFinish={onFinish} onFinishFailed={onFinishFailed} />
-  )
+  return <TeamForm team={team} cities={cities} onFinish={onFinish} />
 }

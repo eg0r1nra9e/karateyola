@@ -1,4 +1,4 @@
-import { Button } from "antd";
+import { Button } from 'antd'
 
 const Player = ({ isDanger, setCountFail, setCountFail2, setCount, addBenefits, removeBenefits }) => {
   return (
@@ -15,7 +15,7 @@ const Player = ({ isDanger, setCountFail, setCountFail2, setCount, addBenefits, 
         2-я кат
       </Button>
 
-            <Button type="dashed" danger={isDanger} onClick={() => setCount(1)}>
+      <Button type="dashed" danger={isDanger} onClick={() => setCount(1)}>
         +1
       </Button>
 
@@ -51,8 +51,7 @@ const Player = ({ isDanger, setCountFail, setCountFail2, setCount, addBenefits, 
         -3
       </Button>
     </>
-  );
-};
+  )
+}
 
-
-export default Player;
+export default Player
