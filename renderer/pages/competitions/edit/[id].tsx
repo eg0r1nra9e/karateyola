@@ -1,6 +1,7 @@
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
-import { CompetitionForm } from '../../../components/CompetitionForm/CompetitionForm'
+
+import { CompetitionFormContainer } from '../../../containers/CompetitionFormContainer/CompetitionFormContainer'
 
 const CompetitionEdit: NextPage = () => {
   const router = useRouter()
@@ -8,8 +9,8 @@ const CompetitionEdit: NextPage = () => {
 
   return (
     <>
-      <h1>Редактирование дисциплины с id {query?.id}</h1>
-      <CompetitionForm name={query?.id as string} />
+      <h1>Редактирование дисциплины</h1>
+      <CompetitionFormContainer competitionId={query?.id?.toString()} />
     </>
   )
 }

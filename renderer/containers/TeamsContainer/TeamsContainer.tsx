@@ -18,7 +18,7 @@ export const TeamsContainer = () => {
 
   const columns: ColumnsType<ITeam> = [
     {
-      title: 'Имя',
+      title: 'Название',
       dataIndex: 'name',
       key: 'name',
       render: (_, team) => <Link href={`/teams/edit/${team.id}`}>{team.name}</Link>,

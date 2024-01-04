@@ -45,7 +45,7 @@ export const TeamForm: FC<ITeamFormProps> = (props) => {
       autoComplete="off"
       form={form}
     >
-      <Form.Item<FieldType> label="Идентификатор команды" name="id" hidden={true}>
+      <Form.Item<FieldType> name="id" hidden={true}>
         <Input />
       </Form.Item>
       <Form.Item<FieldType>

@@ -1,25 +1,29 @@
 import { Button, Form, Input } from 'antd'
-import { FC } from 'react'
+import { FC, useEffect } from 'react'
+
+import { ICompetition } from '../../types/ICompetition'
 
 type FieldType = {
-  name?: string
-}
-
-interface ICompetitionFormProps {
   id?: string
   name?: string
 }
 
+interface ICompetitionFormProps {
+  competition?: ICompetition
+  onFinish: (values: any) => void
+}
+
 export const CompetitionForm: FC<ICompetitionFormProps> = (props) => {
-  const { id, name } = props
+  const { competition, onFinish } = props
 
-  const onFinish = (values: any) => {
-    console.log('Success:', values)
-  }
+  const [form] = Form.useForm()
 
-  const onFinishFailed = (errorInfo: any) => {
-    console.log('Failed:', errorInfo)
-  }
+  useEffect(() => {
+    form.setFieldsValue({
+      id: competition?.id,
+      name: competition?.name,
+    })
+  }, [form, competition])
 
   return (
     <Form
@@ -29,15 +33,18 @@ export const CompetitionForm: FC<ICompetitionFormProps> = (props) => {
       style={{ maxWidth: 600 }}
       initialValues={{ remember: true }}
       onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
       autoComplete="off"
+      form={form}
     >
+      <Form.Item<FieldType> name="id" hidden={true}>
+        <Input />
+      </Form.Item>
       <Form.Item<FieldType>
         label="Название дисциплины"
         name="name"
         rules={[{ required: true, message: 'Введите название дисциплины' }]}
       >
-        <Input defaultValue={name} />
+        <Input />
       </Form.Item>
       <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
         <Button type="primary" htmlType="submit">

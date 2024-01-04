@@ -1,10 +1,13 @@
 import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit'
+
+import competitionsSliceReducer from './slices/competitionsSlice'
 import teamsSliceReducer from './slices/teamsSlice'
 
 export function createStore(reduxState?: any) {
   return configureStore({
     reducer: {
       teams: teamsSliceReducer,
+      competitions: competitionsSliceReducer,
     },
     preloadedState: {
       ...reduxState,
