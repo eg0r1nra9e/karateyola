@@ -1,12 +1,23 @@
+import { Button, Space } from 'antd'
 import { NextPage } from 'next'
 import Link from 'next/link'
 
-export const Athletes: NextPage = () => {
+import { PlusOutlined } from '@ant-design/icons'
+
+import { AthletesContainer } from '../../containers/AthletesContainer/AthleteContainer'
+
+const Athletes: NextPage = () => {
   return (
     <>
       <h1>Спортсмены</h1>
-      <Link href="/athletes/add">Добавить</Link>
-      <Link href="/athletes/edit/1">Изменить</Link>
+      <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
+        <Link href="/athletes/add">
+          <Button type="primary" icon={<PlusOutlined className="teamSocialIcon" />}>
+            Добавить
+          </Button>
+        </Link>
+        <AthletesContainer />
+      </Space>
     </>
   )
 }

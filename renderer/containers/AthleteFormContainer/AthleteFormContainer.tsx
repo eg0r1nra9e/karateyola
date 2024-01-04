@@ -1,34 +1,34 @@
+import { useRouter } from 'next/router'
 import { FC } from 'react'
+
 import { AthleteForm } from '../../components/AthleteForm/AthleteForm'
+import { useAppDispatch, useAppSelector } from '../../store/hooks'
+import { addAthlete, editAthlete, selectAthlete } from '../../store/slices/athletesSlice'
+import { selectTeams } from '../../store/slices/teamsSlice'
 
 interface IAthleteFormProps {
-  id?: string
-  firstName?: string
-  lastName?: string
-  date?: string
-  teamId?: string
+  athleteId?: string
 }
 
 export const AthleteFormContainer: FC<IAthleteFormProps> = (props) => {
-  const { id, firstName, lastName, date, teamId } = props
+  const { athleteId } = props
+  const { push } = useRouter()
 
-  const onFinish = (values: any) => {
-    console.log('Success:', values)
+  const dispatch = useAppDispatch()
+
+  const athlete = useAppSelector((state) => selectAthlete(state, athleteId))
+
+  const teams = useAppSelector(selectTeams)
+
+  const onFinish = (athlete: any) => {
+    if (!athleteId) {
+      dispatch(addAthlete(athlete))
+    } else {
+      dispatch(editAthlete(athlete))
+    }
+
+    push('/athletes/')
   }
 
-  const onFinishFailed = (errorInfo: any) => {
-    console.log('Failed:', errorInfo)
-  }
-
-  return (
-    <AthleteForm
-      id={id}
-      firstName={firstName}
-      lastName={lastName}
-      teamId={teamId}
-      date={date}
-      onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
-    />
-  )
+  return <AthleteForm athlete={athlete} teams={teams} onFinish={onFinish} />
 }
