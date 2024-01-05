@@ -1,22 +1,27 @@
-import { Button, DatePicker, Form, Input, Radio } from 'antd'
+import { Button, DatePicker, Form, Input, Radio, Select, Space } from 'antd'
 import dayjs from 'dayjs'
 import React, { FC, useEffect } from 'react'
 
 import { IGame } from '../../types/IGame'
+import { ICompetition } from '../../types/ICompetition'
+import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons'
 
 type FieldType = IGame
 
 interface IGameFormProps {
   game?: IGame
+  competitions: ICompetition[]
   onFinish: (values: any) => void
 }
 
 const dateFormat = 'DD.MM.YYYY'
 
 export const GameForm: FC<IGameFormProps> = (props) => {
-  const { game, onFinish } = props
+  const { game, competitions, onFinish } = props
 
   const [form] = Form.useForm()
+
+  const competitionOptions = competitions.map((team: ICompetition) => ({ value: team.id, label: team.name }))
 
   useEffect(() => {
     form.setFieldsValue({
@@ -25,6 +30,7 @@ export const GameForm: FC<IGameFormProps> = (props) => {
       firstDate: dayjs(game?.firstDate),
       lastDate: dayjs(game?.lastDate),
       status: game.status,
+      competitions: game.competitions,
     })
   }, [form, game])
 
@@ -58,6 +64,36 @@ export const GameForm: FC<IGameFormProps> = (props) => {
         rules={[{ required: true, message: 'Введите дату окончания соревнований' }]}
       >
         <DatePicker format={dateFormat} />
+      </Form.Item>
+
+      <Form.Item<FieldType>
+        label="Дисциплины"
+        name="competitions"
+        rules={[{ required: true, message: 'Выберите дисциплину' }]}
+      >
+        <Form.List name="competitions">
+          {(fields, { add, remove }) => (
+            <>
+              {fields.map(({ key, name, ...restField }) => (
+                <Space key={key} style={{ display: 'flex', marginBottom: 8 }} align="baseline">
+                  <Form.Item
+                    {...restField}
+                    name={[name, 'competitionId']}
+                    rules={[{ required: true, message: 'Выберите дисциплину' }]}
+                  >
+                    <Select showSearch placeholder="Выберете дисциплину" options={competitionOptions} />
+                  </Form.Item>
+                  <MinusCircleOutlined onClick={() => remove(name)} />
+                </Space>
+              ))}
+              <Form.Item>
+                <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
+                  Добавить дисциплину
+                </Button>
+              </Form.Item>
+            </>
+          )}
+        </Form.List>
       </Form.Item>
 
       <Form.Item<FieldType> label="Статус" name="status" rules={[{ required: true, message: 'Выберите статус' }]}>

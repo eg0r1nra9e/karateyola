@@ -8,10 +8,12 @@ import { ApartmentOutlined, MinusOutlined, ThunderboltOutlined } from '@ant-desi
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { endGame, removeGame, selectGames, startGame } from '../../store/slices/gamesSlice'
 import { IGame } from '../../types/IGame'
+import { selectCompetitions } from '../../store/slices/competitionsSlice'
 
 export const GamesContainer = () => {
   const games = useAppSelector(selectGames)
   const dispatch = useAppDispatch()
+  const competitions = useAppSelector(selectCompetitions)
 
   const deleteGame = (gameId: string) => {
     dispatch(removeGame(gameId))
@@ -45,6 +47,17 @@ export const GamesContainer = () => {
     return null
   }
 
+  const gameCompetitions = (game: IGame) => {
+    if (!game.competitions || !game.competitions.length) {
+      return null
+    }
+
+    return game.competitions.map((competition) => {
+      const competitionName = competitions.find((c) => c.id === competition.competitionId)?.name
+      return <div key={competition.competitionId}>{competitionName}</div>
+    })
+  }
+
   const columns: ColumnsType<IGame> = [
     {
       title: 'Название',
@@ -72,6 +85,12 @@ export const GamesContainer = () => {
           .format('DD.MM.YYYY')
           .toString(),
       sorter: (a, b) => a.lastDate.getTime() - b.lastDate.getTime(),
+    },
+    {
+      title: 'Дисциплины',
+      dataIndex: 'competitions',
+      key: 'competitions',
+      render: (_, game) => gameCompetitions(game),
     },
     {
       title: 'Статус',

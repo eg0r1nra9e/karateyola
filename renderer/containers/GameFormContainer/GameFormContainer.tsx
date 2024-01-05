@@ -3,6 +3,7 @@ import { GameForm } from '../../components/GameForm/GameForm'
 import { useRouter } from 'next/router'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { addGame, editGame, selectGame } from '../../store/slices/gamesSlice'
+import { selectCompetitions } from '../../store/slices/competitionsSlice'
 
 interface IGameFormProps {
   gameId?: string
@@ -15,16 +16,17 @@ export const GameFormContainer: FC<IGameFormProps> = (props) => {
   const dispatch = useAppDispatch()
 
   const game = useAppSelector((state) => selectGame(state, gameId))
+  const competitions = useAppSelector(selectCompetitions)
 
-  const onFinish = (team: any) => {
+  const onFinish = (game: any) => {
     if (!gameId) {
-      dispatch(addGame(team))
+      dispatch(addGame(game))
     } else {
-      dispatch(editGame(team))
+      dispatch(editGame(game))
     }
 
     push('/games/')
   }
 
-  return <GameForm game={game} onFinish={onFinish} />
+  return <GameForm game={game} competitions={competitions} onFinish={onFinish} />
 }

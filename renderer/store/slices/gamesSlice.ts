@@ -27,6 +27,7 @@ export const gamesSlice = createSlice({
       game.firstDate = action.payload.firstDate
       game.lastDate = action.payload.lastDate
       game.status = action.payload.status
+      game.competitions = action.payload.competitions
     },
     startGame: (state, action: PayloadAction<string>) => {
       const game = state.games.find((game) => game.id === action.payload)

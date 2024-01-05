@@ -1,3 +1,5 @@
+import { IGameCompetition } from './IGameCompetition'
+
 /**
  * Соревнование.
  */
@@ -26,4 +28,9 @@ export interface IGame {
    * Статус соревнования
    */
   status: 'ожидает начала' | 'идет' | 'закончено'
+
+  /**
+   * Дисциплины соревнования.
+   */
+  competitions: IGameCompetition[]
 }
