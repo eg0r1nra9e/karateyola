@@ -5,29 +5,23 @@ import Link from 'next/link'
 import { MinusOutlined } from '@ant-design/icons'
 
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
-import { removeTeam, selectTeams } from '../../store/slices/teamsSlice'
-import { ITeam } from '../../types/ITeam'
+import { removeCategory, selectCategories } from '../../store/slices/categoriesSlice'
+import { ICategory } from '../../types/ICategory'
 
-export const TeamsContainer = () => {
-  const teams = useAppSelector(selectTeams)
+export const CategoriesContainer = () => {
+  const categories = useAppSelector(selectCategories)
   const dispatch = useAppDispatch()
 
-  const deleteTeam = (teamId: string) => {
-    dispatch(removeTeam(teamId))
+  const deleteTeam = (categoryId: string) => {
+    dispatch(removeCategory(categoryId))
   }
 
-  const columns: ColumnsType<ITeam> = [
+  const columns: ColumnsType<ICategory> = [
     {
       title: 'Название',
       dataIndex: 'name',
       key: 'name',
-      render: (_, team) => <Link href={`/teams/edit/${team.id}`}>{team.name}</Link>,
-      sorter: (a, b) => a.name.length - b.name.length,
-    },
-    {
-      title: 'Город',
-      dataIndex: 'city',
-      key: 'city',
+      render: (_, team) => <Link href={`/categories/edit/${team.id}`}>{team.name}</Link>,
       sorter: (a, b) => a.name.length - b.name.length,
     },
     {
@@ -41,5 +35,5 @@ export const TeamsContainer = () => {
     },
   ]
 
-  return <Table dataSource={teams} columns={columns} />
+  return <Table dataSource={categories} columns={columns} />
 }

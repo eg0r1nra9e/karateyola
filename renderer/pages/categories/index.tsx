@@ -4,22 +4,22 @@ import Link from 'next/link'
 
 import { PlusOutlined } from '@ant-design/icons'
 
-import { AthletesContainer } from '../../containers/AthletesContainer/AthleteContainer'
+import { CategoriesContainer } from '../../containers/CategoriesContainer/CategoriesContainer'
 
-const Athletes: NextPage = () => {
+const Categories: NextPage = () => {
   return (
     <>
-      <h1>Спортсмены</h1>
+      <h1>Категории</h1>
       <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
-        <Link href="/athletes/add">
+        <Link href="/categories/add">
           <Button type="primary" icon={<PlusOutlined />}>
             Добавить
           </Button>
         </Link>
-        <AthletesContainer />
+        <CategoriesContainer />
       </Space>
     </>
   )
 }
 
-export default Athletes
+export default Categories

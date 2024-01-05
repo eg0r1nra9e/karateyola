@@ -10,7 +10,7 @@ const Teams: NextPage = () => {
       <h1>Команды</h1>
       <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
         <Link href="/teams/add">
-          <Button type="primary" icon={<PlusOutlined className="teamSocialIcon" />}>
+          <Button type="primary" icon={<PlusOutlined />}>
             Добавить
           </Button>
         </Link>

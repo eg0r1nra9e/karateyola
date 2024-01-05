@@ -3,11 +3,7 @@ import { FC, useEffect } from 'react'
 
 import { ITeam } from '../../types/ITeam'
 
-type FieldType = {
-  id?: string
-  name?: string
-  city?: string
-}
+type FieldType = ITeam
 
 export interface ICity {
   region: string

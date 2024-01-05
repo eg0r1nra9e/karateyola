@@ -1,26 +1,30 @@
 import { Button, Form, Input } from 'antd'
 import { FC, useEffect } from 'react'
 
-import { ICompetition } from '../../types/ICompetition'
+import { ICategory } from '../../types/ICategory'
 
-type FieldType = ICompetition
+type FieldType = ICategory
 
-interface ICompetitionFormProps {
-  competition?: ICompetition
+export interface ICity {
+  region: string
+  city: string
+}
+
+interface ICategoryFormProps {
+  category?: ICategory
   onFinish: (values: any) => void
 }
 
-export const CompetitionForm: FC<ICompetitionFormProps> = (props) => {
-  const { competition, onFinish } = props
-
+export const CategoryForm: FC<ICategoryFormProps> = (props) => {
+  const { category, onFinish } = props
   const [form] = Form.useForm()
 
   useEffect(() => {
     form.setFieldsValue({
-      id: competition?.id,
-      name: competition?.name,
+      id: category?.id,
+      name: category?.name,
     })
-  }, [form, competition])
+  }, [form, category])
 
   return (
     <Form
@@ -37,12 +41,13 @@ export const CompetitionForm: FC<ICompetitionFormProps> = (props) => {
         <Input />
       </Form.Item>
       <Form.Item<FieldType>
-        label="Название дисциплины"
+        label="Название категории"
         name="name"
-        rules={[{ required: true, message: 'Введите название дисциплины' }]}
+        rules={[{ required: true, message: 'Введите название категории' }]}
       >
         <Input />
       </Form.Item>
+
       <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
         <Button type="primary" htmlType="submit">
           Сохранить
