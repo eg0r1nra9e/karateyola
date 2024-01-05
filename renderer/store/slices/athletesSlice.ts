@@ -25,7 +25,9 @@ export const athletesSlice = createSlice({
       const athlete = state.athletes.find((athlete) => athlete.id === action.payload.id)
       athlete.firstName = action.payload.firstName
       athlete.lastName = action.payload.lastName
-      athlete.date = action.payload.date
+      athlete.dateOfBirth = action.payload.dateOfBirth
+      athlete.gender = action.payload.gender
+      athlete.weight = action.payload.weight
       athlete.teamId = action.payload.teamId
     },
     removeAthlete: (state, action: PayloadAction<string>) => {

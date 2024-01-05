@@ -1,17 +1,11 @@
-import { Button, DatePicker, Form, Input, Select } from 'antd'
+import { Button, DatePicker, Form, Input, Radio, Select } from 'antd'
 import dayjs from 'dayjs'
 import React, { FC, useEffect } from 'react'
 
 import { IAthlete } from '../../types/IAthlete'
 import { ITeam } from '../../types/ITeam'
 
-type FieldType = {
-  id: string
-  firstName?: string
-  lastName?: string
-  date?: string
-  teamId?: string
-}
+type FieldType = IAthlete
 
 interface IAthleteFormProps {
   athlete?: IAthlete
@@ -33,7 +27,9 @@ export const AthleteForm: FC<IAthleteFormProps> = (props) => {
       id: athlete?.id,
       lastName: athlete?.lastName,
       firstName: athlete?.firstName,
-      date: dayjs(athlete?.date),
+      dateOfBirth: dayjs(athlete?.dateOfBirth),
+      gender: athlete?.gender,
+      weight: athlete?.weight,
       teamId: athlete?.teamId,
     })
   }, [form, athlete])
@@ -61,11 +57,21 @@ export const AthleteForm: FC<IAthleteFormProps> = (props) => {
         </Form.Item>
         <Form.Item<FieldType>
           label="Дата рождения"
-          name="date"
+          name="dateOfBirth"
           rules={[{ required: true, message: 'Введите дату рождения' }]}
         >
           <DatePicker format={dateFormat} />
         </Form.Item>
+        <Form.Item<FieldType> label="Пол" name="gender" rules={[{ required: true, message: 'Выберите пол' }]}>
+          <Radio.Group>
+            <Radio value="м"> Мужской </Radio>
+            <Radio value="ж"> Женский </Radio>
+          </Radio.Group>
+        </Form.Item>
+        <Form.Item<FieldType> label="Вес" name="weight" rules={[{ required: true, message: 'Введите вес' }]}>
+          <Input />
+        </Form.Item>
+
         <Form.Item<FieldType> label="Название команды" name="teamId">
           <Select showSearch placeholder="Выберете населенный пункт" options={teamOptions} />
         </Form.Item>
