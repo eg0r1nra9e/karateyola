@@ -6,6 +6,7 @@ import { IGame } from '../../types/IGame'
 import { ICompetition } from '../../types/ICompetition'
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons'
 import Card from 'antd/es/card/Card'
+import { IAthlete } from '../../types/IAthlete'
 
 const { RangePicker } = DatePicker
 
@@ -14,6 +15,7 @@ type FieldType = IGame
 interface IGameFormProps {
   game?: IGame
   competitions: ICompetition[]
+  athletes: IAthlete[]
   onFinish: (values: any) => void
 }
 
@@ -25,11 +27,12 @@ interface IModalFormProps {
 const dateFormat = 'DD.MM.YYYY'
 
 export const GameForm: FC<IGameFormProps> = (props) => {
-  const { game, competitions, onFinish } = props
+  const { game, competitions, athletes, onFinish } = props
 
   const [form] = Form.useForm()
 
   const competitionOptions = competitions.map((team: ICompetition) => ({ value: team.id, label: team.name }))
+  const athleteOptions = athletes.map((athlete: IAthlete) => ({ value: athlete.id, label: athlete.lastName }))
 
   useEffect(() => {
     form.setFieldsValue({
@@ -74,9 +77,9 @@ export const GameForm: FC<IGameFormProps> = (props) => {
         <Form.List name="competitions">
           {(competitions, { add, remove }) => {
             return (
-              <div>
+              <Card>
                 {competitions.map((competition) => (
-                  <Space key={competition.key} style={{ display: 'flex', marginBottom: 8 }} align="start">
+                  <Card key={competition.key}>
                     <Space key={competition.key} style={{ display: 'flex', marginBottom: 8 }} align="start">
                       <Form.Item
                         {...competition}
@@ -96,23 +99,67 @@ export const GameForm: FC<IGameFormProps> = (props) => {
                     <Form.List name={[competition.name, 'categories']}>
                       {(categories, { add, remove }) => {
                         return (
-                          <div>
+                          <Card>
                             {categories.map((category) => (
-                              <Space key={category.key} align="start">
-                                <Form.Item
-                                  {...category}
-                                  name={[category.name, 'name']}
-                                  rules={[{ required: true, message: 'Введите категорию' }]}
-                                >
-                                  <Input placeholder="Введите категорию" />
-                                </Form.Item>
+                              <div key={category.key}>
+                                <Space key={category.key} align="start">
+                                  <Form.Item
+                                    {...category}
+                                    name={[category.name, 'name']}
+                                    rules={[{ required: true, message: 'Введите категорию' }]}
+                                  >
+                                    <Input placeholder="Введите категорию" />
+                                  </Form.Item>
 
-                                <MinusCircleOutlined
-                                  onClick={() => {
-                                    remove(category.name)
+                                  <MinusCircleOutlined
+                                    onClick={() => {
+                                      remove(category.name)
+                                    }}
+                                  />
+                                </Space>
+
+                                <Form.List name={[competition.name, 'athletes']}>
+                                  {(athletes, { add, remove }) => {
+                                    return (
+                                      <Card>
+                                        {athletes.map((athlete) => (
+                                          <Space key={athlete.key} align="start">
+                                            <Form.Item
+                                              {...athlete}
+                                              name={[athlete.name]}
+                                              rules={[{ required: true, message: 'Выберите спортсмена' }]}
+                                            >
+                                              <Select
+                                                showSearch
+                                                placeholder="Выберете спортсмена"
+                                                options={athleteOptions}
+                                              />
+                                            </Form.Item>
+
+                                            <MinusCircleOutlined
+                                              onClick={() => {
+                                                remove(athlete.name)
+                                              }}
+                                            />
+                                          </Space>
+                                        ))}
+
+                                        <Form.Item>
+                                          <Button
+                                            type="dashed"
+                                            onClick={() => {
+                                              add()
+                                            }}
+                                            block
+                                          >
+                                            <PlusOutlined /> Добавить спортсмена
+                                          </Button>
+                                        </Form.Item>
+                                      </Card>
+                                    )
                                   }}
-                                />
-                              </Space>
+                                </Form.List>
+                              </div>
                             ))}
 
                             <Form.Item>
@@ -126,11 +173,11 @@ export const GameForm: FC<IGameFormProps> = (props) => {
                                 <PlusOutlined /> Добавить категорию
                               </Button>
                             </Form.Item>
-                          </div>
+                          </Card>
                         )
                       }}
                     </Form.List>
-                  </Space>
+                  </Card>
                 ))}
 
                 <Form.Item>
@@ -144,7 +191,7 @@ export const GameForm: FC<IGameFormProps> = (props) => {
                     <PlusOutlined /> Добавить дисциплину
                   </Button>
                 </Form.Item>
-              </div>
+              </Card>
             )
           }}
         </Form.List>
@@ -164,7 +211,4 @@ export const GameForm: FC<IGameFormProps> = (props) => {
       </Form.Item>
     </Form>
   )
-}
-function useResetFormOnCloseModal(arg0: { form: import('antd').FormInstance<any>; open: ModalFormProps }) {
-  throw new Error('Function not implemented.')
 }

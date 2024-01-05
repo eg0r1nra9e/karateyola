@@ -31,5 +31,5 @@ export const GameFormContainer: FC<IGameFormProps> = (props) => {
     push('/games/')
   }
 
-  return <GameForm game={game} competitions={competitions} onFinish={onFinish} />
+  return <GameForm game={game} competitions={competitions} athletes={athletes} onFinish={onFinish} />
 }
