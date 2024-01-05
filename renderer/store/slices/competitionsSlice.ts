@@ -1,9 +1,10 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { v4 as uuidv4 } from 'uuid'
 
-import type { TAppState } from '../store'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+
 import { ICompetition } from '../../types/ICompetition'
 
+import type { TAppState } from '../store'
 interface ICompetitionsState {
   competitions: ICompetition[]
 }

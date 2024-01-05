@@ -1,40 +1,30 @@
 import { FC } from 'react'
 import { GameForm } from '../../components/GameForm/GameForm'
-
-type FieldType = {
-  gameName?: string
-  firstDate?: string
-  lastDate?: string
-}
+import { useRouter } from 'next/router'
+import { useAppDispatch, useAppSelector } from '../../store/hooks'
+import { addGame, editGame, selectGame } from '../../store/slices/gamesSlice'
 
 interface IGameFormProps {
-  id?: string
-  gameName?: string
-  firstDate?: string
-  lastDate?: string
-  onFinish: (values: any) => void
-  onFinishFailed: (values: any) => void
+  gameId?: string
 }
 
 export const GameFormContainer: FC<IGameFormProps> = (props) => {
-  const { id, gameName, firstDate, lastDate } = props
+  const { gameId } = props
+  const { push } = useRouter()
 
-  const onFinish = (values: any) => {
-    console.log('Success:', values)
+  const dispatch = useAppDispatch()
+
+  const game = useAppSelector((state) => selectGame(state, gameId))
+
+  const onFinish = (team: any) => {
+    if (!gameId) {
+      dispatch(addGame(team))
+    } else {
+      dispatch(editGame(team))
+    }
+
+    push('/games/')
   }
 
-  const onFinishFailed = (errorInfo: any) => {
-    console.log('Failed:', errorInfo)
-  }
-
-  return (
-    <GameForm
-      id={id}
-      gameName={gameName}
-      firstDate={firstDate}
-      lastDate={lastDate}
-      onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
-    />
-  )
+  return <GameForm game={game} onFinish={onFinish} />
 }

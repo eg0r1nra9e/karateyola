@@ -1,13 +1,23 @@
+import { Button, Space } from 'antd'
 import { NextPage } from 'next'
 import Link from 'next/link'
+
+import { PlusOutlined } from '@ant-design/icons'
+
+import { GamesContainer } from '../../containers/GamesContainer/GamesContainer'
 
 const Games: NextPage = () => {
   return (
     <>
       <h1>Соревнования</h1>
-      <Link href="/games/add">Добавить</Link>
-      <Link href="/games/edit/1">Изменить</Link>
-      <Link href="/games/start/1">Начать соревнование</Link>
+      <Space direction="vertical" size="middle" style={{ display: 'flex' }}>
+        <Link href="/games/add">
+          <Button type="primary" icon={<PlusOutlined />}>
+            Добавить
+          </Button>
+        </Link>
+        <GamesContainer />
+      </Space>
     </>
   )
 }

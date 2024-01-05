@@ -3,6 +3,7 @@ import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit'
 import athletesSliceReducer from './slices/athletesSlice'
 import categoriesSliceReducer from './slices/categoriesSlice'
 import competitionsSliceReducer from './slices/competitionsSlice'
+import gamesSliceReducer from './slices/gamesSlice'
 import teamsSliceReducer from './slices/teamsSlice'
 
 export function createStore(reduxState?: any) {
@@ -12,6 +13,7 @@ export function createStore(reduxState?: any) {
       competitions: competitionsSliceReducer,
       athletes: athletesSliceReducer,
       categories: categoriesSliceReducer,
+      games: gamesSliceReducer,
     },
     preloadedState: {
       ...reduxState,

@@ -1,10 +1,10 @@
-/* eslint-disable no-param-reassign */
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { v4 as uuidv4 } from 'uuid'
 
-import type { TAppState } from '../store'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+
 import { ITeam } from '../../types/ITeam'
 
+import type { TAppState } from '../store'
 interface ITeamsState {
   teams: ITeam[]
 }

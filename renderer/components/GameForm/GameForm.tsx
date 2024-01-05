@@ -1,26 +1,32 @@
-import { Button, Form, Input } from 'antd'
-import React, { FC } from 'react'
-import type { DatePickerProps } from 'antd'
-import { DatePicker, Space } from 'antd'
-import type { FormItemProps } from 'antd'
+import { Button, DatePicker, Form, Input } from 'antd'
+import dayjs from 'dayjs'
+import React, { FC, useEffect } from 'react'
 
-type FieldType = {
-  gameName?: string
-  firstDate?: string
-  lastDate?: string
-}
+import { IGame } from '../../types/IGame'
+
+type FieldType = IGame
 
 interface IGameFormProps {
-  id?: string
-  gameName?: string
-  firstDate?: string
-  lastDate?: string
+  game?: IGame
   onFinish: (values: any) => void
-  onFinishFailed: (values: any) => void
 }
 
+const dateFormat = 'DD.MM.YYYY'
+
 export const GameForm: FC<IGameFormProps> = (props) => {
-  const { id, gameName, firstDate, onFinish, onFinishFailed } = props
+  const { game, onFinish } = props
+
+  const [form] = Form.useForm()
+
+  useEffect(() => {
+    form.setFieldsValue({
+      id: game?.id,
+      name: game?.name,
+      firstDate: dayjs(game?.firstDate),
+      lastDate: dayjs(game?.lastDate),
+    })
+  }, [form, game])
+
   return (
     <Form
       name="basic"
@@ -29,10 +35,13 @@ export const GameForm: FC<IGameFormProps> = (props) => {
       style={{ maxWidth: 600 }}
       initialValues={{ remember: true }}
       onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
       autoComplete="off"
+      form={form}
     >
-      <Form.Item<FieldType> label="Название" name="gameName" rules={[{ required: true, message: 'Введите название' }]}>
+      <Form.Item<FieldType> name="id" hidden={true}>
+        <Input />
+      </Form.Item>
+      <Form.Item<FieldType> label="Название" name="name" rules={[{ required: true, message: 'Введите название' }]}>
         <Input />
       </Form.Item>
       <Form.Item<FieldType>
@@ -40,14 +49,14 @@ export const GameForm: FC<IGameFormProps> = (props) => {
         name="firstDate"
         rules={[{ required: true, message: 'Введите дату начала соревнований' }]}
       >
-        <DatePicker />
+        <DatePicker format={dateFormat} />
       </Form.Item>
       <Form.Item<FieldType>
         label="Дата окончания"
         name="lastDate"
         rules={[{ required: true, message: 'Введите дату окончания соревнований' }]}
       >
-        <DatePicker />
+        <DatePicker format={dateFormat} />
       </Form.Item>
 
       <Form.Item wrapperCol={{ offset: 8, span: 16 }}>

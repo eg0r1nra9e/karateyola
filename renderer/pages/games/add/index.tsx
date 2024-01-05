@@ -1,4 +1,5 @@
 import { NextPage } from 'next'
+
 import { GameFormContainer } from '../../../containers/GameFormContainer/GameFormContainer'
 
 const GameAdd: NextPage = () => {

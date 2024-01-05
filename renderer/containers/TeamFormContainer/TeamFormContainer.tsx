@@ -6,11 +6,11 @@ import cities from '../../data/city.json'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { addTeam, editTeam, selectTeam } from '../../store/slices/teamsSlice'
 
-interface TeamFormProps {
+interface ITeamFormProps {
   teamId?: string
 }
 
-export const TeamFormContainer: FC<TeamFormProps> = (props) => {
+export const TeamFormContainer: FC<ITeamFormProps> = (props) => {
   const { teamId } = props
   const { push } = useRouter()
 

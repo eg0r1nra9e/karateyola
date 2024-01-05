@@ -28,7 +28,7 @@ export const TeamsContainer = () => {
       title: 'Город',
       dataIndex: 'city',
       key: 'city',
-      sorter: (a, b) => a.name.length - b.name.length,
+      sorter: (a, b) => a.city.length - b.city.length,
     },
     {
       title: '',
