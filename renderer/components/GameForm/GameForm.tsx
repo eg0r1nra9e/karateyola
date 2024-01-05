@@ -1,4 +1,4 @@
-import { Button, DatePicker, Form, Input } from 'antd'
+import { Button, DatePicker, Form, Input, Radio } from 'antd'
 import dayjs from 'dayjs'
 import React, { FC, useEffect } from 'react'
 
@@ -24,6 +24,7 @@ export const GameForm: FC<IGameFormProps> = (props) => {
       name: game?.name,
       firstDate: dayjs(game?.firstDate),
       lastDate: dayjs(game?.lastDate),
+      status: game.status,
     })
   }, [form, game])
 
@@ -59,6 +60,13 @@ export const GameForm: FC<IGameFormProps> = (props) => {
         <DatePicker format={dateFormat} />
       </Form.Item>
 
+      <Form.Item<FieldType> label="Статус" name="status" rules={[{ required: true, message: 'Выберите статус' }]}>
+        <Radio.Group>
+          <Radio value="ожидает начала"> Ожидает начала </Radio>
+          <Radio value="идет"> Идет </Radio>
+          <Radio value="закончено"> Закончено </Radio>
+        </Radio.Group>
+      </Form.Item>
       <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
         <Button type="primary" htmlType="submit">
           Сохранить

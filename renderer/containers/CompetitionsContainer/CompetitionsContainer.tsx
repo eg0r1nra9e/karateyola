@@ -27,8 +27,8 @@ export const CompetitionsContainer = () => {
     {
       title: '',
       key: 'action',
-      render: (_, competitions) => (
-        <Button type="primary" danger onClick={() => deleteCompetitions(competitions.id)} icon={<MinusOutlined />}>
+      render: (_, competition) => (
+        <Button type="primary" danger onClick={() => deleteCompetitions(competition.id)} icon={<MinusOutlined />}>
           Удалить
         </Button>
       ),

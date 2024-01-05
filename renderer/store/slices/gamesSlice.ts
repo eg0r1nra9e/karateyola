@@ -26,6 +26,15 @@ export const gamesSlice = createSlice({
       game.name = action.payload.name
       game.firstDate = action.payload.firstDate
       game.lastDate = action.payload.lastDate
+      game.status = action.payload.status
+    },
+    startGame: (state, action: PayloadAction<string>) => {
+      const game = state.games.find((game) => game.id === action.payload)
+      game.status = 'идет'
+    },
+    endGame: (state, action: PayloadAction<string>) => {
+      const game = state.games.find((game) => game.id === action.payload)
+      game.status = 'закончено'
     },
     removeGame: (state, action: PayloadAction<string>) => {
       state.games = state.games.filter((game) => game.id !== action.payload)
@@ -33,7 +42,7 @@ export const gamesSlice = createSlice({
   },
 })
 
-export const { addGame, removeGame, editGame } = gamesSlice.actions
+export const { addGame, removeGame, editGame, startGame, endGame } = gamesSlice.actions
 
 export const selectGames = (state: TAppState) => state.games.games
 export const selectGame = (state: TAppState, gameId: string) => state.games.games.find((game) => game.id === gameId)
