@@ -1,10 +1,13 @@
-import { Button, DatePicker, Form, Input, Radio, Select, Space } from 'antd'
+import { Button, DatePicker, Form, Input, Modal, Radio, Select, Space } from 'antd'
 import dayjs from 'dayjs'
 import React, { FC, useEffect } from 'react'
 
 import { IGame } from '../../types/IGame'
 import { ICompetition } from '../../types/ICompetition'
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons'
+import Card from 'antd/es/card/Card'
+
+const { RangePicker } = DatePicker
 
 type FieldType = IGame
 
@@ -12,6 +15,11 @@ interface IGameFormProps {
   game?: IGame
   competitions: ICompetition[]
   onFinish: (values: any) => void
+}
+
+interface IModalFormProps {
+  open: boolean
+  onCancel: () => void
 }
 
 const dateFormat = 'DD.MM.YYYY'
@@ -27,10 +35,9 @@ export const GameForm: FC<IGameFormProps> = (props) => {
     form.setFieldsValue({
       id: game?.id,
       name: game?.name,
-      firstDate: dayjs(game?.firstDate),
-      lastDate: dayjs(game?.lastDate),
-      status: game.status,
-      competitions: game.competitions,
+      dates: [dayjs(game?.dates[0]), dayjs(game?.dates[1])],
+      status: game?.status,
+      competitions: game?.competitions,
     })
   }, [form, game])
 
@@ -52,18 +59,11 @@ export const GameForm: FC<IGameFormProps> = (props) => {
         <Input />
       </Form.Item>
       <Form.Item<FieldType>
-        label="Дата начала"
-        name="firstDate"
-        rules={[{ required: true, message: 'Введите дату начала соревнований' }]}
+        label="Даты проведения"
+        name="dates"
+        rules={[{ required: true, message: 'Введите даты проведения' }]}
       >
-        <DatePicker format={dateFormat} />
-      </Form.Item>
-      <Form.Item<FieldType>
-        label="Дата окончания"
-        name="lastDate"
-        rules={[{ required: true, message: 'Введите дату окончания соревнований' }]}
-      >
-        <DatePicker format={dateFormat} />
+        <RangePicker format={dateFormat} />
       </Form.Item>
 
       <Form.Item<FieldType>
@@ -72,27 +72,81 @@ export const GameForm: FC<IGameFormProps> = (props) => {
         rules={[{ required: true, message: 'Выберите дисциплину' }]}
       >
         <Form.List name="competitions">
-          {(fields, { add, remove }) => (
-            <>
-              {fields.map(({ key, name, ...restField }) => (
-                <Space key={key} style={{ display: 'flex', marginBottom: 8 }} align="baseline">
-                  <Form.Item
-                    {...restField}
-                    name={[name, 'competitionId']}
-                    rules={[{ required: true, message: 'Выберите дисциплину' }]}
+          {(competitions, { add, remove }) => {
+            return (
+              <div>
+                {competitions.map((competition) => (
+                  <Space key={competition.key} style={{ display: 'flex', marginBottom: 8 }} align="start">
+                    <Space key={competition.key} style={{ display: 'flex', marginBottom: 8 }} align="start">
+                      <Form.Item
+                        {...competition}
+                        name={[competition.name, 'competitionId']}
+                        rules={[{ required: true, message: 'Выберите дисциплину' }]}
+                      >
+                        <Select showSearch placeholder="Выберете дисциплину" options={competitionOptions} />
+                      </Form.Item>
+
+                      <MinusCircleOutlined
+                        onClick={() => {
+                          remove(competition.name)
+                        }}
+                      />
+                    </Space>
+
+                    <Form.List name={[competition.name, 'categories']}>
+                      {(categories, { add, remove }) => {
+                        return (
+                          <div>
+                            {categories.map((category) => (
+                              <Space key={category.key} align="start">
+                                <Form.Item
+                                  {...category}
+                                  name={[category.name, 'name']}
+                                  rules={[{ required: true, message: 'Введите категорию' }]}
+                                >
+                                  <Input placeholder="Введите категорию" />
+                                </Form.Item>
+
+                                <MinusCircleOutlined
+                                  onClick={() => {
+                                    remove(category.name)
+                                  }}
+                                />
+                              </Space>
+                            ))}
+
+                            <Form.Item>
+                              <Button
+                                type="dashed"
+                                onClick={() => {
+                                  add()
+                                }}
+                                block
+                              >
+                                <PlusOutlined /> Добавить категорию
+                              </Button>
+                            </Form.Item>
+                          </div>
+                        )
+                      }}
+                    </Form.List>
+                  </Space>
+                ))}
+
+                <Form.Item>
+                  <Button
+                    type="dashed"
+                    onClick={() => {
+                      add()
+                    }}
+                    block
                   >
-                    <Select showSearch placeholder="Выберете дисциплину" options={competitionOptions} />
-                  </Form.Item>
-                  <MinusCircleOutlined onClick={() => remove(name)} />
-                </Space>
-              ))}
-              <Form.Item>
-                <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
-                  Добавить дисциплину
-                </Button>
-              </Form.Item>
-            </>
-          )}
+                    <PlusOutlined /> Добавить дисциплину
+                  </Button>
+                </Form.Item>
+              </div>
+            )
+          }}
         </Form.List>
       </Form.Item>
 
@@ -110,4 +164,7 @@ export const GameForm: FC<IGameFormProps> = (props) => {
       </Form.Item>
     </Form>
   )
+}
+function useResetFormOnCloseModal(arg0: { form: import('antd').FormInstance<any>; open: ModalFormProps }) {
+  throw new Error('Function not implemented.')
 }

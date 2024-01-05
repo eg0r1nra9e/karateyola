@@ -1,3 +1,5 @@
+import { IGameCompetitionCategory } from './IGameCompetitionCategory'
+
 /**
  * Дисциплина соревнования.
  */
@@ -11,4 +13,9 @@ export interface IGameCompetition {
    * Идентификатор дисциплины
    */
   competitionId: string
+
+  /**
+   * Категории дисциплины.
+   */
+  categories: IGameCompetitionCategory[]
 }

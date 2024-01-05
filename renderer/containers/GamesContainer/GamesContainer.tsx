@@ -58,6 +58,24 @@ export const GamesContainer = () => {
     })
   }
 
+  const gameDates = (game: IGame) => {
+    if (!game?.dates || !game?.dates?.length) {
+      return null
+    }
+
+    return (
+      <>
+        {dayjs(game?.dates[0])
+          .format('DD.MM.YYYY')
+          .toString()}
+        -
+        {dayjs(game?.dates[1])
+          .format('DD.MM.YYYY')
+          .toString()}
+      </>
+    )
+  }
+
   const columns: ColumnsType<IGame> = [
     {
       title: 'Название',
@@ -68,23 +86,9 @@ export const GamesContainer = () => {
     },
     {
       title: 'Дата начала',
-      dataIndex: 'firstDate',
-      key: 'firstDate',
-      render: (_, game) =>
-        dayjs(game?.firstDate)
-          .format('DD.MM.YYYY')
-          .toString(),
-      sorter: (a, b) => a.firstDate.getTime() - b.firstDate.getTime(),
-    },
-    {
-      title: 'Дата окончания',
-      dataIndex: 'date',
-      key: 'date',
-      render: (_, game) =>
-        dayjs(game?.lastDate)
-          .format('DD.MM.YYYY')
-          .toString(),
-      sorter: (a, b) => a.lastDate.getTime() - b.lastDate.getTime(),
+      dataIndex: 'dates',
+      key: 'dates',
+      render: (_, game) => gameDates(game),
     },
     {
       title: 'Дисциплины',

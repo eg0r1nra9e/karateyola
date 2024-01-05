@@ -15,14 +15,9 @@ export interface IGame {
   name?: string
 
   /**
-   * Дата начала соревнования.
+   * Даты проведения соревнований.
    */
-  firstDate?: Date
-
-  /**
-   * Дата окончания соревнования.
-   */
-  lastDate?: Date
+  dates?: Date[]
 
   /**
    * Статус соревнования
