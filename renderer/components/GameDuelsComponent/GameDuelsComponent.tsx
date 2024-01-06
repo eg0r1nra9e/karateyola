@@ -8,13 +8,14 @@ import { EditOutlined, EllipsisOutlined, FireOutlined, SettingOutlined } from '@
 import Link from 'next/link'
 
 interface IGameDuelsComponentProps {
+  gameId?: string
   standings: IDuel[]
   athletes: IAthlete[]
   teams: ITeam[]
   actions?: ReactNode[]
 }
 export const GameDuelsComponent: FC<IGameDuelsComponentProps> = (props) => {
-  const { standings, athletes, teams, actions } = props
+  const { standings, athletes, teams, gameId } = props
 
   if (!standings || !standings.length) {
     return null
@@ -32,7 +33,7 @@ export const GameDuelsComponent: FC<IGameDuelsComponentProps> = (props) => {
   }
 
   return standings.map((standing) => (
-    <Card key={standing?.id} actions={actions}>
+    <Card key={standing?.id}>
       <Card>{getAthlete(standing?.athletesId[0])}</Card>
       {standing?.athletesId[1] && <Card>{getAthlete(standing?.athletesId[1])}</Card>}
     </Card>

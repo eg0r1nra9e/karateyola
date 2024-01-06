@@ -1,18 +1,16 @@
-import { useRouter } from 'next/router'
-import { FC } from 'react'
+import { Button, Card, Tabs } from 'antd'
 import dayjs from 'dayjs'
+import Link from 'next/link'
+import { FC } from 'react'
 
-import { GameForm } from '../../components/GameForm/GameForm'
-import { useAppDispatch, useAppSelector } from '../../store/hooks'
+import { FireOutlined } from '@ant-design/icons'
+
+import { useAppSelector } from '../../store/hooks'
 import { selectAthletes } from '../../store/slices/athletesSlice'
 import { selectCompetitions } from '../../store/slices/competitionsSlice'
-import { addGame, editGame, selectGame } from '../../store/slices/gamesSlice'
-import { IGame } from '../../types/IGame'
-import { GameDuelsComponent } from '../../components/GameDuelsComponent/GameDuelsComponent'
+import { selectGame } from '../../store/slices/gamesSlice'
 import { selectTeams } from '../../store/slices/teamsSlice'
-import { Button, Empty, Tabs } from 'antd'
-import Link from 'next/link'
-import { FireOutlined } from '@ant-design/icons'
+import { IDuel } from '../../types/IDuel'
 
 interface IGameFormProps {
   gameId?: string
@@ -20,9 +18,6 @@ interface IGameFormProps {
 
 export const GameContainer: FC<IGameFormProps> = (props) => {
   const { gameId } = props
-  const { push } = useRouter()
-
-  const dispatch = useAppDispatch()
 
   const game = useAppSelector((state) => selectGame(state, gameId))
   const competitions = useAppSelector(selectCompetitions)
@@ -31,9 +26,9 @@ export const GameContainer: FC<IGameFormProps> = (props) => {
 
   const items = []
 
-  const getActions = (duelId) => {
+  const getActions = (gameId: string, competitionId: string, categoryName: string, standingId: string) => {
     return [
-      <Link key="start" href={`/games/${gameId}/${duelId}`}>
+      <Link key="start" href={`/games/${gameId}/${competitionId}/${categoryName}/${standingId}`}>
         <Button type="primary">
           <FireOutlined />
           Начать
@@ -42,6 +37,25 @@ export const GameContainer: FC<IGameFormProps> = (props) => {
     ]
   }
 
+  const getAthlete = (athleteId) => {
+    const athlete = athletes.find((a) => a.id === athleteId)
+    const team = teams.find((t) => t.id === athlete.teamId)
+    const athleteName = `${athlete.firstName} ${athlete.lastName}`
+    let athleteTeam = ''
+    if (team) {
+      athleteTeam = ` (${team?.name}, ${team.city})`
+    }
+    return `${athleteName}${athleteTeam}`
+  }
+
+  const getStandings = (gameId: string, competitionId: string, categoriesName: string, standings: IDuel[]) =>
+    standings.map((standing) => (
+      <Card key={standing?.id} actions={getActions(gameId, competitionId, categoriesName, standing?.id)}>
+        <Card>{getAthlete(standing?.athletesId[0])}</Card>
+        {standing?.athletesId[1] && <Card>{getAthlete(standing?.athletesId[1])}</Card>}
+      </Card>
+    ))
+
   game?.competitions.forEach((competition) => {
     const competitionName = competitions?.find((c) => c.id === competition.competitionId)?.name
     if (competition?.categories?.length) {
@@ -49,33 +63,15 @@ export const GameContainer: FC<IGameFormProps> = (props) => {
         if (!category?.standings?.length) {
           return
         }
-        const actions = [
-          <Link key="start" href={`/games/${gameId}/`}>
-            <Button type="primary">
-              <FireOutlined />
-              Начать
-            </Button>
-          </Link>,
-        ]
+
         items.push({
           key: category.name,
           label: competitionName + ': ' + category?.name,
-          children: (
-            <>
-              <GameDuelsComponent athletes={athletes} teams={teams} standings={category.standings} />
-            </>
-          ),
+          children: getStandings(game.id, competition.competitionId, category.name, category.standings),
         })
       })
     }
   })
-  const onFinish = (game: IGame) => {
-    if (!gameId) {
-      dispatch(addGame(game))
-    } else {
-      dispatch(editGame(game))
-    }
-  }
 
   return (
     <>

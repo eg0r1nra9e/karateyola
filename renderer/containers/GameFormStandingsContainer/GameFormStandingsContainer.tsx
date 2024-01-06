@@ -1,4 +1,4 @@
-import { Button, Divider, Empty, Space, Tabs } from 'antd'
+import { Button, Divider, Space, Tabs } from 'antd'
 import { FC, useState } from 'react'
 
 import { GameDuelsComponent } from '../../components/GameDuelsComponent/GameDuelsComponent'
@@ -8,13 +8,13 @@ import { selectCompetitions } from '../../store/slices/competitionsSlice'
 import { selectTeams } from '../../store/slices/teamsSlice'
 import { IGame } from '../../types/IGame'
 
-interface IGameStandingsContainerProps {
+interface IGameFormStandingsContainerProps {
   game: IGame
   onFinish: (values: any) => void
   onBack: (values: any) => void
 }
 
-export const GameStandingsContainer: FC<IGameStandingsContainerProps> = (props) => {
+export const GameFormStandingsContainer: FC<IGameFormStandingsContainerProps> = (props) => {
   const { game, onFinish, onBack } = props
   const athletes = useAppSelector(selectAthletes)
   const teams = useAppSelector(selectTeams)
@@ -27,14 +27,13 @@ export const GameStandingsContainer: FC<IGameStandingsContainerProps> = (props) 
     const competitionName = competitions?.find((c) => c.id === competition.competitionId)?.name
     if (competition?.categories?.length) {
       competition?.categories.forEach((category) => {
+        if (!category?.standings?.length) {
+          return null
+        }
         items.push({
           key: category.name,
           label: competitionName + ': ' + category?.name,
-          children: category?.standings?.length ? (
-            <GameDuelsComponent athletes={athletes} teams={teams} standings={category.standings} />
-          ) : (
-            <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
-          ),
+          children: <GameDuelsComponent athletes={athletes} teams={teams} standings={category.standings} />,
         })
       })
     }
