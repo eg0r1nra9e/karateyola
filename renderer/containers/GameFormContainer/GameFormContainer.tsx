@@ -28,9 +28,15 @@ export const GameFormContainer: FC<IGameFormProps> = (props) => {
     } else {
       dispatch(editGame(game))
     }
-
-    push('/games/')
   }
 
-  return <GameForm game={game} competitions={competitions} athletes={athletes} onFinish={onFinish} />
+  return (
+    <GameForm
+      game={game}
+      competitions={competitions}
+      athletes={athletes}
+      onSave={onFinish}
+      onFinish={() => push('/games/')}
+    />
+  )
 }

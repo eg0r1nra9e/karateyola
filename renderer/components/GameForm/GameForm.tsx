@@ -9,16 +9,18 @@ import { ICompetition } from '../../types/ICompetition'
 import { IGame } from '../../types/IGame'
 import { GameCompetitionsForm } from '../GameCompetitionsForm/GameCompetitionsForm'
 import { GameGeneralInformationForm } from '../GameGeneralInformationForm/GameGeneralInformationForm'
+import { GameStandingsContainer } from '../../containers/GameStandingsContainer/GameStandingsContainer'
 
 interface IGameFormProps {
   game?: IGame
   competitions: ICompetition[]
   athletes: IAthlete[]
+  onSave: (values: any) => void
   onFinish: (values: any) => void
 }
 
 export const GameForm: FC<IGameFormProps> = (props) => {
-  const { game, competitions, athletes, onFinish } = props
+  const { game, competitions, athletes, onSave: onFinish } = props
 
   const [currentGame, setCurrentGame] = useState(game)
 
@@ -41,52 +43,59 @@ export const GameForm: FC<IGameFormProps> = (props) => {
   }
 
   const onFinishAthletesForm = (game: IGame) => {
-    setCurrentGame({
+    const newGame = {
       ...currentGame,
       ...game,
-    })
+    }
+
+    setCurrentGame(newGame)
+    onFinish(newGame)
     setCurrent(3)
   }
 
   const onFinishForm = () => {
-    onFinish(currentGame)
+    //onFinish(currentGame)
   }
 
   const forms = [
-    <GameGeneralInformationForm key="gameGeneralInformationForm" game={currentGame} onFinish={onFinishGeneralForm} />,
-    <GameCompetitionsForm
-      key="gameCompetitionsForm"
-      game={currentGame}
-      competitions={competitions}
-      onFinish={onFinishCompetitionsForm}
-      onBack={() => {
-        setCurrent(0)
-      }}
-    />,
-    <GameAthletesFormContainer
-      key="gameAthletesFormContainer"
-      game={currentGame}
-      onFinish={onFinishAthletesForm}
-      onBack={() => {
-        setCurrent(1)
-      }}
-    />,
-    <div key="finis">
-      <Divider />
-      <Space size={8}>
-        <Button type="primary" htmlType="submit" onClick={onFinishForm}>
-          Завершить
-        </Button>
-        <Button
-          htmlType="button"
-          onClick={() => {
-            setCurrent(2)
-          }}
-        >
-          Назад
-        </Button>
-      </Space>
-    </div>,
+    <>
+      <h2>Общая информация</h2>
+      <GameGeneralInformationForm key="gameGeneralInformationForm" game={currentGame} onFinish={onFinishGeneralForm} />
+    </>,
+    <>
+      <h2>Дисциплины</h2>
+      <GameCompetitionsForm
+        key="gameCompetitionsForm"
+        game={currentGame}
+        competitions={competitions}
+        onFinish={onFinishCompetitionsForm}
+        onBack={() => {
+          setCurrent(0)
+        }}
+      />
+    </>,
+    <>
+      <h2>Спортсмены</h2>
+      <GameAthletesFormContainer
+        key="gameAthletesFormContainer"
+        game={currentGame}
+        onFinish={onFinishAthletesForm}
+        onBack={() => {
+          setCurrent(1)
+        }}
+      />
+    </>,
+    <>
+      <h2>Турнирная таблица</h2>
+      <GameStandingsContainer
+        key="gameStandingsContainer"
+        game={currentGame}
+        onFinish={onFinishForm}
+        onBack={() => {
+          setCurrent(2)
+        }}
+      />
+    </>,
   ]
 
   return (

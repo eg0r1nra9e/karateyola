@@ -5,6 +5,9 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { IGame } from '../../types/IGame'
 
 import type { TAppState } from '../store'
+import { uniq, shuffle, chunk } from 'lodash'
+import { IGameCompetition } from '../../types/IGameCompetition'
+
 interface IGamesState {
   games: IGame[]
 }
@@ -13,12 +16,27 @@ const initialState: IGamesState = {
   games: [],
 }
 
+const getCompetitions = (competitions: IGameCompetition[]): IGameCompetition[] => {
+  const currentCompetitions = [...competitions]
+
+  currentCompetitions?.forEach((competition) => {
+    competition?.categories?.forEach((category) => {
+      if (!category) {
+        return
+      }
+      category.standings = chunk(shuffle(uniq(category?.athletes)), 2)
+    })
+  })
+
+  return currentCompetitions
+}
+
 export const gamesSlice = createSlice({
   name: 'games',
   initialState,
   reducers: {
     addGame: (state, action: PayloadAction<IGame>) => {
-      const game = { ...action.payload, id: uuidv4() }
+      const game = { ...action.payload, id: uuidv4(), competitions: getCompetitions(action.payload.competitions) }
       state.games = [...state.games, game]
     },
     editGame: (state, action: PayloadAction<IGame>) => {
@@ -26,7 +44,7 @@ export const gamesSlice = createSlice({
       game.name = action.payload.name
       game.dates = action.payload.dates
       game.status = action.payload.status
-      game.competitions = action.payload.competitions
+      game.competitions = getCompetitions(action.payload.competitions)
     },
     startGame: (state, action: PayloadAction<string>) => {
       const game = state.games.find((game) => game.id === action.payload)

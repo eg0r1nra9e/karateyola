@@ -17,6 +17,7 @@
     "@reduxjs/toolkit": "^2.0.1",
     "electron-serve": "^1.1.0",
     "electron-store": "^8.1.0",
+    "lodash": "^4.17.21",
     "react-redux": "^9.0.4",
     "uuid": "^9.0.1"
   },

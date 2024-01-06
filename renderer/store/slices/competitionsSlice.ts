@@ -13,6 +13,18 @@ const initialState: ICompetitionsState = {
   competitions: [],
 }
 
+const getCompetitions = (competitions: IGameCompetition[]): IGameCompetition[] => {
+  const currentCompetitions = [...competitions]
+
+  currentCompetitions?.forEach((competition) => {
+    competition?.categories?.forEach((category) => {
+      category.standing = chunk(shuffle(uniq(category.athletes)), 2)
+    })
+  })
+
+  return currentCompetitions
+}
+
 export const competitionsSlice = createSlice({
   name: 'competitions',
   initialState,

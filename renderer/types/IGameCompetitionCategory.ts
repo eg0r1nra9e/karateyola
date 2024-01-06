@@ -7,5 +7,13 @@ export interface IGameCompetitionCategory {
    */
   name: string
 
+  /**
+   * Участвующие спортсмены
+   */
   athletes: string[]
+
+  /**
+   * Турнирная таблица
+   */
+  standings: any
 }
