@@ -3,9 +3,10 @@ import { FC } from 'react'
 
 import { IAthlete } from '../../types/IAthlete'
 import { ITeam } from '../../types/ITeam'
+import { IDuel } from '../../types/IDuel'
 
 interface IGameDuelsComponentProps {
-  standings: string[][]
+  standings: IDuel[]
   athletes: IAthlete[]
   teams: ITeam[]
 }
@@ -28,9 +29,9 @@ export const GameDuelsComponent: FC<IGameDuelsComponentProps> = (props) => {
   }
 
   return standings.map((standing) => (
-    <Card key={standing[0]}>
-      <Card>{getAthlete(standing[0])}</Card>
-      {standing[1] && <Card>{getAthlete(standing[1])}</Card>}
+    <Card key={standing?.id}>
+      <Card>{getAthlete(standing?.athletesId[0])}</Card>
+      {standing?.athletesId[1] && <Card>{getAthlete(standing?.athletesId[1])}</Card>}
     </Card>
   ))
 }

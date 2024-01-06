@@ -24,7 +24,13 @@ const getCompetitions = (competitions: IGameCompetition[]): IGameCompetition[] =
       if (!category) {
         return
       }
-      category.standings = chunk(shuffle(uniq(category?.athletes)), 2)
+
+      const duels = chunk(shuffle(uniq(category?.athletes)), 2)
+
+      category.standings = duels.map((duel) => ({
+        id: uuidv4(),
+        athletesId: duel,
+      }))
     })
   })
 

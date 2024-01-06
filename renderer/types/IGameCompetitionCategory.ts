@@ -1,3 +1,5 @@
+import { IDuel } from './IDuel'
+
 /**
  * Категория дисциплины.
  */
@@ -15,5 +17,5 @@ export interface IGameCompetitionCategory {
   /**
    * Турнирная таблица
    */
-  standings: any
+  standings: IDuel[]
 }
