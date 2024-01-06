@@ -4,57 +4,55 @@ import { IDuel } from '../../types/IDuel'
 import { TAppState } from '../store'
 import { v4 as uuidv4 } from 'uuid'
 
-
 interface ICurrentDuelState {
-    duel: ICurrentDuel
+  duel: ICurrentDuel
 }
 
 const initialState: ICurrentDuelState = {
-    duel: {},
+  duel: {
+    competitionName: null,
+    categoryName: null,
+    playerOne: {},
+    playerTwo: {},
+    result: {},
+    timer: 0,
+  },
 }
 
-const getCurrentDuel = (currentDuel: ICurrentDuel[]): ICurrentDuel[] => {
-    const currentDuel = [...currentDuel]
-
-    currentDuel?.forEach((currentDuel) => {
-        currentDuel?.player?.forEach((player) => {
-            if (!player) {
-                return
-            }
-
-            const duels = chunk(shuffle(uniq(category?.athletes)), 2)
-
-            player.standings = duels.map((duel) => ({
-                id: uuidv4(),
-                athletesId: player,
-            }))
-        })
-    })
-
-    return currentDuel
-}
-
-export const duelSlice = createSlice({
-    name: 'duels',
-    initialState,
-    reducers: {
-        addDuel: (state, action: PayloadAction<IDuel>) => {
-            const duel = { ...action.payload, id: uuidv4(), duel: getDuel(action.payload.duel) }
-            state.duel = [...state.duel, duel]
-        },
-        editDuel: (state, action: PayloadAction<IDuel>) => {
-            const duel = state.duels.find((duel) => duel.id === action.payload.id)
-            duel.name = action.payload.name
-            duel.athletesId = action.payload.athletesId
-     )
-    }
-
+export const currentDuelSlice = createSlice({
+  name: 'currentDuel',
+  initialState,
+  reducers: {
+    addDuel: (state, action: PayloadAction<ICurrentDuel>) => {
+      state.duel = { ...state.duel, ...action.payload }
+    },
+    addFailOne: (state, action: PayloadAction<number>) => {
+      state.duel.playerOne.fail = state.duel.playerOne.fail + action.payload
+    },
+    addFailTwo: (state, action: PayloadAction<number>) => {
+      state.duel.playerTwo.fail = state.duel.playerTwo.fail + action.payload
+    },
+    addScoreOne: (state, action: PayloadAction<number>) => {
+      state.duel.playerOne.score = state.duel.playerOne.score + action.payload
+    },
+    addScoreTwo: (state, action: PayloadAction<number>) => {
+      state.duel.playerTwo.score = state.duel.playerTwo.score + action.payload
+    },
+    addBenefitOne: (state, action: PayloadAction<number>) => {
+      state.duel.playerOne.benefit = state.duel.playerOne.benefit + action.payload
+    },
+    addBenefitTwo: (state, action: PayloadAction<number>) => {
+      state.duel.playerTwo.benefit = state.duel.playerTwo.benefit + action.payload
+    },
+    setTime: (state, action: PayloadAction<number>) => {
+      state.duel.timer = action.payload
+    },
   },
 })
 
-export const { addDuel, removeDuel, editDuel, startDuel, endDuel } = duelsSlice.actions
+export const { addDuel, addFailOne, addFailTwo, addScoreOne, addScoreTwo, addBenefitOne, addBenefitTwo, setTime } =
+  currentDuelSlice.actions
 
-export const selectDuels = (state: TAppState) => state.duels.duels
-export const selectDuel = (state: TAppState, duelId: string) => state.duels.duels.find((duel) => duel.id === duelId)
+export const selectCurrentDuel = (state: TAppState) => state.currentDuel.duel
 
-export default DuelsSlice.reducer
+export default currentDuelSlice.reducer

@@ -1,18 +1,19 @@
 import { NextPage } from 'next'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
+
+import { DuelContainer } from '../../../../../containers/DuelContainer/DuelContainer'
 
 const Duel: NextPage = () => {
   const router = useRouter()
   const { query } = router
 
   return (
-    <>
-      <h1>
-        Соревнование {query?.gameId}, дисциплина {query.competitionId}, категория {query.categoryName}, поединок{' '}
-        {query.duelId}
-      </h1>
-    </>
+    <DuelContainer
+      gameId={query?.gameId?.toString()}
+      competitionId={query?.competitionId?.toString()}
+      categoryName={query?.categoryName?.toString()}
+      duelId={query?.duelId?.toString()}
+    />
   )
 }
 

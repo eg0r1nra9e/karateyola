@@ -1,6 +1,6 @@
 export interface IPlayer {
   athleteId?: string
-  score?: string
-  fail?: string
-  benefit?: string
+  score?: number
+  fail?: number
+  benefit?: number
 }
