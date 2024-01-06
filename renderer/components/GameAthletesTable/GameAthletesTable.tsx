@@ -16,6 +16,8 @@ interface IGameAthletesContainerProps {
 
 interface DataType extends IAthlete {
   key: React.Key
+  age: number
+  team: string
 }
 
 export const GameAthletesTable: FC<IGameAthletesContainerProps> = (props) => {
@@ -45,10 +47,6 @@ export const GameAthletesTable: FC<IGameAthletesContainerProps> = (props) => {
       title: 'Возраст',
       dataIndex: 'age',
       key: 'age',
-      render: (_, athlete) => {
-        let age = ((new Date().getTime() - new Date(athlete?.dateOfBirth).getTime()) / (24 * 3600 * 365.25 * 1000)) | 0
-        return age
-      },
       sorter: (a, b) => a.dateOfBirth.getTime() - b.dateOfBirth.getTime(),
     },
     {
@@ -59,13 +57,31 @@ export const GameAthletesTable: FC<IGameAthletesContainerProps> = (props) => {
     },
     {
       title: 'Команда',
-      dataIndex: 'teamId',
-      key: 'teamId',
-      render: (_, athlete) => teams?.find((team) => team.id === athlete.teamId)?.name,
+      dataIndex: 'team',
+      key: 'team',
+      sorter: (a, b) => a.team.length - b.team.length,
     },
   ]
 
-  const data: DataType[] = athletes.map((athlete) => ({ ...athlete, key: athlete.id }))
+  const getTeam = (teamId: string): string => {
+    const team = teams?.find((team) => team.id === teamId)
+    if (!team) {
+      return ''
+    }
+
+    return `${team.name}, ${team.city} `
+  }
+
+  const getAge = (date: Date): number => {
+    return ((new Date().getTime() - new Date(date).getTime()) / (24 * 3600 * 365.25 * 1000)) | 0
+  }
+
+  const data: DataType[] = athletes.map((athlete) => ({
+    ...athlete,
+    key: athlete.id,
+    age: getAge(athlete?.dateOfBirth),
+    team: getTeam(athlete.teamId),
+  }))
 
   const rowSelection = {
     selectedRowKeys: category.athletes,

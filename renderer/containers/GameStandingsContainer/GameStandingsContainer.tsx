@@ -1,12 +1,12 @@
-import { Button, Collapse, Divider, Space } from 'antd'
+import { Button, Divider, Empty, Space, Tabs } from 'antd'
 import { FC, useState } from 'react'
 
+import { GameDuelsComponent } from '../../components/GameDuelsComponent/GameDuelsComponent'
 import { useAppSelector } from '../../store/hooks'
 import { selectAthletes } from '../../store/slices/athletesSlice'
 import { selectCompetitions } from '../../store/slices/competitionsSlice'
 import { selectTeams } from '../../store/slices/teamsSlice'
 import { IGame } from '../../types/IGame'
-import { GameDuelsComponent } from '../GameDuelsComponent/GameDuelsComponent'
 
 interface IGameStandingsContainerProps {
   game: IGame
@@ -30,7 +30,11 @@ export const GameStandingsContainer: FC<IGameStandingsContainerProps> = (props) 
         items.push({
           key: category.name,
           label: competitionName + ': ' + category?.name,
-          children: <GameDuelsComponent athletes={athletes} teams={teams} standings={category.standings} />,
+          children: category?.standings?.length ? (
+            <GameDuelsComponent athletes={athletes} teams={teams} standings={category.standings} />
+          ) : (
+            <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
+          ),
         })
       })
     }
@@ -38,7 +42,7 @@ export const GameStandingsContainer: FC<IGameStandingsContainerProps> = (props) 
 
   return (
     <>
-      <Collapse items={items} />
+      <Tabs defaultActiveKey="1" items={items} indicatorSize={(origin) => origin - 16} />
       <Divider />
       <Space size={8}>
         <Button type="primary" htmlType="submit" onClick={() => onFinish(currentGame)}>

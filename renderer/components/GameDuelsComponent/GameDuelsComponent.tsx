@@ -2,14 +2,7 @@ import { Card } from 'antd'
 import { FC } from 'react'
 
 import { IAthlete } from '../../types/IAthlete'
-import { IGame } from '../../types/IGame'
 import { ITeam } from '../../types/ITeam'
-
-interface IGameStandingsContainerProps {
-  game: IGame
-  onFinish: (values: any) => void
-  onBack: (values: any) => void
-}
 
 interface IGameDuelsComponentProps {
   standings: string[][]

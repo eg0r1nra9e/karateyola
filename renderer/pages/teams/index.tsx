@@ -1,8 +1,10 @@
+import { Button, Space } from 'antd'
 import { NextPage } from 'next'
 import Link from 'next/link'
-import { TeamsContainer } from '../../containers/TeamsContainer/TeamsContainer'
-import { Button, Space } from 'antd'
+
 import { PlusOutlined } from '@ant-design/icons'
+
+import { TeamsContainer } from '../../containers/TeamsContainer/TeamsContainer'
 
 const Teams: NextPage = () => {
   return (

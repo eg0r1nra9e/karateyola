@@ -1,4 +1,4 @@
-import { Button, Collapse, Divider, Space } from 'antd'
+import { Button, Divider, Space, Tabs } from 'antd'
 import { FC, useState } from 'react'
 
 import { GameAthletesTable } from '../../components/GameAthletesTable/GameAthletesTable'
@@ -30,7 +30,7 @@ export const GameAthletesFormContainer: FC<IGameAthletesFormContainerProps> = (p
       category.athletes = []
     }
 
-    category.athletes.splice(0, category.athletes.length)
+    category.athletes = []
 
     category.athletes = [...athletesIds]
 
@@ -52,7 +52,7 @@ export const GameAthletesFormContainer: FC<IGameAthletesFormContainerProps> = (p
 
   return (
     <>
-      <Collapse accordion items={items} />
+      <Tabs defaultActiveKey="1" items={items} indicatorSize={(origin) => origin - 16} />
       <Divider />
       <Space size={8}>
         <Button type="primary" htmlType="submit" onClick={() => onFinish(currentGame)}>

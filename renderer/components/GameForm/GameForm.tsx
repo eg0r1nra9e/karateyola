@@ -1,15 +1,15 @@
-import { Button, Divider, Form, Space, Steps } from 'antd'
-import React, { FC, useEffect, useState } from 'react'
+import { Divider, Steps } from 'antd'
+import React, { FC, useState } from 'react'
 
 import { ApartmentOutlined, ProfileOutlined, TeamOutlined, TrophyOutlined } from '@ant-design/icons'
 
 import { GameAthletesFormContainer } from '../../containers/GameAthletesFormContainer/GameAthletesFormContainer'
+import { GameStandingsContainer } from '../../containers/GameStandingsContainer/GameStandingsContainer'
 import { IAthlete } from '../../types/IAthlete'
 import { ICompetition } from '../../types/ICompetition'
 import { IGame } from '../../types/IGame'
 import { GameCompetitionsForm } from '../GameCompetitionsForm/GameCompetitionsForm'
 import { GameGeneralInformationForm } from '../GameGeneralInformationForm/GameGeneralInformationForm'
-import { GameStandingsContainer } from '../../containers/GameStandingsContainer/GameStandingsContainer'
 
 interface IGameFormProps {
   game?: IGame

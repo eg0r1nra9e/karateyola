@@ -6,9 +6,9 @@ import Link from 'next/link'
 import { ApartmentOutlined, MinusOutlined, ThunderboltOutlined } from '@ant-design/icons'
 
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
+import { selectCompetitions } from '../../store/slices/competitionsSlice'
 import { endGame, removeGame, selectGames, startGame } from '../../store/slices/gamesSlice'
 import { IGame } from '../../types/IGame'
-import { selectCompetitions } from '../../store/slices/competitionsSlice'
 
 export const GamesContainer = () => {
   const games = useAppSelector(selectGames)
