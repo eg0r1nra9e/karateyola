@@ -33,11 +33,7 @@ const menu = [
     key: 'competitions',
     icon: <BarsOutlined />,
   },
-  {
-    label: <Link href="/categories">Категории</Link>,
-    key: 'categories',
-    icon: <ProfileOutlined />,
-  },
+
   {
     label: <Link href="/games">Соревнования</Link>,
     key: 'games',
