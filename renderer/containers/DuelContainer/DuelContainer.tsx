@@ -1,29 +1,26 @@
-import { Button, Divider, Flex, Space, Table } from 'antd'
-import { ColumnsType } from 'antd/es/table'
-import Link from 'next/link'
-
-import { MinusOutlined } from '@ant-design/icons'
-
-import { useAppDispatch, useAppSelector } from '../../store/hooks'
-import { removeCompetition, selectCompetitions } from '../../store/slices/competitionsSlice'
-import { ICompetition } from '../../types/ICompetition'
+import { Button, Divider, Flex } from 'antd'
 import { FC, useEffect, useState } from 'react'
-import { selectGame } from '../../store/slices/gamesSlice'
+
+import Player from '../../components/Player'
+import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { selectAthletes } from '../../store/slices/athletesSlice'
-import { selectTeams } from '../../store/slices/teamsSlice'
-import { ICurrentDuel } from '../../types/ICurrentDuel'
+import { selectCompetitions } from '../../store/slices/competitionsSlice'
 import {
+  addBenefitOne,
+  addBenefitTwo,
   addDuel,
-  selectCurrentDuel,
   addFailOne,
   addFailTwo,
   addScoreOne,
   addScoreTwo,
-  addBenefitOne,
-  addBenefitTwo,
+  endDuel,
+  selectCurrentDuel,
   setTime,
 } from '../../store/slices/currentDuelSlice'
-import Player from '../../components/Player'
+import { selectGame } from '../../store/slices/gamesSlice'
+import { selectTeams } from '../../store/slices/teamsSlice'
+import { ICompetition } from '../../types/ICompetition'
+import { ICurrentDuel } from '../../types/ICurrentDuel'
 import { DuelResultContainer } from '../DuelResultContainer/DuelResultContainer'
 
 interface IDuelContainer {
@@ -33,7 +30,7 @@ interface IDuelContainer {
   duelId: string
 }
 
-const TIMER = 60
+const TIMER = 30
 
 export const DuelContainer: FC<IDuelContainer> = (props) => {
   const [isBrowser, setIsBrowser] = useState(false)
@@ -80,7 +77,11 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
   }
 
   useEffect(() => {
-    dispatch(setTime(timer))
+    if (timer) {
+      dispatch(setTime(timer))
+    } else {
+      dispatch(endDuel())
+    }
   }, [dispatch, timer])
 
   useEffect(() => {
@@ -106,7 +107,7 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
           fail: 0,
           score: 0,
         },
-        result: {},
+        result: null,
       }),
     )
   }, [duelId, dispatch, standing?.athletesId, categoryName, competitionName])
@@ -144,7 +145,7 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
     <>
       <h1>{game?.name}</h1>
       <h2>
-        Дисциплина: {competitionName}, Категория: {categoryName}, поединок: {duelId}
+        {competitionName}, {categoryName}
       </h2>
       <h3> Спортсмены: {standing?.athletesId?.map((a) => getAthlete(a)).join(', ')}</h3>
       <Flex gap="middle">
@@ -163,7 +164,7 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
         </Button>
       </Flex>
       <Divider />
-      <Flex>
+      <Flex gap="middle">
         <div style={{ background: 'red', width: '100%' }}>
           <Player
             isDanger={true}

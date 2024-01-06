@@ -27,6 +27,10 @@ export const DuelResultContainer = () => {
   const minutesString = String(Math.floor(currentDuel.timer / 60)).padStart(2, '0')
   const secondsString = String(currentDuel.timer % 60).padStart(2, '0')
 
+  if (currentDuel.result) {
+    return 'Конец боя'
+  }
+
   return (
     <Flex vertical>
       <Flex style={{ justifyContent: 'space-between' }}>
@@ -50,10 +54,10 @@ export const DuelResultContainer = () => {
         <Typography.Title level={1} style={{ marginTop: 0, textAlign: 'center', width: '100%' }}>
           {minutesString} : {secondsString}
         </Typography.Title>
-        <Typography.Title level={1} style={{ marginTop: 0, width: '100%' }}>
+        <div style={{ marginTop: 0, width: '100%' }}>
           <Typography.Title level={2}>{currentDuel.competitionName}</Typography.Title>
           <Typography.Title level={2}>{currentDuel.categoryName}</Typography.Title>
-        </Typography.Title>
+        </div>
       </Flex>
     </Flex>
   )

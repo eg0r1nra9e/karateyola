@@ -14,7 +14,7 @@ const initialState: ICurrentDuelState = {
     categoryName: null,
     playerOne: {},
     playerTwo: {},
-    result: {},
+    result: null,
     timer: 0,
   },
 }
@@ -47,11 +47,23 @@ export const currentDuelSlice = createSlice({
     setTime: (state, action: PayloadAction<number>) => {
       state.duel.timer = action.payload
     },
+    endDuel: (state) => {
+      state.duel.result = 'Конец'
+    },
   },
 })
 
-export const { addDuel, addFailOne, addFailTwo, addScoreOne, addScoreTwo, addBenefitOne, addBenefitTwo, setTime } =
-  currentDuelSlice.actions
+export const {
+  addDuel,
+  addFailOne,
+  addFailTwo,
+  addScoreOne,
+  addScoreTwo,
+  addBenefitOne,
+  addBenefitTwo,
+  setTime,
+  endDuel,
+} = currentDuelSlice.actions
 
 export const selectCurrentDuel = (state: TAppState) => state.currentDuel.duel
 
