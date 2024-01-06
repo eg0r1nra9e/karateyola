@@ -9,7 +9,8 @@ const Duel: NextPage = () => {
   return (
     <>
       <h1>
-        Соревнование {query?.gameId}, состязание {query.competitionId}, поединок {query.duelId}
+        Соревнование {query?.gameId}, дисциплина {query.competitionId}, категория {query.categoryName}, поединок{' '}
+        {query.duelId}
       </h1>
     </>
   )

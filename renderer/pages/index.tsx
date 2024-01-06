@@ -3,6 +3,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import electron from 'electron'
 import { Layout, Form, Select, InputNumber, DatePicker, Switch, Slider, Button } from 'antd'
+import { DashBoardContainer } from '../containers/DashBoardContainer/DashBoardContainer'
 
 const ipcRenderer = electron.ipcRenderer
 
@@ -18,8 +19,10 @@ const Home = () => {
   return (
     <React.Fragment>
       <Head>
-        <title>Home1 - Nextron (with-javascript-ant-design)</title>
+        <title>Управление соревнованиями</title>
       </Head>
+
+      <DashBoardContainer />
 
       <Header>
         <Link href="sample">

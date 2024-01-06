@@ -8,13 +8,13 @@ import { selectCompetitions } from '../../store/slices/competitionsSlice'
 import { selectTeams } from '../../store/slices/teamsSlice'
 import { IGame } from '../../types/IGame'
 
-interface IGameStandingsContainerProps {
+interface IGameFormStandingsContainerProps {
   game: IGame
   onFinish: (values: any) => void
   onBack: (values: any) => void
 }
 
-export const GameStandingsContainer: FC<IGameStandingsContainerProps> = (props) => {
+export const GameFormStandingsContainer: FC<IGameFormStandingsContainerProps> = (props) => {
   const { game, onFinish, onBack } = props
   const athletes = useAppSelector(selectAthletes)
   const teams = useAppSelector(selectTeams)

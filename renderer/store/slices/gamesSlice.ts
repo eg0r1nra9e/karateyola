@@ -1,13 +1,12 @@
+import { chunk, shuffle, uniq } from 'lodash'
 import { v4 as uuidv4 } from 'uuid'
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 import { IGame } from '../../types/IGame'
-
-import type { TAppState } from '../store'
-import { uniq, shuffle, chunk } from 'lodash'
 import { IGameCompetition } from '../../types/IGameCompetition'
 
+import type { TAppState } from '../store'
 interface IGamesState {
   games: IGame[]
 }

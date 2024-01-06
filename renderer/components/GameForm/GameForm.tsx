@@ -4,7 +4,7 @@ import React, { FC, useState } from 'react'
 import { ApartmentOutlined, ProfileOutlined, TeamOutlined, TrophyOutlined } from '@ant-design/icons'
 
 import { GameAthletesFormContainer } from '../../containers/GameAthletesFormContainer/GameAthletesFormContainer'
-import { GameStandingsContainer } from '../../containers/GameStandingsContainer/GameStandingsContainer'
+import { GameFormStandingsContainer } from '../../containers/GameFormStandingsContainer/GameFormStandingsContainer'
 import { IAthlete } from '../../types/IAthlete'
 import { ICompetition } from '../../types/ICompetition'
 import { IGame } from '../../types/IGame'
@@ -20,7 +20,7 @@ interface IGameFormProps {
 }
 
 export const GameForm: FC<IGameFormProps> = (props) => {
-  const { game, competitions, athletes, onSave: onFinish } = props
+  const { game, competitions, athletes, onSave, onFinish } = props
 
   const [currentGame, setCurrentGame] = useState(game)
 
@@ -49,12 +49,12 @@ export const GameForm: FC<IGameFormProps> = (props) => {
     }
 
     setCurrentGame(newGame)
-    onFinish(newGame)
+    onSave(newGame)
     setCurrent(3)
   }
 
   const onFinishForm = () => {
-    //onFinish(currentGame)
+    onFinish(currentGame)
   }
 
   const forms = [
@@ -87,7 +87,7 @@ export const GameForm: FC<IGameFormProps> = (props) => {
     </>,
     <>
       <h2>Турнирная таблица</h2>
-      <GameStandingsContainer
+      <GameFormStandingsContainer
         key="gameStandingsContainer"
         game={currentGame}
         onFinish={onFinishForm}
