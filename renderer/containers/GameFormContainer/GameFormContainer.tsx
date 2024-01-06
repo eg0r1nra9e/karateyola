@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { selectAthletes } from '../../store/slices/athletesSlice'
 import { selectCompetitions } from '../../store/slices/competitionsSlice'
 import { addGame, editGame, selectGame } from '../../store/slices/gamesSlice'
+import { IGame } from '../../types/IGame'
 
 interface IGameFormProps {
   gameId?: string
@@ -21,7 +22,7 @@ export const GameFormContainer: FC<IGameFormProps> = (props) => {
   const competitions = useAppSelector(selectCompetitions)
   const athletes = useAppSelector(selectAthletes)
 
-  const onFinish = (game: any) => {
+  const onFinish = (game: IGame) => {
     if (!gameId) {
       dispatch(addGame(game))
     } else {

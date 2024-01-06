@@ -1,4 +1,4 @@
-import { Button, DatePicker, Form, Input, Radio } from 'antd'
+import { Button, DatePicker, Divider, Form, Input, Radio } from 'antd'
 import dayjs from 'dayjs'
 import React, { FC, useEffect } from 'react'
 
@@ -58,6 +58,7 @@ export const GameGeneralInformationForm: FC<IGameGeneralInformationFormProps> = 
           <Radio value="закончено"> Закончено </Radio>
         </Radio.Group>
       </Form.Item>
+      <Divider />
       <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
         <Button type="primary" htmlType="submit">
           Продолжить

@@ -1,4 +1,4 @@
-import { Button, Card, Form, Input, Select, Space } from 'antd'
+import { Button, Card, Divider, Form, Input, Select, Space } from 'antd'
 import React, { FC } from 'react'
 
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons'
@@ -12,10 +12,11 @@ interface IGameCompetitionsFormProps {
   game?: IGame
   competitions: ICompetition[]
   onFinish: (values: any) => void
-  back: (values: any) => void
+  onBack: (values: any) => void
 }
+
 export const GameCompetitionsForm: FC<IGameCompetitionsFormProps> = (props) => {
-  const { game, competitions, onFinish, back } = props
+  const { game, competitions, onFinish, onBack } = props
   const [form] = Form.useForm()
 
   const competitionOptions = competitions.map((team: ICompetition) => ({ value: team.id, label: team.name }))
@@ -116,12 +117,13 @@ export const GameCompetitionsForm: FC<IGameCompetitionsFormProps> = (props) => {
           }}
         </Form.List>
       </Form.Item>
+      <Divider />
       <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
         <Space>
           <Button type="primary" htmlType="submit">
             Продолжить
           </Button>
-          <Button htmlType="button" onClick={back}>
+          <Button htmlType="button" onClick={onBack}>
             Назад
           </Button>
         </Space>
