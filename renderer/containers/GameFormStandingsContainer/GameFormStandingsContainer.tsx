@@ -1,4 +1,4 @@
-import { Button, Divider, Empty, Space, Tabs } from 'antd'
+import { Button, Divider, Space, Tabs } from 'antd'
 import { FC, useState } from 'react'
 
 import { GameDuelsComponent } from '../../components/GameDuelsComponent/GameDuelsComponent'
@@ -27,14 +27,13 @@ export const GameFormStandingsContainer: FC<IGameFormStandingsContainerProps> = 
     const competitionName = competitions?.find((c) => c.id === competition.competitionId)?.name
     if (competition?.categories?.length) {
       competition?.categories.forEach((category) => {
+        if (!category?.standings?.length) {
+          return null
+        }
         items.push({
           key: category.name,
           label: competitionName + ': ' + category?.name,
-          children: category?.standings?.length ? (
-            <GameDuelsComponent athletes={athletes} teams={teams} standings={category.standings} />
-          ) : (
-            <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} />
-          ),
+          children: <GameDuelsComponent athletes={athletes} teams={teams} standings={category.standings} />,
         })
       })
     }
