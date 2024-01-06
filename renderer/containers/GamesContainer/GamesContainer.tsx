@@ -9,11 +9,13 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { selectCompetitions } from '../../store/slices/competitionsSlice'
 import { endGame, removeGame, selectGames, startGame } from '../../store/slices/gamesSlice'
 import { IGame } from '../../types/IGame'
+import { useRouter } from 'next/router'
 
 export const GamesContainer = () => {
   const games = useAppSelector(selectGames)
   const dispatch = useAppDispatch()
   const competitions = useAppSelector(selectCompetitions)
+  const { push } = useRouter()
 
   const deleteGame = (gameId: string) => {
     dispatch(removeGame(gameId))
@@ -21,6 +23,7 @@ export const GamesContainer = () => {
 
   const start = (gameId: string) => {
     dispatch(startGame(gameId))
+    push(`/games/${gameId}`)
   }
 
   const end = (gameId: string) => {
