@@ -19,7 +19,15 @@ function Next() {
       </Header>
 
       <Content style={{ padding: 500 }}>
-        <Result status="success" title="Nextron" subTitle="with Ant Design" />
+        <Result
+          <style={{ paddingLeft: 80 }}>
+          {' '}
+          {countOne} {countDefaultOne}{' '}
+        </>
+        < style={{ paddingLeft: 80 }}>
+          {' '}
+          {countTwo} {countDefaultTwo}{' '}
+        </> />
       </Content>
     </React.Fragment>
   )
