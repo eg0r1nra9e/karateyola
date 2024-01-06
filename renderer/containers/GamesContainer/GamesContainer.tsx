@@ -56,8 +56,8 @@ export const GamesContainer = () => {
     }
 
     return game.competitions.map((competition) => {
-      const competitionName = competitions.find((c) => c.id === competition.competitionId)?.name
-      return <div key={competition.competitionId}>{competitionName}</div>
+      const competitionName = competitions.find((c) => c.id === competition.id)?.name
+      return <div key={competition.id}>{competitionName}</div>
     })
   }
 

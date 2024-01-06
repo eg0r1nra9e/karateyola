@@ -38,7 +38,7 @@ export const GameAthletesFormContainer: FC<IGameAthletesFormContainerProps> = (p
   }
 
   currentGame?.competitions.forEach((competition) => {
-    const competitionName = competitions?.find((c) => c.id === competition.competitionId)?.name
+    const competitionName = competitions?.find((c) => c.id === competition.id)?.name
     if (competition?.categories?.length) {
       competition?.categories.forEach((category) => {
         items.push({

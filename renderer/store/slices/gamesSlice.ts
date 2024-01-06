@@ -1,4 +1,4 @@
-import { chunk, shuffle, uniq } from 'lodash'
+import { chunk, shuffle, uniq, toLower, filter } from 'lodash'
 import { v4 as uuidv4 } from 'uuid'
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
@@ -26,6 +26,9 @@ const getCompetitions = (competitions: IGameCompetition[]): IGameCompetition[] =
 
       const duels = chunk(shuffle(uniq(category?.athletes)), 2)
 
+      if (!category.id) {
+        category.id = uuidv4()
+      }
       category.standings = duels.map((duel) => ({
         id: uuidv4(),
         athletesId: duel,
@@ -71,3 +74,24 @@ export const selectGames = (state: TAppState) => state.games.games
 export const selectGame = (state: TAppState, gameId: string) => state.games.games.find((game) => game.id === gameId)
 
 export default gamesSlice.reducer
+
+let foundValue, // Populated with the searched object
+  found = false // Internal flag for iterate()
+
+// Recursive function searching through array
+function iterate(haystack) {
+  if (typeof haystack !== 'object' || haystack === null) return // type-safety
+  if (typeof haystack.id !== 'undefined') {
+    found = true
+    foundValue = haystack.id
+    return
+  } else {
+    for (var i in haystack) {
+      // avoid circular reference infinite loop & skip inherited properties
+      if (haystack === haystack[i] || !haystack.hasOwnProperty(i)) continue
+
+      iterate(haystack[i])
+      if (found === true) return
+    }
+  }
+}

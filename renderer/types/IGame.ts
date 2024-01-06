@@ -1,14 +1,10 @@
+import { IBase } from './IBase'
 import { IGameCompetition } from './IGameCompetition'
 
 /**
  * Соревнование.
  */
-export interface IGame {
-  /**
-   * Идентификатор соревнования.
-   */
-  id?: string
-
+export interface IGame extends IBase {
   /**
    * Название соревнования.
    */

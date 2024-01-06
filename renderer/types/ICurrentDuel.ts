@@ -1,11 +1,7 @@
+import { IBase } from './IBase'
 import { IPlayer } from './IPlayer'
 
-export interface ICurrentDuel {
-  /**
-   * Идентификатор поединка.
-   */
-  id?: string
-
+export interface ICurrentDuel extends IBase {
   /**
    * Первый участник.
    */

@@ -19,8 +19,6 @@ import {
 } from '../../store/slices/currentDuelSlice'
 import { selectGame } from '../../store/slices/gamesSlice'
 import { selectTeams } from '../../store/slices/teamsSlice'
-import { ICompetition } from '../../types/ICompetition'
-import { ICurrentDuel } from '../../types/ICurrentDuel'
 import { DuelResultContainer } from '../DuelResultContainer/DuelResultContainer'
 
 interface IDuelContainer {
@@ -41,7 +39,7 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
   const athletes = useAppSelector(selectAthletes)
   const teams = useAppSelector(selectTeams)
   const competitionName = competitions?.find((c) => c.id === competitionId)?.name
-  const competition = game?.competitions?.find((c) => c.competitionId === competitionId)
+  const competition = game?.competitions?.find((c) => c.id === competitionId)
   const category = competition?.categories.find((c) => c.name === categoryName)
   const standing = category?.standings.find((c) => c.id === duelId)
 
@@ -96,12 +94,14 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
         categoryName,
         timer: TIMER,
         playerOne: {
+          id: standing?.athletesId[0],
           athleteId: standing?.athletesId[0],
           benefit: 0,
           fail: 0,
           score: 0,
         },
         playerTwo: {
+          id: standing?.athletesId[1] || null,
           athleteId: standing?.athletesId[1] || null,
           benefit: 0,
           fail: 0,

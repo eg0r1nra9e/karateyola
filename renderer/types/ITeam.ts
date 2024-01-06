@@ -1,12 +1,9 @@
+import { IBase } from './IBase'
+
 /**
  * Команда.
  */
-export interface ITeam {
-  /**
-   * Идентификатор команды.
-   */
-  id?: string
-
+export interface ITeam extends IBase {
   /**
    * Название команды.
    */

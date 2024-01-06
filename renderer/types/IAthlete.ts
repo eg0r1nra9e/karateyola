@@ -1,12 +1,9 @@
+import { IBase } from './IBase'
+
 /**
  * Спортсмен.
  */
-export interface IAthlete {
-  /**
-   * Идентификатор спортсмена.
-   */
-  id?: string
-
+export interface IAthlete extends IBase {
   /**
    * Имя спортсмена.
    */

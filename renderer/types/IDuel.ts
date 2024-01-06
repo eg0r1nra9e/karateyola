@@ -1,12 +1,9 @@
+import { IBase } from './IBase'
+
 /**
  * Поединок
  */
-export interface IDuel {
-  /**
-   * Идентификатор поединка.
-   */
-  id: string
-
+export interface IDuel extends IBase {
   /**
    * Идентификаторы спортсмена
    */

@@ -1,12 +1,9 @@
+import { IBase } from './IBase'
+
 /**
  * Дисциплина.
  */
-export interface ICompetition {
-  /**
-   * Идентификатор дисциплины.
-   */
-  id?: string
-
+export interface ICompetition extends IBase {
   /**
    * Название дисциплины.
    */

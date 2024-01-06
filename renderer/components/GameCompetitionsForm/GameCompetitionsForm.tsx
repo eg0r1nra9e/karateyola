@@ -46,7 +46,7 @@ export const GameCompetitionsForm: FC<IGameCompetitionsFormProps> = (props) => {
                     <Space key={competition.key} style={{ display: 'flex', marginBottom: 8 }} align="start">
                       <Form.Item
                         {...competition}
-                        name={[competition.name, 'competitionId']}
+                        name={[competition.name, 'id']}
                         rules={[{ required: true, message: 'Выберите дисциплину' }]}
                       >
                         <Select showSearch placeholder="Выберете дисциплину" options={competitionOptions} />

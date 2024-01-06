@@ -1,12 +1,9 @@
+import { IBase } from './IBase'
+
 /**
  * Категория.
  */
-export interface ICategory {
-  /**
-   * Идентификатор категории.
-   */
-  id?: string
-
+export interface ICategory extends IBase {
   /**
    * Название категории.
    */

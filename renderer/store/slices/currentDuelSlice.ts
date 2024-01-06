@@ -10,10 +10,11 @@ interface ICurrentDuelState {
 
 const initialState: ICurrentDuelState = {
   duel: {
+    id: null,
     competitionName: null,
     categoryName: null,
-    playerOne: {},
-    playerTwo: {},
+    playerOne: null,
+    playerTwo: null,
     result: null,
     timer: 0,
   },
@@ -45,6 +46,9 @@ export const currentDuelSlice = createSlice({
       state.duel.playerTwo.benefit = state.duel.playerTwo.benefit + action.payload
     },
     setTime: (state, action: PayloadAction<number>) => {
+      if (!state?.duel) {
+        return
+      }
       state.duel.timer = action.payload
     },
     endDuel: (state) => {

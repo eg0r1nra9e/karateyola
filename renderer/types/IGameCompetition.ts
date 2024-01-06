@@ -1,19 +1,10 @@
+import { IBase } from './IBase'
 import { IGameCompetitionCategory } from './IGameCompetitionCategory'
 
 /**
  * Дисциплина соревнования.
  */
-export interface IGameCompetition {
-  /**
-   * Идентификатор дисциплины соревнования.
-   */
-  id: string
-
-  /**
-   * Идентификатор дисциплины
-   */
-  competitionId: string
-
+export interface IGameCompetition extends IBase {
   /**
    * Категории дисциплины.
    */

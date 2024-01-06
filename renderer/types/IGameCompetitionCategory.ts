@@ -1,9 +1,10 @@
+import { IBase } from './IBase'
 import { IDuel } from './IDuel'
 
 /**
  * Категория дисциплины.
  */
-export interface IGameCompetitionCategory {
+export interface IGameCompetitionCategory extends IBase {
   /**
    * Название.
    */

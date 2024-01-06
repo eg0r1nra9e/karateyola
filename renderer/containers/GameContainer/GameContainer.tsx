@@ -57,7 +57,7 @@ export const GameContainer: FC<IGameFormProps> = (props) => {
     ))
 
   game?.competitions.forEach((competition) => {
-    const competitionName = competitions?.find((c) => c.id === competition.competitionId)?.name
+    const competitionName = competitions?.find((c) => c.id === competition.id)?.name
     if (competition?.categories?.length) {
       competition?.categories.forEach((category) => {
         if (!category?.standings?.length) {
@@ -67,7 +67,7 @@ export const GameContainer: FC<IGameFormProps> = (props) => {
         items.push({
           key: category.name,
           label: competitionName + ': ' + category?.name,
-          children: getStandings(game.id, competition.competitionId, category.name, category.standings),
+          children: getStandings(game.id, competition.id, category.name, category.standings),
         })
       })
     }
@@ -75,9 +75,9 @@ export const GameContainer: FC<IGameFormProps> = (props) => {
 
   return (
     <>
-      <h1>{game.name}</h1>
+      <h1>{game?.name}</h1>
       <h2>
-        {dayjs(game.dates[0]).format('DD.MM.YYYY')} - {dayjs(game.dates[1]).format('DD.MM.YYYY')}
+        {dayjs(game?.dates[0]).format('DD.MM.YYYY')} - {dayjs(game?.dates[1]).format('DD.MM.YYYY')}
       </h2>
       <Tabs defaultActiveKey="1" items={items} indicatorSize={(origin) => origin - 16} />
     </>
