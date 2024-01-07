@@ -1,10 +1,12 @@
-import { chunk, shuffle, uniq, toLower, filter } from 'lodash'
+import { chunk, filter, shuffle, toLower, uniq } from 'lodash'
 import { v4 as uuidv4 } from 'uuid'
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
+import { ICompetition } from '../../types/ICompetition'
 import { IGame } from '../../types/IGame'
-import { IGameCompetition } from '../../types/IGameCompetition'
+import { IStanding } from '../../types/IStanding'
+import { IWinner } from '../../types/IWinner'
 
 import type { TAppState } from '../store'
 interface IGamesState {
@@ -15,7 +17,7 @@ const initialState: IGamesState = {
   games: [],
 }
 
-const getCompetitions = (competitions: IGameCompetition[]): IGameCompetition[] => {
+const getCompetitions = (competitions: ICompetition[]): ICompetition[] => {
   const currentCompetitions = [...competitions]
 
   currentCompetitions?.forEach((competition) => {
@@ -29,10 +31,16 @@ const getCompetitions = (competitions: IGameCompetition[]): IGameCompetition[] =
       if (!category.id) {
         category.id = uuidv4()
       }
-      category.standings = duels.map((duel) => ({
-        id: uuidv4(),
-        athletesId: duel,
-      }))
+      category.standings = [
+        {
+          id: uuidv4(),
+          duels: duels.map((duel) => ({
+            id: uuidv4(),
+            athletesId: duel,
+            winner: duel?.length === 1 ? duel[0] : null,
+          })),
+        },
+      ]
     })
   })
 
@@ -65,10 +73,33 @@ export const gamesSlice = createSlice({
     removeGame: (state, action: PayloadAction<string>) => {
       state.games = state.games.filter((game) => game.id !== action.payload)
     },
+    setWinner: (state, action: PayloadAction<IWinner>) => {
+      const game = state.games.find((game) => game.id === action.payload.gameId)
+      const competition = game?.competitions?.find((c) => c.id === action.payload.competitionId)
+      const category = competition?.categories.find((c) => c.name === action.payload.categoryName)
+      const standing = category?.standings.find((c) => c.id === action.payload.standingId)
+      const duel = standing?.duels.find((c) => c.id === action.payload.duelId)
+      duel.winner = action.payload.athleteId
+      const winners = standing?.duels.filter((duel) => duel.winner).map((duel) => duel.winner)
+
+      if (winners?.length === standing?.duels?.length) {
+        // Тeкущий круг пройден
+        const duels = chunk(uniq(winners), 2)
+        const newStanding: IStanding = {
+          id: uuidv4(),
+          duels: duels.map((duel) => ({
+            id: uuidv4(),
+            athletesId: duel,
+            winner: duel?.length === 1 ? duel[0] : null,
+          })),
+        }
+        category.standings.push(newStanding)
+      }
+    },
   },
 })
 
-export const { addGame, removeGame, editGame, startGame, endGame } = gamesSlice.actions
+export const { addGame, removeGame, editGame, startGame, endGame, setWinner } = gamesSlice.actions
 
 export const selectGames = (state: TAppState) => state.games.games
 export const selectGame = (state: TAppState, gameId: string) => state.games.games.find((game) => game.id === gameId)

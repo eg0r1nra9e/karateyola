@@ -51,8 +51,8 @@ export const currentDuelSlice = createSlice({
       }
       state.duel.timer = action.payload
     },
-    endDuel: (state) => {
-      state.duel.result = 'Конец'
+    endDuel: (state, action: PayloadAction<string>) => {
+      state.duel.result = action.payload
     },
   },
 })

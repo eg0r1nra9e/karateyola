@@ -1,5 +1,6 @@
 import { IBase } from './IBase'
 import { IDuel } from './IDuel'
+import { IStanding } from './IStanding'
 
 /**
  * Категория.
@@ -18,5 +19,5 @@ export interface ICategory extends IBase {
   /**
    * Турнирная таблица
    */
-  standings: IDuel[]
+  standings: IStanding[]
 }

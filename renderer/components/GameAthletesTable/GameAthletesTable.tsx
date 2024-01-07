@@ -4,14 +4,14 @@ import Link from 'next/link'
 import { FC } from 'react'
 
 import { IAthlete } from '../../types/IAthlete'
-import { IGameCompetitionCategory } from '../../types/IGameCompetitionCategory'
+import { ICategory } from '../../types/ICategory'
 import { ITeam } from '../../types/ITeam'
 
 interface IGameAthletesContainerProps {
-  category: IGameCompetitionCategory
+  category: ICategory
   teams: ITeam[]
   athletes: IAthlete[]
-  onChange: (category: IGameCompetitionCategory, athletesIds: string[]) => void
+  onChange: (category: ICategory, athletesIds: string[]) => void
 }
 
 interface DataType extends IAthlete {

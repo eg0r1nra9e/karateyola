@@ -17,7 +17,7 @@ import {
   selectCurrentDuel,
   setTime,
 } from '../../store/slices/currentDuelSlice'
-import { selectGame } from '../../store/slices/gamesSlice'
+import { selectGame, setWinner } from '../../store/slices/gamesSlice'
 import { selectTeams } from '../../store/slices/teamsSlice'
 import { DuelResultContainer } from '../DuelResultContainer/DuelResultContainer'
 
@@ -25,15 +25,16 @@ interface IDuelContainer {
   gameId: string
   competitionId: string
   categoryName: string
+  standingId: string
   duelId: string
 }
 
-const TIMER = 30
+const TIMER = 10
 
 export const DuelContainer: FC<IDuelContainer> = (props) => {
   const [isBrowser, setIsBrowser] = useState(false)
 
-  const { gameId, competitionId, categoryName, duelId } = props
+  const { gameId, competitionId, categoryName, standingId, duelId } = props
   const game = useAppSelector((state) => selectGame(state, gameId))
   const competitions = useAppSelector(selectCompetitions)
   const athletes = useAppSelector(selectAthletes)
@@ -41,7 +42,10 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
   const competitionName = competitions?.find((c) => c.id === competitionId)?.name
   const competition = game?.competitions?.find((c) => c.id === competitionId)
   const category = competition?.categories.find((c) => c.name === categoryName)
-  const standing = category?.standings.find((c) => c.id === duelId)
+  const standing = category?.standings.find((c) => c.id === standingId)
+  const duel = standing?.duels.find((c) => c.id === duelId)
+
+  const currentDuel = useAppSelector(selectCurrentDuel)
 
   const [timer, setTimer] = useState(TIMER)
   const [timeInterval, setTimeInterval] = useState(null)
@@ -50,10 +54,8 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
   const dispatch = useAppDispatch()
 
   const startTimer = () => {
-    // Use setInterval to update the timer every 1000 milliseconds (1 second)
     setTimeInterval(
       setInterval(() => {
-        // Update the timer by incrementing the previous value by 1
         setTimer((prev) => Math.max(prev - 1, 0))
       }, 1000),
     )
@@ -65,12 +67,9 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
     clearInterval(timeInterval)
   }
 
-  // Function to reset the timer
-  const resetTimer = () => {
-    // Reset the timer value to 0
-    setTimer(TIMER)
+  const resetTimer = (secund = TIMER) => {
+    setTimer(secund)
     setIsStartTimer(false)
-    // Clear the interval to stop the timer
     clearInterval(timeInterval)
   }
 
@@ -78,9 +77,30 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
     if (timer) {
       dispatch(setTime(timer))
     } else {
-      dispatch(endDuel())
+      debugger
+      if (currentDuel.playerOne.score === currentDuel.playerTwo.score) {
+        resetTimer(10)
+        return
+      }
+      // Конец боя
+      const winner =
+        currentDuel.playerOne.score > currentDuel.playerTwo.score
+          ? currentDuel.playerOne.athleteId
+          : currentDuel.playerTwo.athleteId
+
+      dispatch(endDuel(winner))
+      dispatch(
+        setWinner({
+          gameId,
+          competitionId,
+          categoryName,
+          standingId,
+          duelId,
+          athleteId: winner,
+        }),
+      )
     }
-  }, [dispatch, timer])
+  }, [timer])
 
   useEffect(() => {
     setIsBrowser(true)
@@ -94,15 +114,15 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
         categoryName,
         timer: TIMER,
         playerOne: {
-          id: standing?.athletesId[0],
-          athleteId: standing?.athletesId[0],
+          id: duel?.athletesId[0],
+          athleteId: duel?.athletesId[0],
           benefit: 0,
           fail: 0,
           score: 0,
         },
         playerTwo: {
-          id: standing?.athletesId[1] || null,
-          athleteId: standing?.athletesId[1] || null,
+          id: duel?.athletesId[1] || null,
+          athleteId: duel?.athletesId[1] || null,
           benefit: 0,
           fail: 0,
           score: 0,
@@ -110,7 +130,7 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
         result: null,
       }),
     )
-  }, [duelId, dispatch, standing?.athletesId, categoryName, competitionName])
+  }, [duelId, dispatch, duel, categoryName, competitionName])
 
   const getAthlete = (athleteId) => {
     const athlete = athletes.find((a) => a.id === athleteId)
@@ -147,7 +167,7 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
       <h2>
         {competitionName}, {categoryName}
       </h2>
-      <h3> Спортсмены: {standing?.athletesId?.map((a) => getAthlete(a)).join(', ')}</h3>
+      <h3> Спортсмены: {duel?.athletesId?.map((a) => getAthlete(a)).join(', ')}</h3>
       <Flex gap="middle">
         {!isStartTimer ? (
           <Button onClick={startTimer} style={{ width: '100%' }} type="primary">
@@ -159,7 +179,7 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
           </Button>
         )}
 
-        <Button onClick={resetTimer} style={{ width: '100%' }} type="primary" danger>
+        <Button onClick={() => resetTimer()} style={{ width: '100%' }} type="primary" danger>
           Reset
         </Button>
       </Flex>

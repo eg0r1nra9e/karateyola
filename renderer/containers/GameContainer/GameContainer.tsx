@@ -11,6 +11,7 @@ import { selectCompetitions } from '../../store/slices/competitionsSlice'
 import { selectGame } from '../../store/slices/gamesSlice'
 import { selectTeams } from '../../store/slices/teamsSlice'
 import { IDuel } from '../../types/IDuel'
+import { IStanding } from '../../types/IStanding'
 
 interface IGameFormProps {
   gameId?: string
@@ -26,9 +27,15 @@ export const GameContainer: FC<IGameFormProps> = (props) => {
 
   const items = []
 
-  const getActions = (gameId: string, competitionId: string, categoryName: string, standingId: string) => {
+  const getActions = (
+    gameId: string,
+    competitionId: string,
+    categoryName: string,
+    standingId: string,
+    dueleId: string,
+  ) => {
     return [
-      <Link key="start" href={`/games/${gameId}/${competitionId}/${categoryName}/${standingId}`}>
+      <Link key="start" href={`/games/${gameId}/${competitionId}/${categoryName}/${standingId}/${dueleId}`}>
         <Button type="primary">
           <FireOutlined />
           Начать
@@ -48,11 +55,19 @@ export const GameContainer: FC<IGameFormProps> = (props) => {
     return `${athleteName}${athleteTeam}`
   }
 
-  const getStandings = (gameId: string, competitionId: string, categoriesName: string, standings: IDuel[]) =>
+  const getStandings = (gameId: string, competitionId: string, categoriesName: string, standings: IStanding[]) =>
     standings.map((standing) => (
-      <Card key={standing?.id} actions={getActions(gameId, competitionId, categoriesName, standing?.id)}>
-        <Card>{getAthlete(standing?.athletesId[0])}</Card>
-        {standing?.athletesId[1] && <Card>{getAthlete(standing?.athletesId[1])}</Card>}
+      <Card key={standing?.id}>
+        {standing?.duels?.map((duel) => (
+          <Card
+            key={duel?.id}
+            actions={!duel.winner && getActions(gameId, competitionId, categoriesName, standing?.id, duel?.id)}
+          >
+            {duel.athletesId.map((athleteId) => (
+              <Card key={athleteId}>{getAthlete(athleteId)}</Card>
+            ))}
+          </Card>
+        ))}
       </Card>
     ))
 

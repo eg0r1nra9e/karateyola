@@ -1,15 +1,13 @@
-import { Button, Card } from 'antd'
+import { Card } from 'antd'
 import { FC, ReactNode } from 'react'
 
 import { IAthlete } from '../../types/IAthlete'
 import { ITeam } from '../../types/ITeam'
-import { IDuel } from '../../types/IDuel'
-import { EditOutlined, EllipsisOutlined, FireOutlined, SettingOutlined } from '@ant-design/icons'
-import Link from 'next/link'
+import { IStanding } from '../../types/IStanding'
 
 interface IGameDuelsComponentProps {
   gameId?: string
-  standings: IDuel[]
+  standings: IStanding[]
   athletes: IAthlete[]
   teams: ITeam[]
   actions?: ReactNode[]
@@ -34,8 +32,13 @@ export const GameDuelsComponent: FC<IGameDuelsComponentProps> = (props) => {
 
   return standings.map((standing) => (
     <Card key={standing?.id}>
-      <Card>{getAthlete(standing?.athletesId[0])}</Card>
-      {standing?.athletesId[1] && <Card>{getAthlete(standing?.athletesId[1])}</Card>}
+      {standing?.duels?.map((duel) => (
+        <Card key={duel?.id}>
+          {duel.athletesId.map((athleteId) => (
+            <Card key={athleteId}>{getAthlete(athleteId)}</Card>
+          ))}
+        </Card>
+      ))}
     </Card>
   ))
 }

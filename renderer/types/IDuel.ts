@@ -8,4 +8,6 @@ export interface IDuel extends IBase {
    * Идентификаторы спортсмена
    */
   athletesId: string[]
+
+  winner: string
 }
