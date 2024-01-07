@@ -4,6 +4,8 @@ module.exports = {
       config.target = 'electron-renderer'
     }
 
+    config.output.globalObject = 'this'
+
     return config
   },
 }

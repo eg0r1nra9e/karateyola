@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 
-import { BarsOutlined, HomeOutlined, TeamOutlined, TrophyOutlined, UserOutlined } from '@ant-design/icons'
+import { BarsOutlined, FireOutlined, HomeOutlined, TeamOutlined, TrophyOutlined, UserOutlined } from '@ant-design/icons'
 
 const menu = [
   {
@@ -31,6 +31,11 @@ const menu = [
     label: <Link href="/games">Соревнования</Link>,
     key: 'games',
     icon: <TrophyOutlined />,
+  },
+  {
+    label: <Link href="/current-result">Текущие состязания</Link>,
+    key: 'current-result',
+    icon: <FireOutlined />,
   },
 ]
 

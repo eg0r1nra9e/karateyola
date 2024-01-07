@@ -14,12 +14,16 @@ import { readData, saveData } from '../utils/file'
 
 import type { AppProps } from 'next/app'
 import { initMessageListener } from 'redux-state-sync'
+import { Store } from '@reduxjs/toolkit'
 
 dayjs.locale('ru')
 
+// global store, used only at client
+let globalClientStore: Store | undefined
+
 function MyApp({ Component, pageProps }: AppProps) {
   const reduxState = readData()
-  const store = createStore(reduxState)
+  const store = globalClientStore || (globalClientStore = createStore(reduxState))
 
   initMessageListener(store)
   store.subscribe(() => {
