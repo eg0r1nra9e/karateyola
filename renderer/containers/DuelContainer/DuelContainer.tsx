@@ -77,7 +77,6 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
     if (timer) {
       dispatch(setTime(timer))
     } else {
-      debugger
       if (currentDuel.playerOne.score === currentDuel.playerTwo.score) {
         resetTimer(10)
         return
