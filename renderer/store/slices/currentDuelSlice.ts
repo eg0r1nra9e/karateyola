@@ -33,6 +33,12 @@ export const currentDuelSlice = createSlice({
     addFailTwo: (state, action: PayloadAction<number>) => {
       state.duel.playerTwo.fail = state.duel.playerTwo.fail + action.payload
     },
+    addFailOne2: (state, action: PayloadAction<number>) => {
+      state.duel.playerOne.secondFail = state.duel.playerOne.secondFail + action.payload
+    },
+    addFailTwo2: (state, action: PayloadAction<number>) => {
+      state.duel.playerTwo.secondFail = state.duel.playerTwo.secondFail + action.payload
+    },
     addScoreOne: (state, action: PayloadAction<number>) => {
       state.duel.playerOne.score = state.duel.playerOne.score + action.payload
     },
@@ -61,6 +67,8 @@ export const {
   addDuel,
   addFailOne,
   addFailTwo,
+  addFailOne2,
+  addFailTwo2,
   addScoreOne,
   addScoreTwo,
   addBenefitOne,
