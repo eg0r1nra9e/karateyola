@@ -57,16 +57,6 @@ export const AthletesContainer = () => {
       sorter: (a, b) => a.weight - b.weight,
     },
     {
-      title: 'Дата рождения',
-      dataIndex: 'date',
-      key: 'date',
-      render: (_, athlete) =>
-        dayjs(athlete?.dateOfBirth)
-          .format('DD.MM.YYYY')
-          .toString(),
-      sorter: (a, b) => a.dateOfBirth.getTime() - b.dateOfBirth.getTime(),
-    },
-    {
       title: 'Команда',
       dataIndex: 'teamId',
       key: 'teamId',
