@@ -1,5 +1,5 @@
 import { IBase } from './IBase'
-import { IGameCompetition } from './IGameCompetition'
+import { ICompetition } from './ICompetition'
 
 /**
  * Соревнование.
@@ -23,5 +23,5 @@ export interface IGame extends IBase {
   /**
    * Дисциплины соревнования.
    */
-  competitions: IGameCompetition[]
+  competitions: ICompetition[]
 }
