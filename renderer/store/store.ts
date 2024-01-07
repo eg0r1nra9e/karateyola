@@ -16,7 +16,8 @@ export function createStore(reduxState?: any) {
       games: gamesSliceReducer,
       currentDuel: currentDuelSlice,
     },
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(createStateSyncMiddleware({})),
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware().concat(createStateSyncMiddleware({ channel: 'karateYola' })),
     preloadedState: reduxState,
   })
 }
