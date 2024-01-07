@@ -11,6 +11,8 @@ import {
   addDuel,
   addFailOne,
   addFailTwo,
+  addFailOne2,
+  addFailTwo2,
   addScoreOne,
   addScoreTwo,
   endDuel,
@@ -118,6 +120,7 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
           athleteId: duel?.athletesId[0],
           benefit: 0,
           fail: 0,
+          fail2: 0,
           score: 0,
         },
         playerTwo: {
@@ -125,6 +128,7 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
           athleteId: duel?.athletesId[1] || null,
           benefit: 0,
           fail: 0,
+          fail2: 0,
           score: 0,
         },
         result: null,
@@ -155,6 +159,56 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
   const clickCountOne = (count: number) => {
     pauseTimer()
     dispatch(addScoreOne(count))
+  }
+
+  const clickAddBenefitTwo = () => {
+    pauseTimer()
+    dispatch(addBenefitTwo(1))
+  }
+  const clickRemoveBenefitTwo = () => {
+    pauseTimer()
+    dispatch(addBenefitTwo(-1))
+  }
+
+  const clickAddFailTwo = () => {
+    pauseTimer()
+    dispatch(addFailTwo(1))
+  }
+  const clickRemoveFailTwo = () => {
+    pauseTimer()
+    dispatch(addFailTwo(-1))
+  }
+
+  const clickAddFailOne = () => {
+    pauseTimer()
+    dispatch(addFailOne2(1))
+  }
+  const clickRemoveFailOne = () => {
+    pauseTimer()
+    dispatch(addFailOne(-1))
+  }
+
+  const clickAddFailTwo2 = () => {
+    pauseTimer()
+    dispatch(addFailTwo2(1))
+  }
+  const clickRemoveFailTwo2 = () => {
+    pauseTimer()
+    dispatch(addFailTwo2(-1))
+  }
+
+  const clickAddFailOne2 = () => {
+    pauseTimer()
+    dispatch(addFailOne2(1))
+  }
+  const clickRemoveFailOne2 = () => {
+    pauseTimer()
+    dispatch(addFailOne2(-1))
+  }
+
+  const clickCountTwo = (count: number) => {
+    pauseTimer()
+    dispatch(addScoreTwo(count))
   }
 
   if (!isBrowser) {
@@ -195,7 +249,16 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
             setCountFail2={(count) => {}}
           />
         </div>
-        <div style={{ background: 'blue', width: '100%' }}>2</div>
+        <div style={{ background: 'blue', width: '100%' }}>
+          <Player
+            isDanger={false}
+            addBenefits={clickAddBenefitTwo}
+            removeBenefits={clickRemoveBenefitTwo}
+            setCount={clickCountTwo}
+            setCountFail={(count) => {}}
+            setCountFail2={(count) => {}}
+          />
+        </div>
       </Flex>
       <Divider />
       <DuelResultContainer />
