@@ -12,6 +12,11 @@ export function saveData(data) {
 }
 
 export function readData() {
+  if (!fs.existsSync(filePath)) {
+    saveData('')
+    return {}
+  }
+
   const fileData = fs.readFileSync(filePath, {
     encoding: 'utf-8',
   })

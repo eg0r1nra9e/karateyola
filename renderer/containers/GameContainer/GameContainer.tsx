@@ -1,4 +1,4 @@
-import { Button, Card, Tabs } from 'antd'
+import { Button, Card, Flex, Tabs } from 'antd'
 import dayjs from 'dayjs'
 import Link from 'next/link'
 import { FC } from 'react'
@@ -82,7 +82,7 @@ export const GameContainer: FC<IGameFormProps> = (props) => {
         items.push({
           key: category.name,
           label: competitionName + ': ' + category?.name,
-          children: getStandings(game.id, competition.id, category.name, category.standings),
+          children: <Flex> {getStandings(game.id, competition.id, category.name, category.standings)}</Flex>,
         })
       })
     }
