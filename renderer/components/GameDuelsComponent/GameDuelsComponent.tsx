@@ -1,19 +1,18 @@
 import { Card } from 'antd'
-import { FC, ReactNode } from 'react'
+import { FC } from 'react'
 
 import { IAthlete } from '../../types/IAthlete'
-import { ITeam } from '../../types/ITeam'
 import { IStanding } from '../../types/IStanding'
+import { ITeam } from '../../types/ITeam'
 
 interface IGameDuelsComponentProps {
-  gameId?: string
   standings: IStanding[]
   athletes: IAthlete[]
   teams: ITeam[]
-  actions?: ReactNode[]
 }
+
 export const GameDuelsComponent: FC<IGameDuelsComponentProps> = (props) => {
-  const { standings, athletes, teams, gameId } = props
+  const { standings, athletes, teams } = props
 
   if (!standings || !standings.length) {
     return null
@@ -30,15 +29,19 @@ export const GameDuelsComponent: FC<IGameDuelsComponentProps> = (props) => {
     return `${athleteName}${athleteTeam}`
   }
 
-  return standings.map((standing) => (
-    <Card key={standing?.id}>
-      {standing?.duels?.map((duel) => (
-        <Card key={duel?.id}>
-          {duel.athletesId.map((athleteId) => (
-            <Card key={athleteId}>{getAthlete(athleteId)}</Card>
+  return (
+    <>
+      {standings.map((standing) => (
+        <Card key={standing?.id}>
+          {standing?.duels?.map((duel) => (
+            <Card key={duel?.id}>
+              {duel.athletesId.map((athleteId) => (
+                <Card key={athleteId}>{getAthlete(athleteId)}</Card>
+              ))}
+            </Card>
           ))}
         </Card>
       ))}
-    </Card>
-  ))
+    </>
+  )
 }

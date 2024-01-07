@@ -35,7 +35,7 @@ export const DuelResultContainer = () => {
   const secondsString = String(currentDuel.timer % 60).padStart(2, '0')
 
   if (currentDuel.result) {
-    return 'Конец боя'
+    return <div>Конец боя</div>
   }
 
   if (!isBrowser) {
