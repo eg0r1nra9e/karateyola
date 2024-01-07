@@ -13,6 +13,7 @@ import { createStore } from '../store/store'
 import { readData, saveData } from '../utils/file'
 
 import type { AppProps } from 'next/app'
+import { initMessageListener } from 'redux-state-sync'
 
 dayjs.locale('ru')
 
@@ -20,6 +21,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   const reduxState = readData()
   const store = createStore(reduxState)
 
+  initMessageListener(store)
   store.subscribe(() => {
     const data = store.getState()
     saveData(data)

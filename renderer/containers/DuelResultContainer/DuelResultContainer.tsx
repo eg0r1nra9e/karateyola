@@ -4,11 +4,18 @@ import { useAppSelector } from '../../store/hooks'
 import { selectAthletes } from '../../store/slices/athletesSlice'
 import { selectCurrentDuel } from '../../store/slices/currentDuelSlice'
 import { selectTeams } from '../../store/slices/teamsSlice'
+import { useEffect, useState } from 'react'
 
 export const DuelResultContainer = () => {
+  const [isBrowser, setIsBrowser] = useState(false)
+
   const athletes = useAppSelector(selectAthletes)
   const teams = useAppSelector(selectTeams)
   const currentDuel = useAppSelector(selectCurrentDuel)
+
+  useEffect(() => {
+    setIsBrowser(true)
+  }, [])
 
   const getAthlete = (athleteId) => {
     if (!athleteId) {
@@ -29,6 +36,10 @@ export const DuelResultContainer = () => {
 
   if (currentDuel.result) {
     return 'Конец боя'
+  }
+
+  if (!isBrowser) {
+    return null
   }
 
   return (

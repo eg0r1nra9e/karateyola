@@ -10,7 +10,6 @@ import { selectAthletes } from '../../store/slices/athletesSlice'
 import { selectCompetitions } from '../../store/slices/competitionsSlice'
 import { selectGame } from '../../store/slices/gamesSlice'
 import { selectTeams } from '../../store/slices/teamsSlice'
-import { IDuel } from '../../types/IDuel'
 import { IStanding } from '../../types/IStanding'
 
 interface IGameFormProps {

@@ -5,6 +5,7 @@ import competitionsSliceReducer from './slices/competitionsSlice'
 import currentDuelSlice from './slices/currentDuelSlice'
 import gamesSliceReducer from './slices/gamesSlice'
 import teamsSliceReducer from './slices/teamsSlice'
+import { createStateSyncMiddleware, initMessageListener } from 'redux-state-sync'
 
 export function createStore(reduxState?: any) {
   return configureStore({
@@ -15,9 +16,8 @@ export function createStore(reduxState?: any) {
       games: gamesSliceReducer,
       currentDuel: currentDuelSlice,
     },
-    preloadedState: {
-      ...reduxState,
-    },
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(createStateSyncMiddleware({})),
+    preloadedState: reduxState,
   })
 }
 

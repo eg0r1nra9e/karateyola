@@ -103,6 +103,7 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
 
   useEffect(() => {
     setIsBrowser(true)
+    window.open('/current-result', '_blank', 'contextIsolation=no,nodeIntegration=yes')
   }, [])
 
   useEffect(() => {

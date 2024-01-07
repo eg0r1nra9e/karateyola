@@ -6,8 +6,8 @@ import { useAppSelector } from '../../store/hooks'
 import { selectAthletes } from '../../store/slices/athletesSlice'
 import { selectCompetitions } from '../../store/slices/competitionsSlice'
 import { selectTeams } from '../../store/slices/teamsSlice'
+import { ICategory } from '../../types/ICategory'
 import { IGame } from '../../types/IGame'
-import { IGameCompetitionCategory } from '../../types/IGameCompetitionCategory'
 
 interface IGameAthletesFormContainerProps {
   game: IGame
@@ -25,7 +25,7 @@ export const GameAthletesFormContainer: FC<IGameAthletesFormContainerProps> = (p
 
   const items = []
 
-  const onChange = (category: IGameCompetitionCategory, athletesIds: string[]) => {
+  const onChange = (category: ICategory, athletesIds: string[]) => {
     if (!category.athletes?.length) {
       category.athletes = []
     }

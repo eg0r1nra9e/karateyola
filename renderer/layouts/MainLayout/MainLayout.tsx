@@ -1,5 +1,5 @@
 import { Layout, theme } from 'antd'
-import React, { FC } from 'react'
+import React, { FC, useState } from 'react'
 
 import { LeftMenu } from '../../components/LeftMenu/LeftMenu'
 import { TMainLayoutProps } from './MainLayout.typed'
@@ -10,18 +10,11 @@ export const MainLayout: FC<TMainLayoutProps> = ({ children = null }) => {
     token: { colorBgContainer },
   } = theme.useToken()
 
+  const [collapsed, setCollapsed] = useState(false)
+
   return (
-    <Layout>
-      <Sider
-        breakpoint="lg"
-        collapsedWidth="0"
-        onBreakpoint={(broken) => {
-          console.log(broken)
-        }}
-        onCollapse={(collapsed, type) => {
-          console.log(collapsed, type)
-        }}
-      >
+    <Layout style={{ minHeight: '100vh' }}>
+      <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
         <div className="demo-logo-vertical" />
         <LeftMenu />
       </Sider>

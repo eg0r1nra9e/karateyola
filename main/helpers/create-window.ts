@@ -1,3 +1,4 @@
+/* eslint-disable import/no-anonymous-default-export */
 import { BrowserWindow, screen } from 'electron'
 import Store from 'electron-store'
 
@@ -72,9 +73,10 @@ export default (windowName: string, options: BrowserWindowConstructorOptions): B
       nodeIntegration: true,
       contextIsolation: false,
 
-      //devTools: false,
+      devTools: false,
       ...options.webPreferences,
     },
+    autoHideMenuBar: true,
   }
 
   win = new BrowserWindow(browserOptions)

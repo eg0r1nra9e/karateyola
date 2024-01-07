@@ -3,14 +3,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useEffect, useState } from 'react'
 
-import {
-  BarsOutlined,
-  HomeOutlined,
-  ProfileOutlined,
-  TeamOutlined,
-  TrophyOutlined,
-  UserOutlined,
-} from '@ant-design/icons'
+import { BarsOutlined, HomeOutlined, TeamOutlined, TrophyOutlined, UserOutlined } from '@ant-design/icons'
 
 const menu = [
   {
