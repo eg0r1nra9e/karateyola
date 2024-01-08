@@ -72,7 +72,6 @@ export default (windowName: string, options: BrowserWindowConstructorOptions): B
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
-
       devTools: false,
       ...options.webPreferences,
     },

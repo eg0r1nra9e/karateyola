@@ -73,7 +73,7 @@ export const AthleteForm: FC<IAthleteFormProps> = (props) => {
         </Form.Item>
 
         <Form.Item<FieldType> label="Название команды" name="teamId">
-          <Select showSearch placeholder="Выберете населенный пункт" options={teamOptions} />
+          <Select showSearch placeholder="Введите название команды" options={teamOptions} />
         </Form.Item>
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
           <Button type="primary" htmlType="submit">
