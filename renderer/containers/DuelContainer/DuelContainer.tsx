@@ -31,8 +31,6 @@ interface IDuelContainer {
   duelId: string
 }
 
-const TIMER = 10
-
 export const DuelContainer: FC<IDuelContainer> = (props) => {
   const [isBrowser, setIsBrowser] = useState(false)
 
@@ -49,7 +47,7 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
 
   const currentDuel = useAppSelector(selectCurrentDuel)
 
-  const [timer, setTimer] = useState(TIMER)
+  const [timer, setTimer] = useState(category.time)
   const [timeInterval, setTimeInterval] = useState(null)
   const [isStartTimer, setIsStartTimer] = useState(false)
 
@@ -69,7 +67,7 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
     clearInterval(timeInterval)
   }
 
-  const resetTimer = (secund = TIMER) => {
+  const resetTimer = (secund = category.time) => {
     setTimer(secund)
     setIsStartTimer(false)
     clearInterval(timeInterval)
@@ -80,7 +78,7 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
       dispatch(setTime(timer))
     } else {
       if (currentDuel.playerOne.score === currentDuel.playerTwo.score) {
-        resetTimer(10)
+        resetTimer(category.time)
         return
       }
       // Конец боя
@@ -114,7 +112,7 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
         id: duelId,
         competitionName,
         categoryName,
-        timer: TIMER,
+        timer: category.time,
         playerOne: {
           id: duel?.athletesId[0],
           athleteId: duel?.athletesId[0],

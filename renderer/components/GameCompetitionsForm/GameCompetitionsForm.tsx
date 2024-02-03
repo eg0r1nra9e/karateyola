@@ -73,6 +73,13 @@ export const GameCompetitionsForm: FC<IGameCompetitionsFormProps> = (props) => {
                                   >
                                     <Input placeholder="Введите категорию" />
                                   </Form.Item>
+                                  <Form.Item
+                                    {...category}
+                                    name={[category.name, 'time']}
+                                    rules={[{ required: true, message: 'Введите время боя' }]}
+                                  >
+                                    <Input placeholder="Введите время боя" />
+                                  </Form.Item>
 
                                   <MinusCircleOutlined
                                     onClick={() => {

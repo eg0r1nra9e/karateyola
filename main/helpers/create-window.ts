@@ -73,7 +73,7 @@ export default (windowName: string, options: BrowserWindowConstructorOptions): B
       nodeIntegration: true,
       contextIsolation: false,
 
-      devTools: false,
+      devTools: true,
       ...options.webPreferences,
     },
     autoHideMenuBar: true,

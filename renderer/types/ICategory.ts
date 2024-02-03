@@ -9,7 +9,12 @@ export interface ICategory extends IBase {
   /**
    * Название категории.
    */
-  name?: string
+  name: string
+
+  /**
+   * Время боя.
+   */
+  time: number
 
   /**
    * Участвующие спортсмены
