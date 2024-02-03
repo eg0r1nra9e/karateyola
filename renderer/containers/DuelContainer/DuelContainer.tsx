@@ -159,6 +159,11 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
     dispatch(addScoreOne(count))
   }
 
+  const clickCountTwo = (count: number) => {
+    pauseTimer()
+    dispatch(addScoreTwo(count))
+  }
+
   const clickAddBenefitTwo = () => {
     pauseTimer()
     dispatch(addBenefitTwo(1))
@@ -168,45 +173,24 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
     dispatch(addBenefitTwo(-1))
   }
 
-  const clickAddFailTwo = () => {
+  const clickAddFailOne = (value) => {
     pauseTimer()
-    dispatch(addFailTwo(1))
-  }
-  const clickRemoveFailTwo = () => {
-    pauseTimer()
-    dispatch(addFailTwo(-1))
+    dispatch(addFailOne(value))
   }
 
-  const clickAddFailOne = () => {
+  const clickAddFailTwo = (value) => {
     pauseTimer()
-    dispatch(addFailOne2(1))
-  }
-  const clickRemoveFailOne = () => {
-    pauseTimer()
-    dispatch(addFailOne(-1))
+    dispatch(addFailTwo(value))
   }
 
-  const clickAddFailTwo2 = () => {
+  const clickAddFailOne2 = (value) => {
     pauseTimer()
-    dispatch(addFailTwo2(1))
-  }
-  const clickRemoveFailTwo2 = () => {
-    pauseTimer()
-    dispatch(addFailTwo2(-1))
+    dispatch(addFailOne2(value))
   }
 
-  const clickAddFailOne2 = () => {
+  const clickAddFailTwo2 = (value) => {
     pauseTimer()
-    dispatch(addFailOne2(1))
-  }
-  const clickRemoveFailOne2 = () => {
-    pauseTimer()
-    dispatch(addFailOne2(-1))
-  }
-
-  const clickCountTwo = (count: number) => {
-    pauseTimer()
-    dispatch(addScoreTwo(count))
+    dispatch(addFailTwo2(value))
   }
 
   if (!isBrowser) {
@@ -243,8 +227,8 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
             addBenefits={clickAddBenefitOne}
             removeBenefits={clickRemoveBenefitOne}
             setCount={clickCountOne}
-            setCountFail={(count) => {}}
-            setCountFail2={(count) => {}}
+            setCountFail={clickAddFailOne}
+            setCountFail2={clickAddFailOne2}
           />
         </div>
         <div style={{ background: 'blue', width: '100%' }}>
@@ -253,8 +237,8 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
             addBenefits={clickAddBenefitTwo}
             removeBenefits={clickRemoveBenefitTwo}
             setCount={clickCountTwo}
-            setCountFail={(count) => {}}
-            setCountFail2={(count) => {}}
+            setCountFail={clickAddFailTwo}
+            setCountFail2={clickAddFailTwo2}
           />
         </div>
       </Flex>

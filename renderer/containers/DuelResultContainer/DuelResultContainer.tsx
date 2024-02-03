@@ -5,6 +5,7 @@ import { selectAthletes } from '../../store/slices/athletesSlice'
 import { selectCurrentDuel } from '../../store/slices/currentDuelSlice'
 import { selectTeams } from '../../store/slices/teamsSlice'
 import { useEffect, useState } from 'react'
+import { Violations } from '../../components/Violations/Violations'
 
 export const DuelResultContainer = () => {
   const [isBrowser, setIsBrowser] = useState(false)
@@ -77,20 +78,26 @@ export const DuelResultContainer = () => {
       </Flex>
 
       <Flex style={{ justifyContent: 'space-between' }}>
-        <Typography.Title level={1} style={{ marginTop: 0, width: '50%' }} type="danger">
-          {currentDuel?.playerOne?.fail}
-        </Typography.Title>
-        <Typography.Title level={1} style={{ marginTop: 0, width: '50%', color: 'blue', textAlign: 'right' }}>
-          {currentDuel?.playerTwo?.fail}
-        </Typography.Title>
+        <div style={{ margin: 0, width: '30%' }}>
+          <Flex>
+            <Violations type="C1" value={currentDuel?.playerOne?.fail} isDanger />
+          </Flex>
+        </div>
+        <div style={{ margin: 0, width: '40%' }}></div>
+        <div style={{ margin: 0, width: '30%' }}>
+          <Violations type="C1" value={currentDuel?.playerTwo?.fail} />
+        </div>
       </Flex>
       <Flex style={{ justifyContent: 'space-between' }}>
-        <Typography.Title level={1} style={{ marginTop: 0, width: '50%' }} type="danger">
-          {currentDuel?.playerOne?.fail2}
-        </Typography.Title>
-        <Typography.Title level={1} style={{ marginTop: 0, width: '50%', color: 'blue', textAlign: 'right' }}>
-          {currentDuel?.playerTwo?.fail2}
-        </Typography.Title>
+        <div style={{ margin: 0, width: '30%' }}>
+          <Flex>
+            <Violations type="C2" value={currentDuel?.playerOne?.fail2} isDanger />
+          </Flex>
+        </div>
+        <div style={{ margin: 0, width: '40%' }}></div>
+        <div style={{ margin: 0, width: '30%' }}>
+          <Violations type="C2" value={currentDuel?.playerTwo?.fail2} />
+        </div>
       </Flex>
       <Flex style={{ justifyContent: 'space-between' }}>
         <div style={{ marginTop: 0, width: '100%' }}>
