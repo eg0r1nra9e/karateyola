@@ -22,6 +22,7 @@ import {
 import { selectGame, setWinner } from '../../store/slices/gamesSlice'
 import { selectTeams } from '../../store/slices/teamsSlice'
 import { DuelResultContainer } from '../DuelResultContainer/DuelResultContainer'
+import { useRouter } from 'next/router'
 
 interface IDuelContainer {
   gameId: string
@@ -32,6 +33,8 @@ interface IDuelContainer {
 }
 
 export const DuelContainer: FC<IDuelContainer> = (props) => {
+  const { push } = useRouter()
+
   const [isBrowser, setIsBrowser] = useState(false)
 
   const { gameId, competitionId, categoryName, standingId, duelId } = props
@@ -47,7 +50,7 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
 
   const currentDuel = useAppSelector(selectCurrentDuel)
 
-  const [timer, setTimer] = useState(category.time)
+  const [timer, setTimer] = useState(category?.time)
   const [timeInterval, setTimeInterval] = useState(null)
   const [isStartTimer, setIsStartTimer] = useState(false)
 
@@ -78,7 +81,7 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
       dispatch(setTime(timer))
     } else {
       if (currentDuel.playerOne.score === currentDuel.playerTwo.score) {
-        resetTimer(category.additionTime)
+        resetTimer(category?.additionTime)
         return
       }
       // Конец боя
@@ -88,16 +91,6 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
           : currentDuel.playerTwo.athleteId
 
       dispatch(endDuel(winner))
-      dispatch(
-        setWinner({
-          gameId,
-          competitionId,
-          categoryName,
-          standingId,
-          duelId,
-          athleteId: winner,
-        }),
-      )
     }
   }, [timer])
 
@@ -154,6 +147,15 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
     dispatch(addBenefitOne(-1))
   }
 
+  const clickAddBenefitTwo = () => {
+    pauseTimer()
+    dispatch(addBenefitTwo(1))
+  }
+  const clickRemoveBenefitTwo = () => {
+    pauseTimer()
+    dispatch(addBenefitTwo(-1))
+  }
+
   const clickCountOne = (count: number) => {
     pauseTimer()
     dispatch(addScoreOne(count))
@@ -162,15 +164,6 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
   const clickCountTwo = (count: number) => {
     pauseTimer()
     dispatch(addScoreTwo(count))
-  }
-
-  const clickAddBenefitTwo = () => {
-    pauseTimer()
-    dispatch(addBenefitTwo(1))
-  }
-  const clickRemoveBenefitTwo = () => {
-    pauseTimer()
-    dispatch(addBenefitTwo(-1))
   }
 
   const clickAddFailOne = (value) => {
@@ -191,6 +184,28 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
   const clickAddFailTwo2 = (value) => {
     pauseTimer()
     dispatch(addFailTwo2(value))
+  }
+
+  const clickWinnerOne = () => {
+    dispatch(endDuel(currentDuel.playerOne.athleteId))
+  }
+
+  const clickWinnerTwo = () => {
+    dispatch(endDuel(currentDuel.playerTwo.athleteId))
+  }
+
+  const endWinnerDuel = () => {
+    dispatch(
+      setWinner({
+        gameId,
+        competitionId,
+        categoryName,
+        standingId,
+        duelId,
+        athleteId: currentDuel.result,
+      }),
+    )
+    push('/games/' + gameId)
   }
 
   if (!isBrowser) {
@@ -216,8 +231,14 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
         )}
 
         <Button onClick={() => resetTimer()} style={{ width: '100%' }} type="primary" danger>
-          Reset
+          Сбросить таймер
         </Button>
+
+        {currentDuel?.result ? (
+          <Button onClick={() => endWinnerDuel()} style={{ width: '100%' }} type="dashed" danger>
+            Закончить поединок
+          </Button>
+        ) : null}
       </Flex>
       <Divider />
       <Flex gap="middle">
@@ -229,6 +250,7 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
             setCount={clickCountOne}
             setCountFail={clickAddFailOne}
             setCountFail2={clickAddFailOne2}
+            clickWinner={clickWinnerOne}
           />
         </div>
         <div style={{ background: 'blue', width: '100%' }}>
@@ -239,6 +261,7 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
             setCount={clickCountTwo}
             setCountFail={clickAddFailTwo}
             setCountFail2={clickAddFailTwo2}
+            clickWinner={clickWinnerTwo}
           />
         </div>
       </Flex>

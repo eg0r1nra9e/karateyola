@@ -1,6 +1,6 @@
 import { Button, Flex } from 'antd'
 
-const Player = ({ isDanger, setCountFail, setCountFail2, setCount, addBenefits, removeBenefits }) => {
+const Player = ({ isDanger, setCountFail, setCountFail2, setCount, addBenefits, removeBenefits, clickWinner }) => {
   return (
     <>
       <Flex gap="small" justify="space-between">
@@ -51,6 +51,11 @@ const Player = ({ isDanger, setCountFail, setCountFail2, setCount, addBenefits, 
 
         <Button type="dashed" danger={isDanger} onClick={() => setCount(-3)} style={{ width: '16%' }}>
           -3
+        </Button>
+      </Flex>
+      <Flex>
+        <Button danger={isDanger} onClick={() => clickWinner()} style={{ width: '100%' }}>
+          Победа
         </Button>
       </Flex>
     </>

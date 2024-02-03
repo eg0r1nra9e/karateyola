@@ -64,7 +64,7 @@ export const DuelResultContainer = () => {
       </Flex>
       <Flex style={{ justifyContent: 'space-between' }}>
         <Typography.Title level={1} style={{ margin: 0, width: '25%', fontSize: '8rem' }} type="danger">
-          {currentDuel?.playerOne?.score}
+          {currentDuel?.playerOne?.score} {currentDuel?.playerOne?.benefit ? '`' : null}
         </Typography.Title>
         <Typography.Title level={1} style={{ margin: 0, width: '50%', textAlign: 'center', fontSize: '8rem' }}>
           {minutesString} : {secondsString}
@@ -73,7 +73,7 @@ export const DuelResultContainer = () => {
           level={1}
           style={{ margin: 0, width: '25%', color: 'blue', textAlign: 'right', fontSize: '8rem' }}
         >
-          {currentDuel?.playerTwo?.score}
+          {currentDuel?.playerTwo?.benefit ? '`' : null} {currentDuel?.playerTwo?.score}
         </Typography.Title>
       </Flex>
 
