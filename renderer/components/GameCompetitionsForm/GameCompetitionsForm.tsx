@@ -80,6 +80,13 @@ export const GameCompetitionsForm: FC<IGameCompetitionsFormProps> = (props) => {
                                   >
                                     <Input placeholder="Введите время боя" />
                                   </Form.Item>
+                                  <Form.Item
+                                    {...category}
+                                    name={[category.name, 'additionTime']}
+                                    rules={[{ required: true, message: 'Введите дополнительное время боя' }]}
+                                  >
+                                    <Input placeholder="Введите дополнительное время боя" />
+                                  </Form.Item>
 
                                   <MinusCircleOutlined
                                     onClick={() => {

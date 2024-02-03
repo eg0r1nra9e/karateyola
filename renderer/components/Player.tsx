@@ -9,11 +9,11 @@ const Player = ({ isDanger, setCountFail, setCountFail2, setCount, addBenefits, 
         </Button>
 
         <Button type="primary" danger={isDanger} onClick={() => setCountFail(1)} style={{ flexBasis: '100%' }}>
-          1-я кат
+          c1
         </Button>
 
         <Button type="primary" danger={isDanger} onClick={() => setCountFail2(1)} style={{ flexBasis: '100%' }}>
-          2-я кат
+          c2
         </Button>
 
         <Button type="dashed" danger={isDanger} onClick={() => setCount(1)} style={{ flexBasis: '100%' }}>
@@ -34,11 +34,11 @@ const Player = ({ isDanger, setCountFail, setCountFail2, setCount, addBenefits, 
         </Button>
 
         <Button type="primary" danger={isDanger} onClick={() => setCountFail(-1)} style={{ flexBasis: '100%' }}>
-          - 1-я кат
+          - c1
         </Button>
 
         <Button type="primary" danger={isDanger} onClick={() => setCountFail2(-1)} style={{ flexBasis: '100%' }}>
-          - 2-я кат
+          - c2
         </Button>
 
         <Button type="dashed" danger={isDanger} onClick={() => setCount(-1)} style={{ flexBasis: '100%' }}>

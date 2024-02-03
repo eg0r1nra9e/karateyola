@@ -22,13 +22,22 @@ export const DuelResultContainer = () => {
       return ''
     }
     const athlete = athletes.find((a) => a.id === athleteId)
-    const team = teams.find((t) => t.id === athlete.teamId)
+    if (!athlete) {
+      return null
+    }
+
+    const team = teams.find((t) => t.id === athlete?.teamId)
     const athleteName = `${athlete.firstName} ${athlete.lastName}`
     let athleteTeam = ''
     if (team) {
-      athleteTeam = ` (${team?.name}, ${team.city})`
+      athleteTeam = `(${team?.name}, ${team.city})`
     }
-    return `${athleteName}${athleteTeam}`
+    return (
+      <div>
+        <div>{athleteName}</div>
+        {athleteTeam || ''}
+      </div>
+    )
   }
 
   const minutesString = String(Math.floor(currentDuel.timer / 60)).padStart(2, '0')
@@ -45,26 +54,45 @@ export const DuelResultContainer = () => {
   return (
     <Flex vertical>
       <Flex style={{ justifyContent: 'space-between' }}>
-        <Typography.Title level={1} style={{ marginTop: 0, width: '80%' }}>
+        <Typography.Title level={1} style={{ marginTop: 0, width: '50%' }} type="danger">
           {getAthlete(currentDuel?.playerOne?.athleteId)}
         </Typography.Title>
-        <Typography.Title level={1} style={{ marginTop: 0, width: '20%' }} type="danger">
-          {currentDuel?.playerOne?.score}
+        <Typography.Title level={1} style={{ margin: 0, width: '50%', color: 'blue', textAlign: 'right' }}>
+          {getAthlete(currentDuel?.playerTwo?.athleteId)}
         </Typography.Title>
       </Flex>
       <Flex style={{ justifyContent: 'space-between' }}>
-        <Typography.Title level={1} style={{ marginTop: 0, width: '80%' }}>
-          {getAthlete(currentDuel?.playerTwo?.athleteId)}
+        <Typography.Title level={1} style={{ margin: 0, width: '25%', fontSize: '8rem' }} type="danger">
+          {currentDuel?.playerOne?.score}
         </Typography.Title>
-
-        <Typography.Title level={1} style={{ marginTop: 0, color: 'blue', width: '20%' }}>
+        <Typography.Title level={1} style={{ margin: 0, width: '50%', textAlign: 'center', fontSize: '8rem' }}>
+          {minutesString} : {secondsString}
+        </Typography.Title>
+        <Typography.Title
+          level={1}
+          style={{ margin: 0, width: '25%', color: 'blue', textAlign: 'right', fontSize: '8rem' }}
+        >
           {currentDuel?.playerTwo?.score}
         </Typography.Title>
       </Flex>
+
       <Flex style={{ justifyContent: 'space-between' }}>
-        <Typography.Title level={1} style={{ marginTop: 0, textAlign: 'center', width: '100%' }}>
-          {minutesString} : {secondsString}
+        <Typography.Title level={1} style={{ marginTop: 0, width: '50%' }} type="danger">
+          {currentDuel?.playerOne?.fail}
         </Typography.Title>
+        <Typography.Title level={1} style={{ marginTop: 0, width: '50%', color: 'blue', textAlign: 'right' }}>
+          {currentDuel?.playerTwo?.fail}
+        </Typography.Title>
+      </Flex>
+      <Flex style={{ justifyContent: 'space-between' }}>
+        <Typography.Title level={1} style={{ marginTop: 0, width: '50%' }} type="danger">
+          {currentDuel?.playerOne?.fail2}
+        </Typography.Title>
+        <Typography.Title level={1} style={{ marginTop: 0, width: '50%', color: 'blue', textAlign: 'right' }}>
+          {currentDuel?.playerTwo?.fail2}
+        </Typography.Title>
+      </Flex>
+      <Flex style={{ justifyContent: 'space-between' }}>
         <div style={{ marginTop: 0, width: '100%' }}>
           <Typography.Title level={2}>{currentDuel.competitionName}</Typography.Title>
           <Typography.Title level={2}>{currentDuel.categoryName}</Typography.Title>

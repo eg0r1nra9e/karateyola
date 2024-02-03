@@ -78,7 +78,7 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
       dispatch(setTime(timer))
     } else {
       if (currentDuel.playerOne.score === currentDuel.playerTwo.score) {
-        resetTimer(category.time)
+        resetTimer(category.additionTime)
         return
       }
       // Конец боя

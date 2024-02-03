@@ -17,6 +17,11 @@ export interface ICategory extends IBase {
   time: number
 
   /**
+   * Дополнительное время боя.
+   */
+  additionTime: number
+
+  /**
    * Участвующие спортсмены
    */
   athletes: string[]
