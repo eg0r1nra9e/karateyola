@@ -14,7 +14,7 @@ export const Violations: FC<IViolationsProps> = (props) => {
 
   const background = isDanger ? 'red' : 'blue'
 
-  const violations = ['C', 'K', 'HC', 'H']
+  const violations = ['', '', '', '', '']
 
   return (
     <Flex gap="large" justify="space-between" style={{ marginTop: 0, width: '100%' }}>

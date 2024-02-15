@@ -78,27 +78,17 @@ export const DuelResultContainer = () => {
       </Flex>
 
       <Flex style={{ justifyContent: 'space-between' }}>
-        <div style={{ margin: 0, width: '30%' }}>
+        <div style={{ margin: 0, width: '40%' }}>
           <Flex>
-            <Violations type="C1" value={currentDuel?.playerOne?.fail} isDanger />
+            <Violations type="Чуй" value={currentDuel?.playerOne?.fail} isDanger />
           </Flex>
         </div>
         <div style={{ margin: 0, width: '40%' }}></div>
-        <div style={{ margin: 0, width: '30%' }}>
-          <Violations type="C1" value={currentDuel?.playerTwo?.fail} />
+        <div style={{ margin: 0, width: '40%' }}>
+          <Violations type="Чуй" value={currentDuel?.playerTwo?.fail} />
         </div>
       </Flex>
-      <Flex style={{ justifyContent: 'space-between' }}>
-        <div style={{ margin: 0, width: '30%' }}>
-          <Flex>
-            <Violations type="C2" value={currentDuel?.playerOne?.fail2} isDanger />
-          </Flex>
-        </div>
-        <div style={{ margin: 0, width: '40%' }}></div>
-        <div style={{ margin: 0, width: '30%' }}>
-          <Violations type="C2" value={currentDuel?.playerTwo?.fail2} />
-        </div>
-      </Flex>
+      <Flex style={{ justifyContent: 'space-between' }}></Flex>
       <Flex style={{ justifyContent: 'space-between' }}>
         <div style={{ marginTop: 0, width: '100%' }}>
           <Typography.Title level={2}>{currentDuel.competitionName}</Typography.Title>

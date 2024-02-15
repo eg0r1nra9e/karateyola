@@ -11,8 +11,6 @@ import {
   addDuel,
   addFailOne,
   addFailTwo,
-  addFailOne2,
-  addFailTwo2,
   addScoreOne,
   addScoreTwo,
   endDuel,
@@ -176,16 +174,6 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
     dispatch(addFailTwo(value))
   }
 
-  const clickAddFailOne2 = (value) => {
-    pauseTimer()
-    dispatch(addFailOne2(value))
-  }
-
-  const clickAddFailTwo2 = (value) => {
-    pauseTimer()
-    dispatch(addFailTwo2(value))
-  }
-
   const clickWinnerOne = () => {
     dispatch(endDuel(currentDuel.playerOne.athleteId))
   }
@@ -249,7 +237,6 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
             removeBenefits={clickRemoveBenefitOne}
             setCount={clickCountOne}
             setCountFail={clickAddFailOne}
-            setCountFail2={clickAddFailOne2}
             clickWinner={clickWinnerOne}
           />
         </div>
@@ -260,7 +247,6 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
             removeBenefits={clickRemoveBenefitTwo}
             setCount={clickCountTwo}
             setCountFail={clickAddFailTwo}
-            setCountFail2={clickAddFailTwo2}
             clickWinner={clickWinnerTwo}
           />
         </div>
