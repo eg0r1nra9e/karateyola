@@ -1,5 +1,6 @@
 import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit'
 
+import categoriesSlice from './slices/categoriesSlice'
 import athletesSliceReducer from './slices/athletesSlice'
 import competitionsSliceReducer from './slices/competitionsSlice'
 import currentDuelSlice from './slices/currentDuelSlice'
@@ -15,6 +16,7 @@ export function createStore(reduxState?: any) {
       athletes: athletesSliceReducer,
       games: gamesSliceReducer,
       currentDuel: currentDuelSlice,
+      categories: categoriesSlice,
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware().concat(createStateSyncMiddleware({ channel: 'karateYola' })),
