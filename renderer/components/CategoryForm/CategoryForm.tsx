@@ -19,6 +19,8 @@ export const CategoryForm: FC<ICategoryFormProps> = (props) => {
     form.setFieldsValue({
       id: category?.id,
       name: category?.name,
+      time: category?.time,
+      additionTime: category?.additionTime,
     })
   }, [form, category])
 
@@ -40,6 +42,20 @@ export const CategoryForm: FC<ICategoryFormProps> = (props) => {
         label="Название категории"
         name="name"
         rules={[{ required: true, message: 'Введите название категории' }]}
+      >
+        <Input />
+      </Form.Item>
+      <Form.Item<FieldType>
+        label="Время боя"
+        name="time"
+        rules={[{ required: true, message: 'Введите длительность боя (в сек.)' }]}
+      >
+        <Input />
+      </Form.Item>
+      <Form.Item<FieldType>
+        label="Дополнительное время боя"
+        name="additionTime"
+        rules={[{ required: true, message: 'Введите дополнительное время' }]}
       >
         <Input />
       </Form.Item>

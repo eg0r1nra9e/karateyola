@@ -24,20 +24,18 @@ export const CategoriesContainer = () => {
       render: (_, category) => <Link href={`/categories/edit/${category.id}`}>{category.name}</Link>,
       sorter: (a, b) => a.name.length - b.name.length,
     },
-    // {
-    //   title: 'Время боя',
-    //   dataIndex: 'time',
-    //   key: 'time',
-    //   render: (_, category) => <Link href={`/categories/edit/${category.id}`}>{category.time}</Link>,
-    //   sorter: (a, b) => a.time - b.time,
-    // },
-    // {
-    //   title: 'Дополнительное время боя',
-    //   dataIndex: 'additionTime',
-    //   key: 'additionTime',
-    //   render: (_, category) => <Link href={`/categories/edit/${category.id}`}>{category.additionTime}</Link>,
-    //   sorter: (a, b) => a.additionTime - b.additionTime,
-    // },
+    {
+      title: 'Время боя',
+      dataIndex: 'time',
+      key: 'time',
+      sorter: (a, b) => a.time - b.time,
+    },
+    {
+      title: 'Дополнительное время боя',
+      dataIndex: 'additionTime',
+      key: 'additionTime',
+      sorter: (a, b) => a.additionTime - b.additionTime,
+    },
     {
       title: '',
       key: 'action',

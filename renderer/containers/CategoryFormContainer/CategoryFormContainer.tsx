@@ -7,7 +7,6 @@ import { addCategory, editCategory, selectCategory } from '../../store/slices/ca
 
 interface ICategoryFormProps {
   categoryId?: string
-  name?: string
 }
 
 export const CategoryFormContainer: FC<ICategoryFormProps> = (props) => {

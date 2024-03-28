@@ -1,5 +1,5 @@
 import { IBase } from './IBase'
-import { IDuel } from './IDuel'
+
 import { IStanding } from './IStanding'
 
 /**

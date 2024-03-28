@@ -23,6 +23,8 @@ export const categoriesSlice = createSlice({
     editCategory: (state, action: PayloadAction<ICategory>) => {
       const category = state.categories.find((category) => category.id === action.payload.id)
       category.name = action.payload.name
+      category.time = action.payload.time
+      category.additionTime = action.payload.additionTime
     },
     removeCategory: (state, action: PayloadAction<string>) => {
       state.categories = state.categories.filter((category) => category.id !== action.payload)
