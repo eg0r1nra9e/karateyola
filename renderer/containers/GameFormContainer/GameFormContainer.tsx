@@ -3,6 +3,7 @@ import { FC } from 'react'
 
 import { GameForm } from '../../components/GameForm/GameForm'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
+import { selectCategories } from '../../store/slices/categoriesSlice'
 import { selectAthletes } from '../../store/slices/athletesSlice'
 import { selectCompetitions } from '../../store/slices/competitionsSlice'
 import { addGame, editGame, selectGame } from '../../store/slices/gamesSlice'
@@ -20,6 +21,7 @@ export const GameFormContainer: FC<IGameFormProps> = (props) => {
 
   const game = useAppSelector((state) => selectGame(state, gameId))
   const competitions = useAppSelector(selectCompetitions)
+  const categories = useAppSelector(selectCategories)
   const athletes = useAppSelector(selectAthletes)
 
   const onFinish = (game: IGame) => {
@@ -34,6 +36,7 @@ export const GameFormContainer: FC<IGameFormProps> = (props) => {
     <GameForm
       game={game}
       competitions={competitions}
+      categories={categories}
       athletes={athletes}
       onSave={onFinish}
       onFinish={() => push('/games/')}

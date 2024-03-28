@@ -5,21 +5,27 @@ import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons'
 
 import { ICompetition } from '../../types/ICompetition'
 import { IGame } from '../../types/IGame'
+import { ICategory } from '../../types/ICategory'
 
 type FieldType = IGame
 
 interface IGameCompetitionsFormProps {
   game?: IGame
   competitions: ICompetition[]
+  categories: ICategory[]
   onFinish: (values: any) => void
   onBack: (values: any) => void
 }
 
 export const GameCompetitionsForm: FC<IGameCompetitionsFormProps> = (props) => {
-  const { game, competitions, onFinish, onBack } = props
+  const { game, competitions, categories, onFinish, onBack } = props
   const [form] = Form.useForm()
 
-  const competitionOptions = competitions.map((team: ICompetition) => ({ value: team.id, label: team.name }))
+  const competitionOptions = competitions.map((competition: ICompetition) => ({
+    value: competition.id,
+    label: competition.name,
+  }))
+  const categoriesOptions = categories.map((category: ICategory) => ({ value: category.id, label: category.name }))
 
   return (
     <Form
@@ -69,25 +75,10 @@ export const GameCompetitionsForm: FC<IGameCompetitionsFormProps> = (props) => {
                                   <Form.Item
                                     {...category}
                                     name={[category.name, 'name']}
-                                    rules={[{ required: true, message: 'Введите категорию' }]}
+                                    rules={[{ required: true, message: 'Выберите категорию' }]}
                                   >
-                                    <Input placeholder="Введите категорию" />
+                                    <Select showSearch placeholder="Выберете категорию" options={categoriesOptions} />
                                   </Form.Item>
-                                  <Form.Item
-                                    {...category}
-                                    name={[category.name, 'time']}
-                                    rules={[{ required: true, message: 'Введите время боя' }]}
-                                  >
-                                    <Input placeholder="Введите время боя" />
-                                  </Form.Item>
-                                  <Form.Item
-                                    {...category}
-                                    name={[category.name, 'additionTime']}
-                                    rules={[{ required: true, message: 'Введите дополнительное время боя' }]}
-                                  >
-                                    <Input placeholder="Введите дополнительное время боя" />
-                                  </Form.Item>
-
                                   <MinusCircleOutlined
                                     onClick={() => {
                                       remove(category.name)

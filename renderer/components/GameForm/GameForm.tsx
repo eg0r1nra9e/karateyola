@@ -7,6 +7,7 @@ import { GameAthletesFormContainer } from '../../containers/GameAthletesFormCont
 import { GameFormStandingsContainer } from '../../containers/GameFormStandingsContainer/GameFormStandingsContainer'
 import { IAthlete } from '../../types/IAthlete'
 import { ICompetition } from '../../types/ICompetition'
+import { ICategory } from '../../types/ICategory'
 import { IGame } from '../../types/IGame'
 import { GameCompetitionsForm } from '../GameCompetitionsForm/GameCompetitionsForm'
 import { GameGeneralInformationForm } from '../GameGeneralInformationForm/GameGeneralInformationForm'
@@ -14,13 +15,14 @@ import { GameGeneralInformationForm } from '../GameGeneralInformationForm/GameGe
 interface IGameFormProps {
   game?: IGame
   competitions: ICompetition[]
+  categories: ICategory[]
   athletes: IAthlete[]
   onSave: (values: any) => void
   onFinish: (values: any) => void
 }
 
 export const GameForm: FC<IGameFormProps> = (props) => {
-  const { game, competitions, athletes, onSave, onFinish } = props
+  const { game, competitions, categories, athletes, onSave, onFinish } = props
 
   const [currentGame, setCurrentGame] = useState(game)
 
@@ -68,6 +70,7 @@ export const GameForm: FC<IGameFormProps> = (props) => {
         key="gameCompetitionsForm"
         game={currentGame}
         competitions={competitions}
+        categories={categories}
         onFinish={onFinishCompetitionsForm}
         onBack={() => {
           setCurrent(0)

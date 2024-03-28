@@ -11,7 +11,7 @@ const Duel: NextPage = () => {
     <DuelContainer
       gameId={query?.gameId?.toString()}
       competitionId={query?.competitionId?.toString()}
-      categoryName={query?.categoryName?.toString()}
+      categoryId={query?.categoryId?.toString()}
       standingId={query?.standingId?.toString()}
       duelId={query?.duelId?.toString()}
     />

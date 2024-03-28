@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid'
 
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
+import { ICategory } from '../../types/ICategory'
 import { ICompetition } from '../../types/ICompetition'
 import { IGame } from '../../types/IGame'
 import { IStanding } from '../../types/IStanding'
@@ -76,7 +77,7 @@ export const gamesSlice = createSlice({
     setWinner: (state, action: PayloadAction<IWinner>) => {
       const game = state.games.find((game) => game.id === action.payload.gameId)
       const competition = game?.competitions?.find((c) => c.id === action.payload.competitionId)
-      const category = competition?.categories.find((c) => c.name === action.payload.categoryName)
+      const category = competition?.categories.find((c) => c.name === action.payload.categoryId)
       const standing = category?.standings.find((c) => c.id === action.payload.standingId)
       const duel = standing?.duels.find((c) => c.id === action.payload.duelId)
       duel.winner = action.payload.athleteId

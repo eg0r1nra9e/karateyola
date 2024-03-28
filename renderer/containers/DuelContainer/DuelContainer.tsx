@@ -25,7 +25,7 @@ import { useRouter } from 'next/router'
 interface IDuelContainer {
   gameId: string
   competitionId: string
-  categoryName: string
+  categoryId: string
   standingId: string
   duelId: string
 }
@@ -35,14 +35,15 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
 
   const [isBrowser, setIsBrowser] = useState(false)
 
-  const { gameId, competitionId, categoryName, standingId, duelId } = props
+  const { gameId, competitionId, categoryId, standingId, duelId } = props
   const game = useAppSelector((state) => selectGame(state, gameId))
   const competitions = useAppSelector(selectCompetitions)
   const athletes = useAppSelector(selectAthletes)
   const teams = useAppSelector(selectTeams)
   const competitionName = competitions?.find((c) => c.id === competitionId)?.name
   const competition = game?.competitions?.find((c) => c.id === competitionId)
-  const category = competition?.categories.find((c) => c.name === categoryName)
+  const categoryName = competition?.categories.find((c) => c.id === categoryId)?.name
+  const category = game?.categories?.find((c) => c.id === categoryId)
   const standing = category?.standings.find((c) => c.id === standingId)
   const duel = standing?.duels.find((c) => c.id === duelId)
 
@@ -187,7 +188,7 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
       setWinner({
         gameId,
         competitionId,
-        categoryName,
+        categoryId,
         standingId,
         duelId,
         athleteId: currentDuel.result,

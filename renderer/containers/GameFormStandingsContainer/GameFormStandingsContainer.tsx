@@ -5,6 +5,7 @@ import { GameDuelsComponent } from '../../components/GameDuelsComponent/GameDuel
 import { useAppSelector } from '../../store/hooks'
 import { selectAthletes } from '../../store/slices/athletesSlice'
 import { selectCompetitions } from '../../store/slices/competitionsSlice'
+import { selectCategories } from '../../store/slices/categoriesSlice'
 import { selectTeams } from '../../store/slices/teamsSlice'
 import { IGame } from '../../types/IGame'
 
@@ -19,24 +20,13 @@ export const GameFormStandingsContainer: FC<IGameFormStandingsContainerProps> = 
   const athletes = useAppSelector(selectAthletes)
   const teams = useAppSelector(selectTeams)
   const competitions = useAppSelector(selectCompetitions)
+  const categories = useAppSelector(selectCategories)
   const [currentGame, setCurrentGame] = useState(game)
 
   const items = []
 
   currentGame?.competitions.forEach((competition) => {
     const competitionName = competitions?.find((c) => c.id === competition.id)?.name
-    if (competition?.categories?.length) {
-      competition?.categories.forEach((category) => {
-        if (!category?.standings?.length) {
-          return null
-        }
-        items.push({
-          key: category.name,
-          label: competitionName + ': ' + category?.name,
-          children: <GameDuelsComponent athletes={athletes} teams={teams} standings={category.standings} />,
-        })
-      })
-    }
   })
 
   return (
