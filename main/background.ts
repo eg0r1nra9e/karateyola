@@ -13,15 +13,22 @@ if (isProd) {
 ;(async () => {
   await app.whenReady()
 
+  const currentDuelWindow = createWindow('currentDuelWindow', {
+    width: 1000,
+    height: 600,
+  })
+
   const mainWindow = createWindow('main', {
     width: 1000,
     height: 600,
   })
 
   if (isProd) {
+    await currentDuelWindow.loadURL('app://./current-result.html')
     await mainWindow.loadURL('app://./index.html')
   } else {
     const port = process.argv[2]
+    await currentDuelWindow.loadURL(`http://localhost:${port}/current-result`)
     await mainWindow.loadURL(`http://localhost:${port}/`)
     mainWindow.webContents.openDevTools()
   }

@@ -88,7 +88,7 @@ export const DuelResultContainer = () => {
           <Violations type="Чуй" value={currentDuel?.playerTwo?.fail} />
         </div>
       </Flex>
-      <Flex style={{ justifyContent: 'space-between' }}></Flex>
+      <Flex style={{ justifyContent: 'space-between' }}>&nbsp;</Flex>
       <Flex style={{ justifyContent: 'space-between' }}>
         <div style={{ marginTop: 0, width: '100%' }}>
           <Typography.Title level={2}>{currentDuel.competitionName}</Typography.Title>
