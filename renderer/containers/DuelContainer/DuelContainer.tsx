@@ -21,6 +21,8 @@ import { selectGame, setWinner } from '../../store/slices/gamesSlice'
 import { selectTeams } from '../../store/slices/teamsSlice'
 import { DuelResultContainer } from '../DuelResultContainer/DuelResultContainer'
 import { useRouter } from 'next/router'
+import { time } from '../CategoriesContainer/CategoriesContainer'
+import { additionTime } from '../CategoriesContainer/CategoriesContainer'
 
 interface IDuelContainer {
   gameId: string
@@ -69,7 +71,7 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
     clearInterval(timeInterval)
   }
 
-  const resetTimer = (secund = category.time) => {
+  const resetTimer = (secund = time) => {
     setTimer(secund)
     setIsStartTimer(false)
     clearInterval(timeInterval)
@@ -80,7 +82,7 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
       dispatch(setTime(timer))
     } else {
       if (currentDuel.playerOne.score === currentDuel.playerTwo.score) {
-        resetTimer(category?.additionTime)
+        resetTimer(additionTime)
         return
       }
       // Конец боя

@@ -76,7 +76,7 @@ export default (windowName: string, options: BrowserWindowConstructorOptions): B
       devTools: true,
       ...options.webPreferences,
     },
-    autoHideMenuBar: true,
+    //autoHideMenuBar: true,
   }
 
   win = new BrowserWindow(browserOptions)

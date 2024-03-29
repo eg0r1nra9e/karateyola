@@ -25,7 +25,10 @@ export const GameCompetitionsForm: FC<IGameCompetitionsFormProps> = (props) => {
     value: competition.id,
     label: competition.name,
   }))
-  const categoriesOptions = categories.map((category: ICategory) => ({ value: category.id, label: category.name }))
+  const categoriesOptions = categories.map((category: ICategory) => ({
+    value: category.id,
+    label: category.name,
+  }))
 
   return (
     <Form
@@ -74,7 +77,7 @@ export const GameCompetitionsForm: FC<IGameCompetitionsFormProps> = (props) => {
                                 <Space key={category.key} align="start">
                                   <Form.Item
                                     {...category}
-                                    name={[category.name, 'name']}
+                                    name={[category.name, 'id']}
                                     rules={[{ required: true, message: 'Выберите категорию' }]}
                                   >
                                     <Select showSearch placeholder="Выберете категорию" options={categoriesOptions} />
