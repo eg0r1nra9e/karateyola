@@ -25,8 +25,24 @@ export const GameFormStandingsContainer: FC<IGameFormStandingsContainerProps> = 
 
   const items = []
 
+  const getCategoryName = (categoryId) => {
+    return categories.find((category) => category.id === categoryId)?.name
+  }
+
   currentGame?.competitions.forEach((competition) => {
     const competitionName = competitions?.find((c) => c.id === competition.id)?.name
+    if (competition?.categories?.length) {
+      competition?.categories.forEach((category) => {
+        if (!category?.standings?.length) {
+          return null
+        }
+        items.push({
+          key: category.name,
+          label: competitionName + ': ' + getCategoryName(category?.id),
+          children: <GameDuelsComponent athletes={athletes} teams={teams} standings={category.standings} />,
+        })
+      })
+    }
   })
 
   return (
