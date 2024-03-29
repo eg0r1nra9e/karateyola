@@ -48,7 +48,7 @@ export const GameAthletesFormContainer: FC<IGameAthletesFormContainerProps> = (p
     if (competition?.categories?.length) {
       competition?.categories.forEach((category) => {
         items.push({
-          key: category.name,
+          key: category.id,
           label: competitionName + ': ' + getCategoryName(category?.id),
           children: <GameAthletesTable category={category} athletes={athletes} teams={teams} onChange={onChange} />,
         })

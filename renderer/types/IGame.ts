@@ -25,6 +25,4 @@ export interface IGame extends IBase {
    * Дисциплины соревнования.
    */
   competitions: ICompetition[]
-
-  categories: ICategory[]
 }

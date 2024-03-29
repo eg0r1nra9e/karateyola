@@ -37,7 +37,7 @@ export const GameFormStandingsContainer: FC<IGameFormStandingsContainerProps> = 
           return null
         }
         items.push({
-          key: category.name,
+          key: category.id,
           label: competitionName + ': ' + getCategoryName(category?.id),
           children: <GameDuelsComponent athletes={athletes} teams={teams} standings={category.standings} />,
         })
