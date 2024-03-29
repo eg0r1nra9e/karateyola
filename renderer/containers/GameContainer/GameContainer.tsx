@@ -7,6 +7,7 @@ import { FireOutlined } from '@ant-design/icons'
 
 import { useAppSelector } from '../../store/hooks'
 import { selectAthletes } from '../../store/slices/athletesSlice'
+import { selectCategories } from '../../store/slices/categoriesSlice'
 import { selectCompetitions } from '../../store/slices/competitionsSlice'
 import { selectGame } from '../../store/slices/gamesSlice'
 import { selectTeams } from '../../store/slices/teamsSlice'
@@ -21,6 +22,7 @@ export const GameContainer: FC<IGameFormProps> = (props) => {
 
   const game = useAppSelector((state) => selectGame(state, gameId))
   const competitions = useAppSelector(selectCompetitions)
+  const categories = useAppSelector(selectCategories)
   const athletes = useAppSelector(selectAthletes)
   const teams = useAppSelector(selectTeams)
 
@@ -70,6 +72,10 @@ export const GameContainer: FC<IGameFormProps> = (props) => {
       </Card>
     ))
 
+  const getCategoryName = (categoryId) => {
+    return categories.find((category) => category.id === categoryId)?.name
+  }
+
   game?.competitions.forEach((competition) => {
     const competitionName = competitions?.find((c) => c.id === competition.id)?.name
     if (competition?.categories?.length) {
@@ -79,8 +85,8 @@ export const GameContainer: FC<IGameFormProps> = (props) => {
         }
 
         items.push({
-          key: category.name,
-          label: competitionName + ': ' + category?.name,
+          key: category.id,
+          label: competitionName + ': ' + getCategoryName(category?.id),
           children: <Flex> {getStandings(game.id, competition.id, category.name, category.standings)}</Flex>,
         })
       })
