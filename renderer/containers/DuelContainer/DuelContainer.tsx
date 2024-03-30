@@ -87,8 +87,9 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
     clearInterval(timeInterval)
   }
 
+
   // Определение победителя текущей дуэли.
-  const getWinner = () => {
+  useEffect(() => {
     if (!currentDuel || !currentDuel.playerOne || !currentDuel.playerTwo) {
       return
     }
@@ -100,7 +101,7 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
     }
 
     // Второй спортсмен набрал 5 нарушений - он проиграл.
-    if (currentDuel.playerTwo.fail === 5) {
+    if (currentDuel.playerTwo.fail > 4) {
       dispatch(endDuel(currentDuel.playerOne.athleteId))
       beep()
     }
@@ -110,7 +111,7 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
       dispatch(endDuel(currentDuel.playerOne.athleteId))
       beep()
     }
-    
+
     // Второй спортсмен набрал 8 очков - он победил.
     if (currentDuel.playerTwo.score >= 8) {
       dispatch(endDuel(currentDuel.playerTwo.athleteId))
@@ -119,7 +120,7 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
 
     // Время закончилось
     if (!timer) {
-      
+
       // Разное количество очков, можем определить победителя.
       if (currentDuel.playerOne.score !== currentDuel.playerTwo.score) {
         const winner =
@@ -140,7 +141,7 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
         }
       }
     }
-  }
+  }, [timer, currentDuel])
 
   useEffect(() => {
     if (timer) {
@@ -158,8 +159,6 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
         resetTimer(category.additionTime)
         return
       }
-
-      getWinner()
     }
     
   }, [timer])
@@ -227,33 +226,31 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
   const clickCountOne = (count: number) => {
     pauseTimer()
     dispatch(addScoreOne(count))
-    getWinner()
   }
 
   const clickCountTwo = (count: number) => {
     pauseTimer()
     dispatch(addScoreTwo(count))
-    getWinner()
   }
 
   const clickAddFailOne = (value) => {
     pauseTimer()
     dispatch(addFailOne(value))
-    getWinner()
   }
 
   const clickAddFailTwo = (value) => {
     pauseTimer()
     dispatch(addFailTwo(value))
-    getWinner()
   }
 
   const clickWinnerOne = () => {
     dispatch(endDuel(currentDuel.playerOne.athleteId))
+    beep()
   }
 
   const clickWinnerTwo = () => {
     dispatch(endDuel(currentDuel.playerTwo.athleteId))
+    beep()
   }
 
   const endWinnerDuel = () => {
