@@ -21,8 +21,7 @@ import { selectGame, setWinner } from '../../store/slices/gamesSlice'
 import { selectTeams } from '../../store/slices/teamsSlice'
 import { DuelResultContainer } from '../DuelResultContainer/DuelResultContainer'
 import { useRouter } from 'next/router'
-import { time } from '../CategoriesContainer/CategoriesContainer'
-import { additionTime } from '../CategoriesContainer/CategoriesContainer'
+import { selectCategories } from '../../store/slices/categoriesSlice'
 
 interface IDuelContainer {
   gameId: string
@@ -39,14 +38,20 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
 
   const { gameId, competitionId, categoryId, standingId, duelId } = props
   const game = useAppSelector((state) => selectGame(state, gameId))
+
   const competitions = useAppSelector(selectCompetitions)
+  const categories = useAppSelector(selectCategories)
   const athletes = useAppSelector(selectAthletes)
   const teams = useAppSelector(selectTeams)
-  const competitionName = competitions?.find((c) => c.id === competitionId)?.name
-  const competition = game?.competitions?.find((c) => c.id === competitionId)
-  const categoryName = competition?.categories.find((c) => c.id === categoryId)?.name
-  const category = game?.categories?.find((c) => c.id === categoryId)
+
+  const competition = competitions?.find((c) => c.id === competitionId)
+  const competitionName = competition?.name
+
+  const category = categories?.find((c) => c.id === categoryId)
+  const categoryName = category?.name
+
   const standing = category?.standings.find((c) => c.id === standingId)
+
   const duel = standing?.duels.find((c) => c.id === duelId)
 
   const currentDuel = useAppSelector(selectCurrentDuel)
@@ -71,7 +76,7 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
     clearInterval(timeInterval)
   }
 
-  const resetTimer = (secund = time) => {
+  const resetTimer = (secund = category.time) => {
     setTimer(secund)
     setIsStartTimer(false)
     clearInterval(timeInterval)
@@ -82,7 +87,7 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
       dispatch(setTime(timer))
     } else {
       if (currentDuel.playerOne.score === currentDuel.playerTwo.score) {
-        resetTimer(additionTime)
+        resetTimer(category.additionTime)
         return
       }
       // Конец боя
@@ -101,6 +106,7 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
   }, [])
 
   useEffect(() => {
+    debugger
     dispatch(
       addDuel({
         id: duelId,
