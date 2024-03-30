@@ -1,12 +1,13 @@
-import { Button, Table } from 'antd'
-import { ColumnsType } from 'antd/es/table'
-import Link from 'next/link'
+import { Button, Table } from 'antd';
+import { ColumnsType } from 'antd/es/table';
+import Link from 'next/link';
+import * as path from 'path';
 
-import { MinusOutlined } from '@ant-design/icons'
+import { MinusOutlined } from '@ant-design/icons';
 
-import { useAppDispatch, useAppSelector } from '../../store/hooks'
-import { removeTeam, selectTeams } from '../../store/slices/teamsSlice'
-import { ITeam } from '../../types/ITeam'
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { removeTeam, selectTeams } from '../../store/slices/teamsSlice';
+import { ITeam } from '../../types/ITeam';
 
 export const TeamsContainer = () => {
   const teams = useAppSelector(selectTeams)
@@ -14,6 +15,11 @@ export const TeamsContainer = () => {
 
   const deleteTeam = (teamId: string) => {
     dispatch(removeTeam(teamId))
+
+    const filePath = path.join('testSound.mp3')
+
+    let ding = new Audio(filePath);
+    ding.play();
   }
 
   const columns: ColumnsType<ITeam> = [

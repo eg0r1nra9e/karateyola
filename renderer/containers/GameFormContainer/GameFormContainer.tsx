@@ -25,6 +25,12 @@ export const GameFormContainer: FC<IGameFormProps> = (props) => {
   const athletes = useAppSelector(selectAthletes)
 
   const onFinish = (game: IGame) => {
+    game.dates = game.dates.map((date: any) => {
+      if (date && date.toDate && typeof date.toDate == 'function') {
+        return date.toDate().toString()
+      }
+    })
+
     if (!gameId) {
       dispatch(addGame(game))
     } else {

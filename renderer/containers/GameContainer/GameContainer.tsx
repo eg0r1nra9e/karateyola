@@ -39,6 +39,7 @@ export const GameContainer: FC<IGameFormProps> = (props) => {
       <Link key="start" href={`/games/${gameId}/${competitionId}/${categoryId}/${standingId}/${dueleId}`}>
         <Button type="primary">
           <FireOutlined />
+          {`/games/${gameId}/${competitionId}/${categoryId}/${standingId}/${dueleId}`}
           Начать
         </Button>
       </Link>,
@@ -47,8 +48,8 @@ export const GameContainer: FC<IGameFormProps> = (props) => {
 
   const getAthlete = (athleteId) => {
     const athlete = athletes.find((a) => a.id === athleteId)
-    const team = teams.find((t) => t.id === athlete.teamId)
-    const athleteName = `${athlete.firstName} ${athlete.lastName}`
+    const team = teams.find((t) => t.id === athlete?.teamId)
+    const athleteName = `${athlete?.firstName} ${athlete?.lastName}`
     let athleteTeam = ''
     if (team) {
       athleteTeam = ` (${team?.name}, ${team.city})`
@@ -56,13 +57,13 @@ export const GameContainer: FC<IGameFormProps> = (props) => {
     return `${athleteName}${athleteTeam}`
   }
 
-  const getStandings = (gameId: string, competitionId: string, categoriesName: string, standings: IStanding[]) =>
+  const getStandings = (gameId: string, competitionId: string, categoryId: string, standings: IStanding[]) =>
     standings.map((standing) => (
       <Card key={standing?.id}>
         {standing?.duels?.map((duel) => (
           <Card
             key={duel?.id}
-            actions={!duel.winner && getActions(gameId, competitionId, categoriesName, standing?.id, duel?.id)}
+            actions={!duel.winner && getActions(gameId, competitionId, categoryId, standing?.id, duel?.id)}
           >
             {duel.athletesId.map((athleteId) => (
               <Card key={athleteId}>{getAthlete(athleteId)}</Card>
@@ -87,7 +88,7 @@ export const GameContainer: FC<IGameFormProps> = (props) => {
         items.push({
           key: category.id,
           label: competitionName + ': ' + getCategoryName(category?.id),
-          children: <Flex> {getStandings(game.id, competition.id, category.name, category.standings)}</Flex>,
+          children: <Flex> {getStandings(game.id, competition.id, category?.id, category.standings)}</Flex>,
         })
       })
     }

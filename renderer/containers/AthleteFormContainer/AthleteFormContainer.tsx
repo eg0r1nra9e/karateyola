@@ -5,6 +5,7 @@ import { AthleteForm } from '../../components/AthleteForm/AthleteForm'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
 import { addAthlete, editAthlete, selectAthlete } from '../../store/slices/athletesSlice'
 import { selectTeams } from '../../store/slices/teamsSlice'
+import { IAthlete } from '../../types/IAthlete'
 
 interface IAthleteFormProps {
   athleteId?: string
@@ -20,7 +21,12 @@ export const AthleteFormContainer: FC<IAthleteFormProps> = (props) => {
 
   const teams = useAppSelector(selectTeams)
 
-  const onFinish = (athlete: any) => {
+  const onFinish = (athlete: IAthlete) => {
+    for (const [key, value] of Object.entries(athlete)) {
+      if (value && value.toDate && typeof value.toDate == 'function') {
+        athlete[key] = value.toDate().toString();
+      }
+    }
     if (!athleteId) {
       dispatch(addAthlete(athlete))
     } else {

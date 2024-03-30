@@ -37,6 +37,7 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
   const [isBrowser, setIsBrowser] = useState(false)
 
   const { gameId, competitionId, categoryId, standingId, duelId } = props
+
   const game = useAppSelector((state) => selectGame(state, gameId))
 
   const competitions = useAppSelector(selectCompetitions)
@@ -83,10 +84,14 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
   }
 
   useEffect(() => {
-    if (timer) {
+     if (timer) {
       dispatch(setTime(timer))
     } else {
-      if (currentDuel.playerOne.score === currentDuel.playerTwo.score) {
+       if (!currentDuel || !currentDuel.playerOne || !currentDuel.playerTwo) {
+         return
+       }
+       
+       if (currentDuel.playerOne.score === currentDuel.playerTwo.score) {
         resetTimer(category.additionTime)
         return
       }
@@ -101,12 +106,7 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
   }, [timer])
 
   useEffect(() => {
-    setIsBrowser(true)
-    window.open('/current-result', '_blank', 'contextIsolation=no,nodeIntegration=yes')
-  }, [])
 
-  useEffect(() => {
-    debugger
     dispatch(
       addDuel({
         id: duelId,
@@ -118,7 +118,6 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
           athleteId: duel?.athletesId[0],
           benefit: 0,
           fail: 0,
-          fail2: 0,
           score: 0,
         },
         playerTwo: {
@@ -126,7 +125,6 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
           athleteId: duel?.athletesId[1] || null,
           benefit: 0,
           fail: 0,
-          fail2: 0,
           score: 0,
         },
         result: null,
