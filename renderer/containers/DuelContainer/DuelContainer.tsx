@@ -137,7 +137,15 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
   useEffect(() => {
     if (timer) {
       dispatch(setTime(timer))
+
+      if (timer === 15) { 
+        const ding = new Audio('censor-beep-4.mp3');
+        ding.play();
+      }
     } else {
+      const ding = new Audio('censor-beep-7.mp3');
+      ding.play();
+
       // Основное время закончилось, очки никто не набрал - продолжить бой в дополнительное время.
       if (currentDuel.playerOne.score === 0 &&
         currentDuel.playerTwo.score === 0 &&

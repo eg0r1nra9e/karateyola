@@ -1,8 +1,7 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { ICurrentDuel } from '../../types/ICurrentDuel'
-import { IDuel } from '../../types/IDuel'
-import { TAppState } from '../store'
-import { v4 as uuidv4 } from 'uuid'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
+import { ICurrentDuel } from '../../types/ICurrentDuel';
+import { TAppState } from '../store';
 
 interface ICurrentDuelState {
   duel: ICurrentDuel
@@ -33,7 +32,7 @@ export const currentDuelSlice = createSlice({
     addFailTwo: (state, action: PayloadAction<number>) => {
       state.duel.playerTwo.fail = state.duel.playerTwo.fail + action.payload
     },
-       addScoreOne: (state, action: PayloadAction<number>) => {
+    addScoreOne: (state, action: PayloadAction<number>) => {
       state.duel.playerOne.score = state.duel.playerOne.score + action.payload
     },
     addScoreTwo: (state, action: PayloadAction<number>) => {
@@ -61,8 +60,6 @@ export const {
   addDuel,
   addFailOne,
   addFailTwo,
-  addFailOne2,
-  addFailTwo2,
   addScoreOne,
   addScoreTwo,
   addBenefitOne,

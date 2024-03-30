@@ -1,7 +1,6 @@
 import { Button, Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import Link from 'next/link';
-import * as path from 'path';
 
 import { MinusOutlined } from '@ant-design/icons';
 
@@ -15,11 +14,6 @@ export const TeamsContainer = () => {
 
   const deleteTeam = (teamId: string) => {
     dispatch(removeTeam(teamId))
-
-    const filePath = path.join('testSound.mp3')
-
-    let ding = new Audio(filePath);
-    ding.play();
   }
 
   const columns: ColumnsType<ITeam> = [
