@@ -57,6 +57,16 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
 
   const dispatch = useAppDispatch()
 
+  const beep = (fileType?) => {
+    const fileName = fileType ? '/censor-beep-4.mp3' : '/censor-beep-7.mp3'
+
+    const filePath = path.join(fileName)
+    const ding = new Audio(filePath);
+    ding.play();
+  }
+
+  
+  
   const startTimer = () => {
     setTimeInterval(
       setInterval(() => {
@@ -86,21 +96,25 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
     // Первый спортсмен набрал 5 нарушений - он проиграл.
     if (currentDuel.playerOne.fail === 5) {
       dispatch(endDuel(currentDuel.playerTwo.athleteId))
+      beep()
     }
 
     // Второй спортсмен набрал 5 нарушений - он проиграл.
     if (currentDuel.playerTwo.fail === 5) {
       dispatch(endDuel(currentDuel.playerOne.athleteId))
+      beep()
     }
 
     // Первый спортсмен набрал 8 очков - он победил.
-    if (currentDuel.playerOne.score === 8) {
+    if (currentDuel.playerOne.score >= 8) {
       dispatch(endDuel(currentDuel.playerOne.athleteId))
+      beep()
     }
     
     // Второй спортсмен набрал 8 очков - он победил.
-    if (currentDuel.playerTwo.score === 8) {
+    if (currentDuel.playerTwo.score >= 8) {
       dispatch(endDuel(currentDuel.playerTwo.athleteId))
+      beep()
     }
 
     // Время закончилось
@@ -114,12 +128,15 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
             : currentDuel.playerTwo.athleteId
 
         dispatch(endDuel(winner))
+        beep()
       } else {
         if (currentDuel.playerOne.benefit !== 0) {
           dispatch(endDuel(currentDuel.playerOne.athleteId))
+          beep()
         }
         if (currentDuel.playerTwo.benefit !== 0) {
           dispatch(endDuel(currentDuel.playerTwo.athleteId))
+          beep()
         }
       }
     }
@@ -130,15 +147,10 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
       dispatch(setTime(timer))
 
       if (timer === 15) { 
-        const filePath = path.join('/censor-beep-4.mp3')
-        let ding = new Audio(filePath);
-        ding.play();
-       
+        beep(true)
       }
     } else {
-      const filePath = path.join('/censor-beep-7.mp3')
-      let ding = new Audio(filePath);
-      ding.play();
+      beep()
 
       // Основное время закончилось, очки никто не набрал - продолжить бой в дополнительное время.
       if (currentDuel.playerOne.score === 0 && currentDuel.playerTwo.score === 0 && !isAdditionTime) {
