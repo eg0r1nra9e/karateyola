@@ -1,27 +1,20 @@
-import { Button, Divider, Flex } from 'antd'
-import { FC, useEffect, useState } from 'react'
+import { Button, Divider, Flex } from 'antd';
+import { useRouter } from 'next/router';
+import * as path from 'path';
+import { FC, useEffect, useState } from 'react';
 
-import Player from '../../components/Player'
-import { useAppDispatch, useAppSelector } from '../../store/hooks'
-import { selectAthletes } from '../../store/slices/athletesSlice'
-import { selectCompetitions } from '../../store/slices/competitionsSlice'
+import Player from '../../components/Player';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { selectAthletes } from '../../store/slices/athletesSlice';
+import { selectCategories } from '../../store/slices/categoriesSlice';
+import { selectCompetitions } from '../../store/slices/competitionsSlice';
 import {
-  addBenefitOne,
-  addBenefitTwo,
-  addDuel,
-  addFailOne,
-  addFailTwo,
-  addScoreOne,
-  addScoreTwo,
-  endDuel,
-  selectCurrentDuel,
-  setTime,
-} from '../../store/slices/currentDuelSlice'
-import { selectGame, setWinner } from '../../store/slices/gamesSlice'
-import { selectTeams } from '../../store/slices/teamsSlice'
-import { DuelResultContainer } from '../DuelResultContainer/DuelResultContainer'
-import { useRouter } from 'next/router'
-import { selectCategories } from '../../store/slices/categoriesSlice'
+    addBenefitOne, addBenefitTwo, addDuel, addFailOne, addFailTwo, addScoreOne, addScoreTwo,
+    endDuel, selectCurrentDuel, setTime
+} from '../../store/slices/currentDuelSlice';
+import { selectGame, setWinner } from '../../store/slices/gamesSlice';
+import { selectTeams } from '../../store/slices/teamsSlice';
+import { DuelResultContainer } from '../DuelResultContainer/DuelResultContainer';
 
 interface IDuelContainer {
   gameId: string
@@ -129,8 +122,6 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
           dispatch(endDuel(currentDuel.playerTwo.athleteId))
         }
       }
-
-
     }
   }
 
@@ -139,19 +130,20 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
       dispatch(setTime(timer))
 
       if (timer === 15) { 
-        const ding = new Audio('censor-beep-4.mp3');
+        const filePath = path.join('/censor-beep-4.mp3')
+        let ding = new Audio(filePath);
         ding.play();
+       
       }
     } else {
-      const ding = new Audio('censor-beep-7.mp3');
+      const filePath = path.join('/censor-beep-7.mp3')
+      let ding = new Audio(filePath);
       ding.play();
 
       // Основное время закончилось, очки никто не набрал - продолжить бой в дополнительное время.
-      if (currentDuel.playerOne.score === 0 &&
-        currentDuel.playerTwo.score === 0 &&
-        !isAdditionTime) {
-        resetTimer(category.additionTime)
+      if (currentDuel.playerOne.score === 0 && currentDuel.playerTwo.score === 0 && !isAdditionTime) {
         setIsAdditionTime(true)
+        resetTimer(category.additionTime)
         return
       }
 
