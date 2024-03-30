@@ -39,8 +39,7 @@ export const GameContainer: FC<IGameFormProps> = (props) => {
       <Link key="start" href={`/games/${gameId}/${competitionId}/${categoryId}/${standingId}/${duelId}`}>
         <Button type="primary">
           <FireOutlined />
-          {`/games/${gameId}/${competitionId}/${categoryId}/${standingId}/${duelId}`}
-          Начать
+          Начать поединок
         </Button>
       </Link>,
     ]
@@ -100,7 +99,7 @@ export const GameContainer: FC<IGameFormProps> = (props) => {
       <h2>
         {dayjs(game?.dates[0]).format('DD.MM.YYYY')} - {dayjs(game?.dates[1]).format('DD.MM.YYYY')}
       </h2>
-      <Tabs defaultActiveKey="1" items={items} indicatorSize={(origin) => origin - 16} />
+      <Tabs defaultActiveKey="1" items={items} indicator={{ size: (origin) => origin - 16 }} />
     </>
   )
 }

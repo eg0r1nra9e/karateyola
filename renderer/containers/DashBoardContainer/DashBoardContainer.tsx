@@ -34,7 +34,7 @@ export const DashBoardContainer = () => {
     if (game.status === 'ожидает начала') {
       return (
         <Button type="primary" onClick={() => start(game.id)} icon={<ApartmentOutlined />}>
-          Начать
+          Начать соревнование
         </Button>
       )
     }

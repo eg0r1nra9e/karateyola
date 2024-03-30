@@ -21,35 +21,6 @@ export const GamesContainer = () => {
     dispatch(removeGame(gameId))
   }
 
-  const start = (gameId: string) => {
-    dispatch(startGame(gameId))
-    push(`/games/${gameId}`)
-  }
-
-  const end = (gameId: string) => {
-    dispatch(endGame(gameId))
-  }
-
-  const gameAction = (game: IGame) => {
-    if (game.status === 'ожидает начала') {
-      return (
-        <Button type="primary" onClick={() => start(game.id)} icon={<ApartmentOutlined />}>
-          Начать
-        </Button>
-      )
-    }
-
-    if (game.status === 'идет') {
-      return (
-        <Button type="primary" onClick={() => end(game.id)} icon={<ThunderboltOutlined />}>
-          Закончить
-        </Button>
-      )
-    }
-
-    return null
-  }
-
   const gameCompetitions = (game: IGame) => {
     if (!game.competitions || !game.competitions.length) {
       return null
@@ -85,13 +56,14 @@ export const GamesContainer = () => {
       dataIndex: 'name',
       key: 'name',
       render: (_, game) => <Link href={`/games/edit/${game.id}`}>{game.name}</Link>,
-      sorter: (a, b) => a.name.length - b.name.length,
+      sorter: (a, b) => a.name.localeCompare(b.name),
     },
     {
       title: 'Дата начала',
       dataIndex: 'dates',
       key: 'dates',
       render: (_, game) => gameDates(game),
+      sorter: (a, b) => (new Date(a.dates[0])).getTime() - (new Date(b.dates[0])).getTime()
     },
     {
       title: 'Дисциплины',
@@ -104,11 +76,6 @@ export const GamesContainer = () => {
       dataIndex: 'status',
       key: 'status',
       sorter: (a, b) => a.status.length - b.status.length,
-    },
-    {
-      title: '',
-      key: 'action',
-      render: (_, game) => gameAction(game),
     },
     {
       title: '',

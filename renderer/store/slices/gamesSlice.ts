@@ -77,7 +77,7 @@ export const gamesSlice = createSlice({
     setWinner: (state, action: PayloadAction<IWinner>) => {
       const game = state.games.find((game) => game.id === action.payload.gameId)
       const competition = game?.competitions?.find((c) => c.id === action.payload.competitionId)
-      const category = competition?.categories.find((c) => c.name === action.payload.categoryId)
+      const category = competition?.categories.find((c) => c.id === action.payload.categoryId)
       const standing = category?.standings.find((c) => c.id === action.payload.standingId)
       const duel = standing?.duels.find((c) => c.id === action.payload.duelId)
       duel.winner = action.payload.athleteId

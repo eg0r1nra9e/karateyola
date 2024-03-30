@@ -47,7 +47,7 @@ export const GameFormStandingsContainer: FC<IGameFormStandingsContainerProps> = 
 
   return (
     <>
-      <Tabs defaultActiveKey="1" items={items} indicatorSize={(origin) => origin - 16} />
+      <Tabs defaultActiveKey="1" items={items} indicator={{ size: (origin) => origin - 16 }} />
       <Divider />
       <Space size={8}>
         <Button type="primary" htmlType="submit" onClick={() => onFinish(currentGame)}>

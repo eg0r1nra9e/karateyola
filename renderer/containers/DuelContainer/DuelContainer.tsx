@@ -34,8 +34,6 @@ interface IDuelContainer {
 export const DuelContainer: FC<IDuelContainer> = (props) => {
   const { push } = useRouter()
 
-  const [isBrowser, setIsBrowser] = useState(false)
-
   const { gameId, competitionId, categoryId, standingId, duelId } = props
 
   const game = useAppSelector((state) => selectGame(state, gameId))
@@ -51,7 +49,9 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
   const category = categories?.find((c) => c.id === categoryId)
   const categoryName = category?.name
 
-  const standing = category?.standings.find((c) => c.id === standingId)
+  const gameCompetitions = game?.competitions.find((c) => c.id === competitionId);
+  const gameCategories = gameCompetitions?.categories.find((c) => c.id === categoryId)
+  const standing = gameCategories?.standings.find((c) => c.id === standingId)
 
   const duel = standing?.duels.find((c) => c.id === duelId)
 
@@ -201,10 +201,6 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
       }),
     )
     push('/games/' + gameId)
-  }
-
-  if (!isBrowser) {
-    return null
   }
 
   return (
