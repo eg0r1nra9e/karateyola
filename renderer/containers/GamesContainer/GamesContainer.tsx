@@ -112,7 +112,7 @@ export const GamesContainer = () => {
     },
     {
       title: '',
-      key: 'action',
+      key: 'delete',
       render: (_, game) => (
         <Button type="primary" danger onClick={() => deleteGame(game.id)} icon={<MinusOutlined />}>
           Удалить
@@ -121,5 +121,5 @@ export const GamesContainer = () => {
     },
   ]
 
-  return <Table dataSource={games} columns={columns} />
+  return <Table dataSource={games} columns={columns} rowKey="id" />
 }

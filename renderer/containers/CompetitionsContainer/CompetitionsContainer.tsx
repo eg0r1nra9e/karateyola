@@ -35,5 +35,5 @@ export const CompetitionsContainer = () => {
     },
   ]
 
-  return <Table dataSource={competitions} columns={columns} />
+  return <Table dataSource={competitions} columns={columns} rowKey="id" />
 }

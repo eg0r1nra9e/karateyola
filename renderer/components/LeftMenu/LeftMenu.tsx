@@ -8,7 +8,7 @@ import { BarsOutlined, FireOutlined, HomeOutlined, TeamOutlined, TrophyOutlined,
 const menu = [
   {
     label: <Link href="/">Главная</Link>,
-    key: '',
+    key: 'home',
     icon: <HomeOutlined />,
   },
   {

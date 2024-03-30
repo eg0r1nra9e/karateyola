@@ -47,5 +47,5 @@ export const TeamsContainer = () => {
     },
   ]
 
-  return <Table dataSource={teams} columns={columns} />
+  return <Table dataSource={teams} columns={columns} rowKey="id" />
 }

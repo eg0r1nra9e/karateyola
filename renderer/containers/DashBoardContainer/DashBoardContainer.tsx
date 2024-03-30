@@ -121,5 +121,5 @@ export const DashBoardContainer = () => {
     },
   ]
 
-  return <Table dataSource={games} columns={columns} />
+  return <Table dataSource={games} columns={columns} rowKey="id" />
 }

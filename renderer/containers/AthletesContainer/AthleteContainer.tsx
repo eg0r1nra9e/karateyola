@@ -78,5 +78,5 @@ export const AthletesContainer = () => {
     },
   ]
 
-  return <Table dataSource={athletes} columns={columns} />
+  return <Table dataSource={athletes} columns={columns} rowKey="id" />
 }

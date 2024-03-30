@@ -93,5 +93,5 @@ export const GameAthletesTable: FC<IGameAthletesContainerProps> = (props) => {
     },
   }
 
-  return <Table rowSelection={rowSelection} dataSource={data} columns={columns} />
+  return <Table rowSelection={rowSelection} dataSource={data} columns={columns} rowKey="id" />
 }

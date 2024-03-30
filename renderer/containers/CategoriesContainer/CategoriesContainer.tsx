@@ -47,5 +47,5 @@ export const CategoriesContainer = () => {
     },
   ]
 
-  return <Table dataSource={categories} columns={columns} />
+  return <Table dataSource={categories} columns={columns} rowKey="id" />
 }

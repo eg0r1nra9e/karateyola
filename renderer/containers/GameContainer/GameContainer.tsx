@@ -33,13 +33,13 @@ export const GameContainer: FC<IGameFormProps> = (props) => {
     competitionId: string,
     categoryId: string,
     standingId: string,
-    dueleId: string,
+    duelId: string,
   ) => {
     return [
-      <Link key="start" href={`/games/${gameId}/${competitionId}/${categoryId}/${standingId}/${dueleId}`}>
+      <Link key="start" href={`/games/${gameId}/${competitionId}/${categoryId}/${standingId}/${duelId}`}>
         <Button type="primary">
           <FireOutlined />
-          {`/games/${gameId}/${competitionId}/${categoryId}/${standingId}/${dueleId}`}
+          {`/games/${gameId}/${competitionId}/${categoryId}/${standingId}/${duelId}`}
           Начать
         </Button>
       </Link>,
