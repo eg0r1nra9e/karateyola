@@ -1,4 +1,4 @@
-import { Button, Divider, Flex } from 'antd';
+import { Button, Divider, Flex, Typography } from 'antd';
 import { useRouter } from 'next/router';
 import * as path from 'path';
 import { FC, useEffect, useState } from 'react';
@@ -9,8 +9,8 @@ import { selectAthletes } from '../../store/slices/athletesSlice';
 import { selectCategories } from '../../store/slices/categoriesSlice';
 import { selectCompetitions } from '../../store/slices/competitionsSlice';
 import {
-    addBenefitOne, addBenefitTwo, addDuel, addFailOne, addFailTwo, addScoreOne, addScoreTwo,
-    endDuel, selectCurrentDuel, setTime
+  addBenefitOne, addBenefitTwo, addDuel, addFailOne, addFailTwo, addScoreOne, addScoreTwo,
+  endDuel, selectCurrentDuel, setTime
 } from '../../store/slices/currentDuelSlice';
 import { selectGame, setWinner } from '../../store/slices/gamesSlice';
 import { selectTeams } from '../../store/slices/teamsSlice';
@@ -65,8 +65,8 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
     ding.play();
   }
 
-  
-  
+
+
   const startTimer = () => {
     setTimeInterval(
       setInterval(() => {
@@ -147,7 +147,7 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
     if (timer) {
       dispatch(setTime(timer))
 
-      if (timer === 15) { 
+      if (timer === 15) {
         beep(true)
       }
     } else {
@@ -160,7 +160,7 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
         return
       }
     }
-    
+
   }, [timer])
 
   useEffect(() => {
@@ -319,7 +319,10 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
         </div>
       </Flex>
       <Divider />
-      <DuelResultContainer />
+      <Typography.Paragraph style={{ fontSize: '0.3em' }}>
+        <DuelResultContainer />
+      </Typography.Paragraph>
+
     </>
   )
 }

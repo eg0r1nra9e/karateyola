@@ -21,7 +21,7 @@ dayjs.locale('ru')
 // global store, used only at client
 let globalClientStore: Store | undefined
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps, router }: AppProps) {
   const reduxState = readData()
   const store = globalClientStore || (globalClientStore = createStore(reduxState))
 
@@ -31,15 +31,26 @@ function MyApp({ Component, pageProps }: AppProps) {
     saveData(data)
   })
 
+  const getContent = () => {
+    if (router.pathname.startsWith('/current-result')) {
+      return <Component {...pageProps} />
+    }
+
+    return (
+      <MainLayout>
+        <Component {...pageProps} />
+      </MainLayout>
+    )
+  }
+
+
   return (
     <Provider store={store}>
       <ConfigProvider locale={ru}>
-        <MainLayout>
-          <Head>
-            <meta name="viewport" content="width=device-width, initial-scale=1" />
-          </Head>
-          <Component {...pageProps} />
-        </MainLayout>
+        <Head>
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+        </Head>
+        {getContent()}
       </ConfigProvider>
     </Provider>
   )

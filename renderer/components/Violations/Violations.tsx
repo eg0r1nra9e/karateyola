@@ -17,13 +17,14 @@ export const Violations: FC<IViolationsProps> = (props) => {
   const violations = ['', '', '', '', '']
 
   return (
-    <Flex gap="large" justify="space-between" style={{ marginTop: 0, width: '100%' }}>
+    <Flex gap="large" justify="space-between" style={{ marginTop: 0, width: '100%', whiteSpace: 'nowrap' }}>
       <Typography.Title
         level={1}
         style={{
           marginTop: 0,
           width: '20%',
           color: background,
+          fontSize: '4em'
         }}
       >
         {type}:

@@ -85,7 +85,7 @@ export const GameContainer: FC<IGameFormProps> = (props) => {
         }
 
         items.push({
-          key: category.id,
+          key: competitionName + ': ' + getCategoryName(category?.id),
           label: competitionName + ': ' + getCategoryName(category?.id),
           children: <Flex> {getStandings(game.id, competition.id, category?.id, category.standings)}</Flex>,
         })
