@@ -48,7 +48,7 @@ export const DuelResultContainer = () => {
     return <Flex vertical >
         <Typography.Title level={1} style={{ marginTop: 0, width: '100%', fontSize: '10em', }}>
         Победитель: {getAthlete(currentDuel.result)}
-      </Typography.Title>
+        </Typography.Title>
       </Flex>
   }
 
@@ -65,18 +65,18 @@ export const DuelResultContainer = () => {
         
       </Flex>
       <Flex style={{ justifyContent: 'space-between' }}>
-        <Typography.Title level={1} style={{ marginTop: 0, width: '50%', fontSize: '5em' }} type="danger">
+        <Typography.Title level={1} style={{ marginTop: 0, width: '50%', fontSize: '3em' }} type="danger">
           {getAthlete(currentDuel?.playerOne?.athleteId)}
         </Typography.Title>
-        <Typography.Title level={1} style={{ margin: 1, width: '50%', color: 'blue', textAlign: 'right', fontSize: '5em' }}>
+        <Typography.Title level={1} style={{ margin: 1, width: '50%', color: 'blue', textAlign: 'right', fontSize: '3em' }}>
           {getAthlete(currentDuel?.playerTwo?.athleteId)}
         </Typography.Title>
       </Flex>
       <Flex style={{ justifyContent: 'space-between' }}>
-        <Typography.Title level={1} style={{ margin: -5, width: '25%', fontSize: '35em', whiteSpace: 'nowrap' }} type="danger">
+        <Typography.Title level={1} style={{ margin: 0, width: '25%', fontSize: '35em', whiteSpace: 'nowrap' }} type="danger">
           {currentDuel?.playerOne?.score}{currentDuel?.playerOne?.benefit ? '`' : null}
         </Typography.Title>
-        <Typography.Title level={1} style={{ margin: -5, width: '50%', textAlign: 'center', fontSize: '15em' }}>
+        <Typography.Title level={1} style={{ margin: 0, width: '50%', textAlign: 'center', fontSize: '15em' }}>
           {minutesString} : {secondsString}
         </Typography.Title>
         <Typography.Title
