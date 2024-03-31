@@ -202,25 +202,29 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
 
   const clickAddBenefitOne = () => {
     pauseTimer()
-    if (currentDuel.playerTwo.benefit === 0) {
+    if (currentDuel.playerTwo.benefit === 0 && currentDuel.playerOne.benefit === 0) {
       dispatch(addBenefitOne(1))
     }
   }
   const clickRemoveBenefitOne = () => {
     pauseTimer()
-    dispatch(addBenefitOne(-1))
+    if (currentDuel.playerOne.benefit > 0) {
+      dispatch(addBenefitOne(-1))
+    }
   }
 
   const clickAddBenefitTwo = () => {
     pauseTimer()
-    if (currentDuel.playerOne.benefit === 0) {
+    if (currentDuel.playerTwo.benefit === 0 && currentDuel.playerOne.benefit === 0) {
       dispatch(addBenefitTwo(1))
     }
   }
 
   const clickRemoveBenefitTwo = () => {
     pauseTimer()
-    dispatch(addBenefitTwo(-1))
+    if (currentDuel.playerTwo.benefit > 0 ) {
+      dispatch(addBenefitTwo(-1))
+    }
   }
 
   const clickCountOne = (count: number) => {

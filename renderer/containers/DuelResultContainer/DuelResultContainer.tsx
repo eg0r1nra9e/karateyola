@@ -45,11 +45,8 @@ export const DuelResultContainer = () => {
   const secondsString = String(currentDuel.timer % 60).padStart(2, '0')
 
   if (currentDuel.result) {
-    return <Flex vertical>
-      <Typography.Title level={1} style={{ marginTop: 0, width: '50%' }}>
-        Конец боя. 
-      </Typography.Title>
-      <Typography.Title level={1} style={{ marginTop: 0, width: '50%' }}>
+    return <Flex vertical >
+        <Typography.Title level={1} style={{ marginTop: 0, width: '100%', fontSize: '10em', }}>
         Победитель: {getAthlete(currentDuel.result)}
       </Typography.Title>
       </Flex>
