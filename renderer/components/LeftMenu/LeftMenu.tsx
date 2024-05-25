@@ -36,11 +36,6 @@ const menu = [
     key: 'games',
     icon: <TrophyOutlined />,
   },
-  {
-    label: <Link href="/current-result">Текущие состязания</Link>,
-    key: 'current-result',
-    icon: <FireOutlined />,
-  },
 ]
 
 export const LeftMenu = () => {
