@@ -1,7 +1,7 @@
 import '../styles/global.css'
 import 'dayjs/locale/ru'
 
-import { ConfigProvider } from 'antd'
+import { ConfigProvider, theme } from 'antd'
 import ru from 'antd/locale/ru_RU'
 import dayjs from 'dayjs'
 import Head from 'next/head'
@@ -46,7 +46,7 @@ function MyApp({ Component, pageProps, router }: AppProps) {
 
   return (
     <Provider store={store}>
-      <ConfigProvider locale={ru}>
+      <ConfigProvider locale={ru} theme={{algorithm: theme.darkAlgorithm}}>
         <Head>
           <meta name="viewport" content="width=device-width, initial-scale=1" />
         </Head>

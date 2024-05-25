@@ -16,6 +16,7 @@ if (isProd) {
   const currentDuelWindow = createWindow('currentDuelWindow', {
     width: 1000,
     height: 600,
+    backgroundColor: 'black',
   })
 
   const mainWindow = createWindow('main', {
