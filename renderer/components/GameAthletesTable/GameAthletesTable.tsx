@@ -76,16 +76,18 @@ export const GameAthletesTable: FC<IGameAthletesContainerProps> = (props) => {
     return ((new Date().getTime() - new Date(date).getTime()) / (24 * 3600 * 365.25 * 1000)) | 0
   }
 
-  const data: DataType[] = athletes.map((athlete) => ({
-    ...athlete,
-    key: athlete.id,
-    age: getAge(athlete?.dateOfBirth),
-    team: getTeam(athlete.teamId),
-  }))
+  const data: DataType[] = athletes.map(
+    (athlete): DataType => ({
+      ...athlete,
+      key: athlete.id,
+      age: getAge(athlete?.dateOfBirth),
+      team: getTeam(athlete.teamId),
+    }),
+  )
 
   const rowSelection = {
     selectedRowKeys: category.athletes,
-    onChange: (selectedRowKeys: React.Key[], selectedRows: IAthlete[]) => {
+    onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
       onChange(
         category,
         selectedRowKeys.map((key) => key.toString()),
@@ -93,5 +95,15 @@ export const GameAthletesTable: FC<IGameAthletesContainerProps> = (props) => {
     },
   }
 
-  return <Table rowSelection={rowSelection} dataSource={data} columns={columns} rowKey="id" />
+  return (
+    <Table
+      rowSelection={{
+        type: 'checkbox',
+        ...rowSelection,
+      }}
+      columns={columns}
+      dataSource={data}
+      rowKey="id"
+    />
+  )
 }

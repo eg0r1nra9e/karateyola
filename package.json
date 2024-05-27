@@ -3,43 +3,55 @@
   "description": "CRM for karate school",
   "version": "1.0.0",
   "author": "Egor",
-  "main": "app/background.js",
+  "main": "main/index.js",
   "scripts": {
-    "dev": "nextron",
-    "build": "nextron build",
-    "postinstall": "electron-builder install-app-deps",
-    "prepare": "husky install"
-  },
-  "husky": {
-    "hooks": {}
+    "clean": "rimraf dist main renderer/out renderer/.next",
+    "start": "npm run build && electron .",
+    "build-renderer": "next build renderer",
+    "build-electron": "tsc -p electron-src",
+    "build": "npm run build-renderer && npm run build-electron",
+    "pack-app": "npm run build && electron-builder --dir",
+    "dist": "npm run build && electron-builder",
+    "dist:debug": "lldb ./dist/mac/electron-quick-start-typescript.app",
+    "dist:unpack": "npx asar extract ./dist/mac/electron-quick-start-typescript.app/Contents/Resources/app.asar ./dist/unpack",
+    "type-check": "tsc"
   },
   "dependencies": {
+    "@ant-design/icons": "^5.2.6",
     "@reduxjs/toolkit": "^1.7.1",
-    "electron-serve": "^1.1.0",
-    "electron-store": "^8.1.0",
+    "antd": "^5.12.1",
+    "electron-is-dev": "^1.1.0",
+    "electron-log": "^5.1.5",
+    "electron-next": "^3.1.5",
+    "electron-store": "^8.2.0",
     "lodash": "^4.17.21",
+    "next": "^12.3.4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "react-redux": "^7.2.6",
     "redux-state-sync": "^3.1.4",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
-    "@ant-design/icons": "^5.2.6",
     "@types/node": "^18.11.18",
     "@types/react": "^18.0.26",
+    "@types/react-dom": "^16.9.9",
     "@types/react-redux": "^7.1.20",
     "@types/redux-state-sync": "^3.1.9",
-    "antd": "^5.12.1",
     "electron": "^21.3.3",
     "electron-builder": "^23.6.0",
     "eslint": "^8.56.0",
     "eslint-config-next": "^14.0.4",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.1.2",
-    "husky": "^8.0.3",
-    "next": "^12.3.4",
-    "nextron": "^8.7.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "rimraf": "^3.0.2",
     "typescript": "^4.9.4"
+  },
+  "build": {
+    "asar": true,
+    "files": [
+      "main",
+      "renderer"
+    ]
   }
 }

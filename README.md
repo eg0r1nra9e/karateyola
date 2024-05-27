@@ -1,42 +1,45 @@
-<p align="center"><img src="https://i.imgur.com/NrkTPe9.png"></p>
+# electron-server
+
+Electron app with server-side rendering using:
+
+* NodeJS 12.x
+* Electron 16.x
+* Typescript 4.x
+
+
+## Examples
+
+Change the git branch to view each example:
+
+* [Express 4.x](https://github.com/kmturley/electron-server/tree/feature/express)
+* [Next 12.x](https://github.com/kmturley/electron-server/tree/feature/next)
+
+
+## Installation
+
+Install node dependencies using:
+
+    npm install
+
 
 ## Usage
 
-### Create an App
+Build Typescript source and run Electron using:
 
-```
-# with npx
-$ npx create-nextron-app my-app --example with-ant-design
+    npm start
 
-# with yarn
-$ yarn create nextron-app my-app --example with-ant-design
 
-# with pnpm
-$ pnpm dlx create-nextron-app my-app --example with-ant-design
-```
+## Build app
 
-### Install Dependencies
+Build production app file using:
 
-```
-$ cd my-app
+    npm run dist
 
-# using yarn or npm
-$ yarn (or `npm install`)
+Unpack the app build to see the included files using:
 
-# using pnpm
-$ pnpm install --shamefully-hoist
-```
+    npm run dist:unpack
 
-### Use it
 
-```
-# development mode
-$ yarn dev (or `npm run dev` or `pnpm run dev`)
+## Contact
 
-# production build
-$ yarn build (or `npm run build` or `pnpm run build`)
-```
-
-## Resources
-
-<https://ant.design>
+For more information please contact kmturley

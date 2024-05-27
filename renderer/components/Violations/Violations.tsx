@@ -24,7 +24,7 @@ export const Violations: FC<IViolationsProps> = (props) => {
           marginTop: 0,
           width: '20%',
           color: background,
-          fontSize: '4em'
+          fontSize: '4em',
         }}
       >
         {type}:
