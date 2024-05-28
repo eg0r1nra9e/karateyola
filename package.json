@@ -61,5 +61,9 @@
       "node_modules/.prisma/**/*",
       "database/dev.db"
     ]
+  },
+  "prisma": {
+    "seed": "npx ts-node prisma/seed.ts"
   }
+  
 }
