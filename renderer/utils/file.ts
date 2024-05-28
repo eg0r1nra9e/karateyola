@@ -1,10 +1,11 @@
 //import * as fs from 'fs'
-import * as path from 'path'
 
-const filePath = path.join('karateyola.json')
+//const filePath = path.join('karateyola.json')
 
 export function saveData(data) {
   const text = JSON.stringify(data)
+
+  // TODO: использовать БД
 
   // fs.writeFileSync(filePath, text, {
   //   encoding: 'utf-8',
@@ -12,6 +13,8 @@ export function saveData(data) {
 }
 
 export function readData() {
+  // TODO: использовать БД
+
   // if (!fs.existsSync(filePath)) {
   //   saveData('')
   //   return {}
@@ -21,6 +24,6 @@ export function readData() {
   //   encoding: 'utf-8',
   // })
 
-  //return JSON.parse(fileData || '{}')
+  // return JSON.parse(fileData || '{}')
   return {}
 }
