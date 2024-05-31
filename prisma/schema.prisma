@@ -36,7 +36,7 @@ model Athlete {
     id          Int       @id @default(autoincrement())
     lastName    String // Фамилия спортсмена
     firstName   String // Имя спортсмена
-    dateOfBirth DateTime? // Дата рождения спортсмена
+    dateOfBirth DateTime // Дата рождения спортсмена
     teamId      Int? // Идентификатор команды
     team        Team?     @relation(fields: [teamId], references: [id])
     gender      String // Пол спортсмена
@@ -50,5 +50,18 @@ model Athlete {
 // Дисциплина
 model Competition {
     id   Int     @id @default(autoincrement())
-    name String? //Наименование дисциплины
+    name String //Наименование дисциплины
+    created_at  DateTime  @default(now())
+    updated_at  DateTime  @updatedAt
+}
+
+
+//Категория
+
+model Category {
+    id   Int     @id @default(autoincrement())
+    name String //Наименование категории
+    time Int //Время боя
+    created_at  DateTime  @default(now())
+    updated_at  DateTime  @updatedAt
 }

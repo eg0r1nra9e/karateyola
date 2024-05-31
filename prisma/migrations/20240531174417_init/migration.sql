@@ -29,6 +29,12 @@ CREATE TABLE "Athlete" (
     CONSTRAINT "Athlete_teamId_fkey" FOREIGN KEY ("teamId") REFERENCES "Team" ("id") ON DELETE SET NULL ON UPDATE CASCADE
 );
 
+-- CreateTable
+CREATE TABLE "Competition" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "name" TEXT
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "Team_name_cityId_key" ON "Team"("name", "cityId");
 

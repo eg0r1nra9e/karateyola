@@ -15,15 +15,15 @@ export const CompetitionsContainer = () => {
     setCompetitions(data)
   }
 
-  const deleteCompetition = async (teamId: number) => {
-    await fetch(`api/competitions/${teamId}`, {
+  const deleteCompetition = async (competitionId: number) => {
+    await fetch(`api/competitions/${competitionId}`, {
       headers: {
         'Content-Type': 'application/json',
       },
       method: 'DELETE',
     })
 
-    const newCompetitions = [...competitions.filter((team) => team.id !== teamId)]
+    const newCompetitions = [...competitions.filter((competition) => competition.id !== competitionId)]
     setCompetitions(newCompetitions)
   }
 
@@ -37,7 +37,7 @@ export const CompetitionsContainer = () => {
       dataIndex: 'name',
       key: 'name',
       render: (_, competition) => <Link href={`/competitions/edit/${competition.id}`}>{competition.name}</Link>,
-      sorter: (a, b) => a.name.length - b.name.length,
+      sorter: (a, b) => a.name.localeCompare(b.name),
     },
     {
       title: '',

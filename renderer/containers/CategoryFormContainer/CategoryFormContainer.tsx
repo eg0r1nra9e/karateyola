@@ -1,10 +1,8 @@
 import { useRouter } from 'next/router'
-import { FC } from 'react'
+import { FC, useEffect, useState } from 'react'
 
 import { CategoryForm } from '../../components/CategoryForm/CategoryForm'
-import { useAppDispatch, useAppSelector } from '../../store/hooks'
-import { addCategory, editCategory, selectCategory } from '../../store/slices/categoriesSlice'
-
+import { Category } from '@prisma/client'
 interface ICategoryFormProps {
   categoryId?: string
 }
@@ -14,19 +12,41 @@ export const CategoryFormContainer: FC<ICategoryFormProps> = (props) => {
 
   const { push } = useRouter()
 
-  const dispatch = useAppDispatch()
+  const [category, setCategory] = useState<Category>()
 
-  const category = useAppSelector((state) => selectCategory(state, categoryId))
+  const fetchData = async () => {
+    if (categoryId) {
+      const resCategory = await fetch(`/api/categories/${categoryId}`)
+      const category = await resCategory.json()
+      setCategory(category)
+    }
+  }
 
-  const onFinish = (category: any) => {
+  const onFinish = async (team: Category) => {
     if (!categoryId) {
-      dispatch(addCategory(category))
+      await fetch('/api/categories/create', {
+        body: JSON.stringify(team),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        method: 'POST',
+      })
     } else {
-      dispatch(editCategory(category))
+      await fetch(`/api/categories/${categoryId}`, {
+        body: JSON.stringify(team),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        method: 'PUT',
+      })
     }
 
     push('/categories/')
   }
+
+  useEffect(() => {
+    fetchData()
+  }, [])
 
   return <CategoryForm category={category} onFinish={onFinish} />
 }

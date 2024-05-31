@@ -4,19 +4,35 @@ import Link from 'next/link'
 
 import { MinusOutlined } from '@ant-design/icons'
 
-import { useAppDispatch, useAppSelector } from '../../store/hooks'
-import { removeCategory, selectCategories } from '../../store/slices/categoriesSlice'
-import { ICategory } from '../../types/ICategory'
+import { Category } from '@prisma/client'
+import { useEffect, useState } from 'react'
 
 export const CategoriesContainer = () => {
-  const categories = useAppSelector(selectCategories)
-  const dispatch = useAppDispatch()
+  const [categories, setCategories] = useState([])
 
-  const deleteCategories = (CategoriesId: string) => {
-    dispatch(removeCategory(CategoriesId))
+  const fetchData = async () => {
+    const res = await fetch('/api/categories')
+    const data = await res.json()
+    setCategories(data)
   }
 
-  const columns: ColumnsType<ICategory> = [
+  const deleteCategory = async (categoryId: number) => {
+    await fetch(`api/categories/${categoryId}`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      method: 'DELETE',
+    })
+
+    const newCategories = [...categories.filter((category) => category.id !== categoryId)]
+    setCategories(newCategories)
+  }
+
+  useEffect(() => {
+    fetchData()
+  }, [])
+
+  const columns: ColumnsType<Category> = [
     {
       title: 'Название',
       dataIndex: 'name',
@@ -31,16 +47,10 @@ export const CategoriesContainer = () => {
       sorter: (a, b) => a.time - b.time,
     },
     {
-      title: 'Дополнительное время боя',
-      dataIndex: 'additionTime',
-      key: 'additionTime',
-      sorter: (a, b) => a.additionTime - b.additionTime,
-    },
-    {
       title: '',
       key: 'action',
       render: (_, category) => (
-        <Button type="primary" danger onClick={() => deleteCategories(category.id)} icon={<MinusOutlined />}>
+        <Button type="primary" danger onClick={() => deleteCategory(category.id)} icon={<MinusOutlined />}>
           Удалить
         </Button>
       ),
