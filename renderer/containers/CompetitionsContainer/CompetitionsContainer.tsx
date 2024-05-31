@@ -1,22 +1,37 @@
 import { Button, Table } from 'antd'
 import { ColumnsType } from 'antd/es/table'
 import Link from 'next/link'
+import { useEffect, useState } from 'react'
 
 import { MinusOutlined } from '@ant-design/icons'
-
-import { useAppDispatch, useAppSelector } from '../../store/hooks'
-import { removeCompetition, selectCompetitions } from '../../store/slices/competitionsSlice'
-import { ICompetition } from '../../types/ICompetition'
+import { Competition } from '@prisma/client'
 
 export const CompetitionsContainer = () => {
-  const competitions = useAppSelector(selectCompetitions)
-  const dispatch = useAppDispatch()
+  const [competitions, setCompetitions] = useState([])
 
-  const deleteCompetitions = (CompetitionsId: string) => {
-    dispatch(removeCompetition(CompetitionsId))
+  const fetchData = async () => {
+    const res = await fetch('/api/competitions')
+    const data = await res.json()
+    setCompetitions(data)
   }
 
-  const columns: ColumnsType<ICompetition> = [
+  const deleteCompetition = async (teamId: number) => {
+    await fetch(`api/competitions/${teamId}`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      method: 'DELETE',
+    })
+
+    const newCompetitions = [...competitions.filter((team) => team.id !== teamId)]
+    setCompetitions(newCompetitions)
+  }
+
+  useEffect(() => {
+    fetchData()
+  }, [])
+
+  const columns: ColumnsType<Competition> = [
     {
       title: 'Название',
       dataIndex: 'name',
@@ -28,7 +43,7 @@ export const CompetitionsContainer = () => {
       title: '',
       key: 'action',
       render: (_, competition) => (
-        <Button type="primary" danger onClick={() => deleteCompetitions(competition.id)} icon={<MinusOutlined />}>
+        <Button type="primary" danger onClick={() => deleteCompetition(competition.id)} icon={<MinusOutlined />}>
           Удалить
         </Button>
       ),

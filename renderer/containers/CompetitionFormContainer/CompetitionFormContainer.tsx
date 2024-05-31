@@ -1,13 +1,11 @@
 import { useRouter } from 'next/router'
-import { FC } from 'react'
+import { FC, useEffect, useState } from 'react'
 
+import { Competition } from '@prisma/client'
 import { CompetitionForm } from '../../components/CompetitionForm/CompetitionForm'
-import { useAppDispatch, useAppSelector } from '../../store/hooks'
-import { addCompetition, editCompetition, selectCompetition } from '../../store/slices/competitionsSlice'
 
 interface ICompetitionFormProps {
   competitionId?: string
-  name?: string
 }
 
 export const CompetitionFormContainer: FC<ICompetitionFormProps> = (props) => {
@@ -15,19 +13,41 @@ export const CompetitionFormContainer: FC<ICompetitionFormProps> = (props) => {
 
   const { push } = useRouter()
 
-  const dispatch = useAppDispatch()
+  const [competition, setCompetition] = useState<Competition>()
 
-  const competition = useAppSelector((state) => selectCompetition(state, competitionId))
+  const fetchData = async () => {
+    if (competitionId) {
+      const resCompetition = await fetch(`/api/competitions/${competitionId}`)
+      const competition = await resCompetition.json()
+      setCompetition(competition)
+    }
+  }
 
-  const onFinish = (competition: any) => {
+  const onFinish = async (team: Competition) => {
     if (!competitionId) {
-      dispatch(addCompetition(competition))
+      await fetch('/api/competitions/create', {
+        body: JSON.stringify(team),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        method: 'POST',
+      })
     } else {
-      dispatch(editCompetition(competition))
+      await fetch(`/api/competitions/${competitionId}`, {
+        body: JSON.stringify(team),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        method: 'PUT',
+      })
     }
 
     push('/competitions/')
   }
+
+  useEffect(() => {
+    fetchData()
+  }, [])
 
   return <CompetitionForm competition={competition} onFinish={onFinish} />
 }

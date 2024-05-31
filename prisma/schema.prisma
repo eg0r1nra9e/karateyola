@@ -21,8 +21,8 @@ model City {
 // Команда
 model Team {
     id         Int       @id @default(autoincrement())
-    name       String
-    cityId     Int?
+    name       String // Наименование команды
+    cityId     Int? // Идентификатор наспеленного пункта
     city       City?     @relation(fields: [cityId], references: [id])
     athletes   Athlete[]
     created_at DateTime  @default(now())
@@ -45,4 +45,10 @@ model Athlete {
     updated_at  DateTime  @updatedAt
 
     @@unique([firstName, lastName, dateOfBirth, teamId])
+}
+
+// Дисциплина
+model Competition {
+    id   Int     @id @default(autoincrement())
+    name String? //Наименование дисциплины
 }

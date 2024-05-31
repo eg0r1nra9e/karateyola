@@ -2,14 +2,15 @@ import { Button, DatePicker, Form, Input, Radio, Select } from 'antd'
 import dayjs from 'dayjs'
 import { FC, useEffect } from 'react'
 
+import { Team } from '@prisma/client'
+import { AthleteWithTeamAndCity } from '../../types/AthleteWithTeamAndCity'
 import { IAthlete } from '../../types/IAthlete'
-import { ITeam } from '../../types/ITeam'
 
 type FieldType = IAthlete
 
 interface IAthleteFormProps {
-  athlete?: IAthlete
-  teams: ITeam[]
+  athlete?: AthleteWithTeamAndCity
+  teams: Team[]
   onFinish: (values: any) => void
 }
 
@@ -20,7 +21,7 @@ export const AthleteForm: FC<IAthleteFormProps> = (props) => {
 
   const [form] = Form.useForm()
 
-  const teamOptions = teams.map((team: ITeam) => ({ value: team.id, label: team.name }))
+  const teamOptions = teams.map((team: Team) => ({ value: team.id, label: team.name }))
   teamOptions.unshift({ value: null, label: 'Не выбрано' })
 
   useEffect(() => {

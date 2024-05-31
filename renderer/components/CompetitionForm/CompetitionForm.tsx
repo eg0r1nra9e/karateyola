@@ -1,12 +1,13 @@
 import { Button, Form, Input } from 'antd'
 import { FC, useEffect } from 'react'
 
+import { Competition } from '@prisma/client'
 import { ICompetition } from '../../types/ICompetition'
 
 type FieldType = ICompetition
 
 interface ICompetitionFormProps {
-  competition?: ICompetition
+  competition?: Competition
   onFinish: (values: any) => void
 }
 

@@ -1,8 +1,9 @@
 import { useRouter } from 'next/router'
 import { FC, useEffect, useState } from 'react'
 
+import { Team } from '@prisma/client'
 import { AthleteForm } from '../../components/AthleteForm/AthleteForm'
-import { AthleteWithTeamAndCity } from '../../types/TeamWithCity copy'
+import { AthleteWithTeamAndCity } from '../../types/AthleteWithTeamAndCity'
 
 interface IAthleteFormProps {
   athleteId?: string
@@ -12,20 +13,20 @@ export const AthleteFormContainer: FC<IAthleteFormProps> = (props) => {
   const { athleteId } = props
   const { push } = useRouter()
 
-  const [athlete, setAthlete] = useState({})
-  const [teams, setTeams] = useState([])
+  const [athlete, setAthlete] = useState<AthleteWithTeamAndCity>()
+  const [teams, setTeams] = useState<Team[]>([])
 
   const fetchData = async () => {
     const tasks = [
       async () => {
         const resTeams = await fetch('/api/teams')
-        const teams = await resTeams.json()
+        const teams: Team[] = await resTeams.json()
         setTeams(teams)
       },
       async () => {
         if (athleteId) {
           const resAthlete = await fetch(`/api/athletes/${athleteId}`)
-          const athlete = await resAthlete.json()
+          const athlete: AthleteWithTeamAndCity = await resAthlete.json()
           setAthlete(athlete)
         }
       },

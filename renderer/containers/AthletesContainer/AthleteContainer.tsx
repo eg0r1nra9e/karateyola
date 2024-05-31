@@ -6,10 +6,10 @@ import Link from 'next/link'
 import { MinusOutlined } from '@ant-design/icons'
 
 import { useEffect, useState } from 'react'
-import { AthleteWithTeamAndCity } from '../../types/TeamWithCity copy'
+import { AthleteWithTeamAndCity } from '../../types/AthleteWithTeamAndCity'
 
 export const AthletesContainer = () => {
-  const [athletes, setAthletes] = useState([])
+  const [athletes, setAthletes] = useState<AthleteWithTeamAndCity[]>([])
 
   const fetchData = async () => {
     const res = await fetch('/api/athletes')

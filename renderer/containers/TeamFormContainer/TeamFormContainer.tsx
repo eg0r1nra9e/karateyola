@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router'
 import { FC, useEffect, useState } from 'react'
 
+import { City } from '@prisma/client'
 import { TeamForm } from '../../components/TeamForm/TeamForm'
 import { TeamWithCity } from '../../types/TeamWithCity'
 
@@ -12,8 +13,8 @@ export const TeamFormContainer: FC<ITeamFormProps> = (props) => {
   const { teamId } = props
   const { push } = useRouter()
 
-  const [team, setTeam] = useState({})
-  const [cities, setCities] = useState([])
+  const [team, setTeam] = useState<TeamWithCity>()
+  const [cities, setCities] = useState<City[]>([])
 
   const fetchData = async () => {
     const tasks = [

@@ -8,7 +8,7 @@ import { MinusOutlined } from '@ant-design/icons'
 import { TeamWithCity } from '../../types/TeamWithCity'
 
 export const TeamsContainer = () => {
-  const [teams, setTeams] = useState([])
+  const [teams, setTeams] = useState<TeamWithCity[]>([])
 
   const fetchData = async () => {
     const res = await fetch('/api/teams')

@@ -1,19 +1,15 @@
 import { Button, Form, Input, Select } from 'antd'
 import { FC, useEffect } from 'react'
 
+import { City } from '@prisma/client'
 import { ITeam } from '../../types/ITeam'
+import { TeamWithCity } from '../../types/TeamWithCity'
 
 type FieldType = ITeam
 
-export interface ICity {
-  id: number
-  region: string
-  city: string
-}
-
 interface ITeamFormProps {
-  team?: ITeam
-  cities: ICity[]
+  team?: TeamWithCity
+  cities: City[]
   onFinish: (values: any) => void
 }
 
@@ -21,7 +17,7 @@ export const TeamForm: FC<ITeamFormProps> = (props) => {
   const { team, cities, onFinish } = props
   const [form] = Form.useForm()
 
-  const cityOptions = cities.map((city: ICity) => ({ value: city.id, label: city.city }))
+  const cityOptions = cities.map((city: City) => ({ value: city.id, label: city.city }))
   cityOptions.unshift({ value: null, label: 'Не выбрано' })
 
   useEffect(() => {
