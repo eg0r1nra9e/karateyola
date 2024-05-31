@@ -6,6 +6,7 @@ import { ITeam } from '../../types/ITeam'
 type FieldType = ITeam
 
 export interface ICity {
+  id: number
   region: string
   city: string
 }
@@ -20,13 +21,14 @@ export const TeamForm: FC<ITeamFormProps> = (props) => {
   const { team, cities, onFinish } = props
   const [form] = Form.useForm()
 
-  const cityOptions = cities.map((city: ICity) => ({ value: city.city, label: city.city }))
+  const cityOptions = cities.map((city: ICity) => ({ value: city.id, label: city.city }))
+  cityOptions.unshift({ value: null, label: 'Не выбрано' })
 
   useEffect(() => {
     form.setFieldsValue({
       id: team?.id,
       name: team?.name,
-      city: team?.city,
+      cityId: team?.cityId,
     })
   }, [form, team])
 
@@ -52,12 +54,8 @@ export const TeamForm: FC<ITeamFormProps> = (props) => {
         <Input />
       </Form.Item>
 
-      <Form.Item<FieldType>
-        label="Населенный пункт"
-        name="city"
-        rules={[{ required: true, message: 'Выберете населенный пункт' }]}
-      >
-        <Select showSearch placeholder="Выберете населенный пункт" options={cityOptions} />
+      <Form.Item<FieldType> label="Населенный пункт" name="cityId">
+        <Select showSearch optionFilterProp="label" placeholder="Выберете населенный пункт" options={cityOptions} />
       </Form.Item>
 
       <Form.Item wrapperCol={{ offset: 8, span: 16 }}>

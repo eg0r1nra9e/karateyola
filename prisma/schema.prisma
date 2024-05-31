@@ -2,22 +2,28 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+    provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:../database/dev.db"
+    provider = "sqlite"
+    url      = "file:../database/dev.db"
 }
 
 model City {
-  id   Int     @id @default(autoincrement())
-  region String
-  city String? @unique
+    id     Int     @id @default(autoincrement())
+    region String
+    city   String?
+    teams  Team[]
 }
 
 model Team {
-  id   Int     @id @default(autoincrement())
-  name String  @unique
-  city String?
+    id         Int      @id @default(autoincrement())
+    name       String
+    cityId     Int?
+    city       City?    @relation(fields: [cityId], references: [id])
+    created_at DateTime @default(now())
+    updated_at DateTime @updatedAt
+
+    @@unique([name, cityId])
 }

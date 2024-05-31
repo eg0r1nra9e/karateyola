@@ -10,7 +10,12 @@ export interface ITeam extends IBase {
   name?: string
 
   /**
+   * Идентификатор города.
+   */
+  cityId?: number
+
+  /**
    * Город.
    */
-  city?: string
+  city?: any
 }

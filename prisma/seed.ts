@@ -1,6 +1,6 @@
+import { PrismaClient } from '@prisma/client'
 import fs from 'fs-extra'
 import path from 'path'
-import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 
 const citiesPath = path.join(process.cwd(), './data/city.json')

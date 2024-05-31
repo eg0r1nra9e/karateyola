@@ -48,7 +48,6 @@ function MyApp({ Component, pageProps, router }: AppProps) {
         <Head>
           <meta name="viewport" content="width=device-width, initial-scale=1" />
         </Head>
-        <a href="api/teams">api</a>
         {getContent()}
       </ConfigProvider>
     </Provider>

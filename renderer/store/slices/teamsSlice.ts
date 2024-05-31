@@ -23,7 +23,7 @@ export const teamsSlice = createSlice({
     },
     editTeam: (state, action: PayloadAction<ITeam>) => {
       const team = state.teams.find((team) => team.id === action.payload.id)
-      team.city = action.payload.city
+      team.cityId = action.payload.cityId
       team.name = action.payload.name
     },
     removeTeam: (state, action: PayloadAction<string>) => {

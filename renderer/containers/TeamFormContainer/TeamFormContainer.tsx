@@ -1,10 +1,8 @@
 import { useRouter } from 'next/router'
-import { FC } from 'react'
+import { FC, useEffect, useState } from 'react'
 
 import { TeamForm } from '../../components/TeamForm/TeamForm'
-import cities from '../../data/city.json'
-import { useAppDispatch, useAppSelector } from '../../store/hooks'
-import { addTeam, editTeam, selectTeam } from '../../store/slices/teamsSlice'
+import { TeamWithCity } from '../../types/TeamWithCity'
 
 interface ITeamFormProps {
   teamId?: string
@@ -14,19 +12,52 @@ export const TeamFormContainer: FC<ITeamFormProps> = (props) => {
   const { teamId } = props
   const { push } = useRouter()
 
-  const dispatch = useAppDispatch()
+  const [team, setTeam] = useState({})
+  const [cities, setCities] = useState([])
 
-  const team = useAppSelector((state) => selectTeam(state, teamId))
+  const fetchData = async () => {
+    const tasks = [
+      async () => {
+        const resCities = await fetch('/api/cities')
+        const cities = await resCities.json()
+        setCities(cities)
+      },
+      async () => {
+        if (teamId) {
+          const resTeam = await fetch(`/api/teams/${teamId}`)
+          const team = await resTeam.json()
+          setTeam(team)
+        }
+      },
+    ]
+    await Promise.all(tasks.map((p) => p()))
+  }
 
-  const onFinish = (team: any) => {
+  const onFinish = (team: TeamWithCity) => {
     if (!teamId) {
-      dispatch(addTeam(team))
+      fetch('/api/teams/create', {
+        body: JSON.stringify(team),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        method: 'POST',
+      })
     } else {
-      dispatch(editTeam(team))
+      fetch(`/api/teams/${teamId}`, {
+        body: JSON.stringify(team),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        method: 'PUT',
+      })
     }
 
     push('/teams/')
   }
+
+  useEffect(() => {
+    fetchData()
+  }, [])
 
   return <TeamForm team={team} cities={cities} onFinish={onFinish} />
 }

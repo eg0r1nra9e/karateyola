@@ -1,34 +1,51 @@
-import { Button, Table } from 'antd';
-import { ColumnsType } from 'antd/es/table';
-import Link from 'next/link';
+import { Button, Table } from 'antd'
+import { ColumnsType } from 'antd/es/table'
+import Link from 'next/link'
+import { useEffect, useState } from 'react'
 
-import { MinusOutlined } from '@ant-design/icons';
+import { MinusOutlined } from '@ant-design/icons'
 
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { removeTeam, selectTeams } from '../../store/slices/teamsSlice';
-import { ITeam } from '../../types/ITeam';
+import { TeamWithCity } from '../../types/TeamWithCity'
 
 export const TeamsContainer = () => {
-  const teams = useAppSelector(selectTeams)
-  const dispatch = useAppDispatch()
+  const [teams, setTeams] = useState([])
 
-  const deleteTeam = (teamId: string) => {
-    dispatch(removeTeam(teamId))
+  const fetchData = async () => {
+    const res = await fetch('/api/teams')
+    const data = await res.json()
+    setTeams(data)
   }
 
-  const columns: ColumnsType<ITeam> = [
+  const deleteTeam = async (teamId: number) => {
+    await fetch(`api/teams/${teamId}`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      method: 'DELETE',
+    })
+
+    const newTeams = [...teams.filter((team) => team.id !== teamId)]
+    setTeams(newTeams)
+  }
+
+  useEffect(() => {
+    fetchData()
+  }, [])
+
+  const columns: ColumnsType<TeamWithCity> = [
     {
       title: 'Название',
       dataIndex: 'name',
       key: 'name',
       render: (_, team) => <Link href={`/teams/edit/${team.id}`}>{team.name}</Link>,
-      sorter: (a, b) => a.name.length - b.name.length,
+      sorter: true,
     },
     {
       title: 'Город',
       dataIndex: 'city',
       key: 'city',
-      sorter: (a, b) => a.city.length - b.city.length,
+      render: (_, team) => (team.city?.city ? `${team.city?.city}` : ''),
+      sorter: true,
     },
     {
       title: '',
@@ -41,5 +58,9 @@ export const TeamsContainer = () => {
     },
   ]
 
-  return <Table dataSource={teams} columns={columns} rowKey="id" />
+  return (
+    <>
+      <Table dataSource={teams} columns={columns} rowKey="id" />
+    </>
+  )
 }

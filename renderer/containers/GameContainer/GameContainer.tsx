@@ -51,7 +51,7 @@ export const GameContainer: FC<IGameFormProps> = (props) => {
     const athleteName = `${athlete?.firstName} ${athlete?.lastName}`
     let athleteTeam = ''
     if (team) {
-      athleteTeam = ` (${team?.name}, ${team.city})`
+      athleteTeam = ` (${team?.name}, ${team.cityId})`
     }
     return `${athleteName}${athleteTeam}`
   }

@@ -69,7 +69,7 @@ export const GameAthletesTable: FC<IGameAthletesContainerProps> = (props) => {
       return ''
     }
 
-    return `${team.name}, ${team.city} `
+    return `${team.name}, ${team.cityId} `
   }
 
   const getAge = (date: Date): number => {
