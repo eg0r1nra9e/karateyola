@@ -1,11 +1,8 @@
 import { useRouter } from 'next/router'
-import { FC } from 'react'
+import { FC, useEffect, useState } from 'react'
 
 import { AthleteForm } from '../../components/AthleteForm/AthleteForm'
-import { useAppDispatch, useAppSelector } from '../../store/hooks'
-import { addAthlete, editAthlete, selectAthlete } from '../../store/slices/athletesSlice'
-import { selectTeams } from '../../store/slices/teamsSlice'
-import { IAthlete } from '../../types/IAthlete'
+import { AthleteWithTeamAndCity } from '../../types/TeamWithCity copy'
 
 interface IAthleteFormProps {
   athleteId?: string
@@ -15,26 +12,52 @@ export const AthleteFormContainer: FC<IAthleteFormProps> = (props) => {
   const { athleteId } = props
   const { push } = useRouter()
 
-  const dispatch = useAppDispatch()
+  const [athlete, setAthlete] = useState({})
+  const [teams, setTeams] = useState([])
 
-  const athlete = useAppSelector((state) => selectAthlete(state, athleteId))
+  const fetchData = async () => {
+    const tasks = [
+      async () => {
+        const resTeams = await fetch('/api/teams')
+        const teams = await resTeams.json()
+        setTeams(teams)
+      },
+      async () => {
+        if (athleteId) {
+          const resAthlete = await fetch(`/api/athletes/${athleteId}`)
+          const athlete = await resAthlete.json()
+          setAthlete(athlete)
+        }
+      },
+    ]
+    await Promise.all(tasks.map((p) => p()))
+  }
 
-  const teams = useAppSelector(selectTeams)
-
-  const onFinish = (athlete: IAthlete) => {
-    for (const [key, value] of Object.entries(athlete)) {
-      if (value && value.toDate && typeof value.toDate == 'function') {
-        athlete[key] = value.toDate().toString();
-      }
-    }
+  const onFinish = async (athlete: AthleteWithTeamAndCity) => {
     if (!athleteId) {
-      dispatch(addAthlete(athlete))
+      await fetch('/api/athletes/create', {
+        body: JSON.stringify(athlete),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        method: 'POST',
+      })
     } else {
-      dispatch(editAthlete(athlete))
+      await fetch(`/api/athletes/${athleteId}`, {
+        body: JSON.stringify(athlete),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        method: 'PUT',
+      })
     }
 
     push('/athletes/')
   }
+
+  useEffect(() => {
+    fetchData()
+  }, [])
 
   return <AthleteForm athlete={athlete} teams={teams} onFinish={onFinish} />
 }

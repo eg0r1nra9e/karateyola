@@ -7,8 +7,20 @@ const prisma = new PrismaClient()
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<any>) {
   try {
-    const teams = await prisma.city.findMany()
-    res.status(200).json(teams)
+    const athletes = await prisma.athlete.findMany({
+      include: {
+        team: {
+          include: {
+            city: {
+              select: {
+                city: true,
+              },
+            },
+          },
+        },
+      },
+    })
+    res.status(200).json(athletes)
   } catch (error) {
     console.error(error)
     log.error(error)

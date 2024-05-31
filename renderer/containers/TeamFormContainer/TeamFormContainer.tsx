@@ -33,9 +33,9 @@ export const TeamFormContainer: FC<ITeamFormProps> = (props) => {
     await Promise.all(tasks.map((p) => p()))
   }
 
-  const onFinish = (team: TeamWithCity) => {
+  const onFinish = async (team: TeamWithCity) => {
     if (!teamId) {
-      fetch('/api/teams/create', {
+      await fetch('/api/teams/create', {
         body: JSON.stringify(team),
         headers: {
           'Content-Type': 'application/json',
@@ -43,7 +43,7 @@ export const TeamFormContainer: FC<ITeamFormProps> = (props) => {
         method: 'POST',
       })
     } else {
-      fetch(`/api/teams/${teamId}`, {
+      await fetch(`/api/teams/${teamId}`, {
         body: JSON.stringify(team),
         headers: {
           'Content-Type': 'application/json',

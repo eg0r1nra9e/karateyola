@@ -38,14 +38,14 @@ export const TeamsContainer = () => {
       dataIndex: 'name',
       key: 'name',
       render: (_, team) => <Link href={`/teams/edit/${team.id}`}>{team.name}</Link>,
-      sorter: true,
+      sorter: (a, b) => a.name.localeCompare(b.name),
     },
     {
       title: 'Город',
       dataIndex: 'city',
       key: 'city',
       render: (_, team) => (team.city?.city ? `${team.city?.city}` : ''),
-      sorter: true,
+      sorter: (a, b) => a.city.city.localeCompare(b.city.city),
     },
     {
       title: '',

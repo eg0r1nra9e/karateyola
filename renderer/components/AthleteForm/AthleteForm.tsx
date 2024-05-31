@@ -1,6 +1,6 @@
 import { Button, DatePicker, Form, Input, Radio, Select } from 'antd'
 import dayjs from 'dayjs'
-import React, { FC, useEffect } from 'react'
+import { FC, useEffect } from 'react'
 
 import { IAthlete } from '../../types/IAthlete'
 import { ITeam } from '../../types/ITeam'
@@ -21,6 +21,7 @@ export const AthleteForm: FC<IAthleteFormProps> = (props) => {
   const [form] = Form.useForm()
 
   const teamOptions = teams.map((team: ITeam) => ({ value: team.id, label: team.name }))
+  teamOptions.unshift({ value: null, label: 'Не выбрано' })
 
   useEffect(() => {
     form.setFieldsValue({

@@ -5,50 +5,60 @@ import Link from 'next/link'
 
 import { MinusOutlined } from '@ant-design/icons'
 
-import { useAppDispatch, useAppSelector } from '../../store/hooks'
-import { removeAthlete, selectAthletes } from '../../store/slices/athletesSlice'
-import { selectTeams } from '../../store/slices/teamsSlice'
-import { IAthlete } from '../../types/IAthlete'
+import { useEffect, useState } from 'react'
+import { AthleteWithTeamAndCity } from '../../types/TeamWithCity copy'
 
 export const AthletesContainer = () => {
-  const athletes = useAppSelector(selectAthletes)
-  const dispatch = useAppDispatch()
+  const [athletes, setAthletes] = useState([])
 
-  const teams = useAppSelector(selectTeams)
-
-  const deleteAthlete = (athleteId: string) => {
-    dispatch(removeAthlete(athleteId))
+  const fetchData = async () => {
+    const res = await fetch('/api/athletes')
+    const data = await res.json()
+    setAthletes(data)
   }
 
-  const columns: ColumnsType<IAthlete> = [
+  const deleteAthlete = async (athleteId: number) => {
+    await fetch(`api/athletes/${athleteId}`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      method: 'DELETE',
+    })
+
+    const newAthletes = [...athletes.filter((athlete) => athlete.id !== athleteId)]
+    setAthletes(newAthletes)
+  }
+
+  useEffect(() => {
+    fetchData()
+  }, [])
+
+  const columns: ColumnsType<AthleteWithTeamAndCity> = [
     {
       title: 'Фамилия',
       dataIndex: 'lastName',
       key: 'lastName',
       render: (_, athlete) => <Link href={`/athletes/edit/${athlete.id}`}>{athlete.lastName}</Link>,
-      sorter: (a, b) => a.lastName.length - b.lastName.length,
+      sorter: (a, b) => a.lastName.localeCompare(b.lastName),
     },
     {
       title: 'Имя',
       dataIndex: 'firstName',
       key: 'firstName',
-      sorter: (a, b) => a.firstName.length - b.firstName.length,
+      sorter: (a, b) => a.firstName.localeCompare(b.firstName),
     },
     {
       title: 'Дата рождения',
       dataIndex: 'date',
       key: 'date',
-      render: (_, athlete) =>
-        dayjs(athlete?.dateOfBirth)
-          .format('DD.MM.YYYY')
-          .toString(),
+      render: (_, athlete) => dayjs(athlete?.dateOfBirth).format('DD.MM.YYYY').toString(),
       sorter: (a, b) => a.dateOfBirth.getTime() - b.dateOfBirth.getTime(),
     },
     {
       title: 'Пол',
       dataIndex: 'gender',
       key: 'gender',
-      sorter: (a, b) => a.gender.length - b.gender.length,
+      sorter: (a, b) => a.gender.localeCompare(b.gender),
     },
     {
       title: 'Вес',
@@ -60,7 +70,8 @@ export const AthletesContainer = () => {
       title: 'Команда',
       dataIndex: 'teamId',
       key: 'teamId',
-      render: (_, athlete) => teams?.find((team) => team.id === athlete.teamId)?.name,
+      render: (_, athlete) => athlete.team?.name,
+      sorter: (a, b) => a.team?.name?.localeCompare(b.team?.name),
     },
     {
       title: '',

@@ -10,6 +10,7 @@ datasource db {
     url      = "file:../database/dev.db"
 }
 
+// Населенный пункт
 model City {
     id     Int     @id @default(autoincrement())
     region String
@@ -17,13 +18,31 @@ model City {
     teams  Team[]
 }
 
+// Команда
 model Team {
-    id         Int      @id @default(autoincrement())
+    id         Int       @id @default(autoincrement())
     name       String
     cityId     Int?
-    city       City?    @relation(fields: [cityId], references: [id])
-    created_at DateTime @default(now())
-    updated_at DateTime @updatedAt
+    city       City?     @relation(fields: [cityId], references: [id])
+    athletes   Athlete[]
+    created_at DateTime  @default(now())
+    updated_at DateTime  @updatedAt
 
     @@unique([name, cityId])
+}
+
+// Спортсмен
+model Athlete {
+    id          Int       @id @default(autoincrement())
+    lastName    String // Фамилия спортсмена
+    firstName   String // Имя спортсмена
+    dateOfBirth DateTime? // Дата рождения спортсмена
+    teamId      Int? // Идентификатор команды
+    team        Team?     @relation(fields: [teamId], references: [id])
+    gender      String // Пол спортсмена
+    weight      Int // Вес спортсмена
+    created_at  DateTime  @default(now())
+    updated_at  DateTime  @updatedAt
+
+    @@unique([firstName, lastName, dateOfBirth, teamId])
 }

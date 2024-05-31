@@ -1,39 +1,43 @@
-import log from 'electron-log'
+import log from 'electron-log/main'
 import { NextApiRequest, NextApiResponse } from 'next'
 
-import { PrismaClient, Team } from '@prisma/client'
+import { Athlete, PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<any>) {
-  const teamId = +req.query.id
-  const { name, cityId } = req.body as Team
+  const athleteId = +req.query.id
+  const { firstName, lastName, dateOfBirth, teamId, gender, weight } = req.body as Athlete
 
-  let team
+  let athlete
 
   try {
     switch (req.method) {
       case 'GET':
-        team = await prisma.team.findUnique({
+        athlete = await prisma.athlete.findUnique({
           where: {
-            id: teamId,
+            id: athleteId,
           },
         })
-        res.status(200).json(team)
+        res.status(200).json(athlete)
         break
       case 'PUT':
-        team = await prisma.team.update({
-          where: { id: Number(teamId) },
+        athlete = await prisma.athlete.update({
+          where: { id: Number(athleteId) },
           data: {
-            name,
-            cityId,
+            firstName,
+            lastName,
+            dateOfBirth,
+            teamId,
+            gender,
+            weight: Number(weight),
           },
         })
-        res.status(200).json(team)
+        res.status(200).json(athlete)
         break
       case 'DELETE':
-        team = await prisma.team.delete({
-          where: { id: Number(teamId) },
+        athlete = await prisma.athlete.delete({
+          where: { id: Number(athleteId) },
         })
         res.status(200).json({ message: 'Note updated' })
         break
