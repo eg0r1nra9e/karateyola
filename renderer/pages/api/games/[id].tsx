@@ -14,9 +14,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     competitions?.map((competition) => {
       return {
         id: competition.id,
-        categories: {
-          set: [],
-        },
       }
     }) ?? []
 
