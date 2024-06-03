@@ -3,54 +3,37 @@ import { ColumnsType } from 'antd/es/table'
 import dayjs from 'dayjs'
 import Link from 'next/link'
 
-import { ApartmentOutlined, MinusOutlined, ThunderboltOutlined } from '@ant-design/icons'
+import { MinusOutlined } from '@ant-design/icons'
 
-import { useAppDispatch, useAppSelector } from '../../store/hooks'
-import { selectCompetitions } from '../../store/slices/competitionsSlice'
-import { endGame, removeGame, selectGames, startGame } from '../../store/slices/gamesSlice'
-import { IGame } from '../../types/IGame'
-import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
+import { GameWithAll } from '../../types/GameWithAll'
 
 export const GamesContainer = () => {
-  const games = useAppSelector(selectGames)
-  const dispatch = useAppDispatch()
-  const competitions = useAppSelector(selectCompetitions)
-  const { push } = useRouter()
+  const [games, setGames] = useState([])
 
-  const deleteGame = (gameId: string) => {
-    dispatch(removeGame(gameId))
+  const fetchData = async () => {
+    const res = await fetch('/api/games')
+    const data = await res.json()
+    setGames(data)
   }
 
-  const gameCompetitions = (game: IGame) => {
-    if (!game.competitions || !game.competitions.length) {
-      return null
-    }
-
-    return game.competitions.map((competition) => {
-      const competitionName = competitions.find((c) => c.id === competition.id)?.name
-      return <div key={competition.id}>{competitionName}</div>
+  const deleteGame = async (gameId: number) => {
+    await fetch(`api/games/${gameId}`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      method: 'DELETE',
     })
+
+    const newCategories = [...games.filter((category) => category.id !== gameId)]
+    setGames(newCategories)
   }
 
-  const gameDates = (game: IGame) => {
-    if (!game?.dates || !game?.dates?.length) {
-      return null
-    }
+  useEffect(() => {
+    fetchData()
+  }, [])
 
-    return (
-      <>
-        {dayjs(game?.dates[0])
-          .format('DD.MM.YYYY')
-          .toString()}
-        -
-        {dayjs(game?.dates[1])
-          .format('DD.MM.YYYY')
-          .toString()}
-      </>
-    )
-  }
-
-  const columns: ColumnsType<IGame> = [
+  const columns: ColumnsType<GameWithAll> = [
     {
       title: 'Название',
       dataIndex: 'name',
@@ -62,14 +45,24 @@ export const GamesContainer = () => {
       title: 'Дата начала',
       dataIndex: 'dates',
       key: 'dates',
-      render: (_, game) => gameDates(game),
-      sorter: (a, b) => (new Date(a.dates[0])).getTime() - (new Date(b.dates[0])).getTime()
+      render: (_, game) => dayjs(game?.startDate).format('DD.MM.YYYY').toString(),
+      sorter: (a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime(),
+    },
+    {
+      title: 'Дата окончания',
+      dataIndex: 'dates',
+      key: 'dates',
+      render: (_, game) => dayjs(game?.endDate).format('DD.MM.YYYY').toString(),
+      sorter: (a, b) => new Date(a.endDate).getTime() - new Date(b.endDate).getTime(),
     },
     {
       title: 'Дисциплины',
       dataIndex: 'competitions',
       key: 'competitions',
-      render: (_, game) => gameCompetitions(game),
+      render: (_, game) =>
+        game.competitions.map((competition) => {
+          return <div key={competition.id}>{competition.name}</div>
+        }),
     },
     {
       title: 'Статус',

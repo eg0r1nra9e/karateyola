@@ -1,18 +1,17 @@
-import { Button, Card, Divider, Form, Input, Select, Space } from 'antd'
-import React, { FC } from 'react'
+import { Button, Card, Divider, Form, Select, Space } from 'antd'
+import { FC } from 'react'
+
+import { Category, Competition } from '@prisma/client'
 
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons'
+import { GameWithAll } from '../../types/GameWithAll'
 
-import { ICompetition } from '../../types/ICompetition'
-import { IGame } from '../../types/IGame'
-import { ICategory } from '../../types/ICategory'
-
-type FieldType = IGame
+type FieldType = GameWithAll
 
 interface IGameCompetitionsFormProps {
-  game?: IGame
-  competitions: ICompetition[]
-  categories: ICategory[]
+  game?: GameWithAll
+  competitions: Competition[]
+  categories: Category[]
   onFinish: (values: any) => void
   onBack: (values: any) => void
 }
@@ -21,11 +20,11 @@ export const GameCompetitionsForm: FC<IGameCompetitionsFormProps> = (props) => {
   const { game, competitions, categories, onFinish, onBack } = props
   const [form] = Form.useForm()
 
-  const competitionOptions = competitions.map((competition: ICompetition) => ({
+  const competitionOptions = competitions.map((competition: Competition) => ({
     value: competition.id,
     label: competition.name,
   }))
-  const categoriesOptions = categories.map((category: ICategory) => ({
+  const categoriesOptions = categories.map((category: Category) => ({
     value: category.id,
     label: category.name,
   }))
@@ -41,11 +40,7 @@ export const GameCompetitionsForm: FC<IGameCompetitionsFormProps> = (props) => {
       autoComplete="off"
       form={form}
     >
-      <Form.Item<FieldType>
-        label="Дисциплины"
-        name="competitions"
-        rules={[{ required: true, message: 'Выберите дисциплину' }]}
-      >
+      <Form.Item<FieldType> label="Дисциплины" rules={[{ required: true, message: 'Выберите дисциплину' }]}>
         <Form.List name="competitions">
           {(competitions, { add, remove }) => {
             return (

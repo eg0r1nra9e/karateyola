@@ -1,15 +1,15 @@
 import { Button, DatePicker, Divider, Form, Input, Radio } from 'antd'
 import dayjs from 'dayjs'
-import React, { FC, useEffect } from 'react'
+import { FC, useEffect } from 'react'
 
-import { IGame } from '../../types/IGame'
+import { GameWithAll } from '../../types/GameWithAll'
 
 const { RangePicker } = DatePicker
 
-type FieldType = IGame
+type FieldType = GameWithAll & { dates: dayjs.Dayjs[] }
 
 interface IGameGeneralInformationFormProps {
-  game?: IGame
+  game?: GameWithAll
   onFinish: (values: any) => void
 }
 const dateFormat = 'DD.MM.YYYY'
@@ -22,7 +22,7 @@ export const GameGeneralInformationForm: FC<IGameGeneralInformationFormProps> = 
     form.setFieldsValue({
       id: game?.id,
       name: game?.name,
-      dates: [dayjs(game?.dates[0]), dayjs(game?.dates[1])],
+      dates: [dayjs(game?.startDate), dayjs(game?.endDate)],
       status: game?.status,
     })
   }, [form, game])

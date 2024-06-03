@@ -33,35 +33,79 @@ model Team {
 
 // Спортсмен
 model Athlete {
-    id          Int       @id @default(autoincrement())
+    id          Int        @id @default(autoincrement())
     lastName    String // Фамилия спортсмена
     firstName   String // Имя спортсмена
     dateOfBirth DateTime // Дата рождения спортсмена
     teamId      Int? // Идентификатор команды
-    team        Team?     @relation(fields: [teamId], references: [id])
+    team        Team?      @relation(fields: [teamId], references: [id])
     gender      String // Пол спортсмена
     weight      Int // Вес спортсмена
-    created_at  DateTime  @default(now())
-    updated_at  DateTime  @updatedAt
+    created_at  DateTime   @default(now())
+    updated_at  DateTime   @updatedAt
+    categories  Category[]
+    onePlayers  Duel[]     @relation(name: "onePlayers")
+    twoPlayers  Duel[]     @relation(name: "twoPlayers")
+    winners     Duel[]     @relation(name: "winners")
 
     @@unique([firstName, lastName, dateOfBirth, teamId])
 }
 
 // Дисциплина
 model Competition {
-    id   Int     @id @default(autoincrement())
-    name String //Наименование дисциплины
-    created_at  DateTime  @default(now())
-    updated_at  DateTime  @updatedAt
+    id         Int        @id @default(autoincrement())
+    name       String // Наименование дисциплины
+    created_at DateTime   @default(now())
+    updated_at DateTime   @updatedAt
+    games      Game[]
+    categories Category[]
 }
 
-
 //Категория
-
 model Category {
-    id   Int     @id @default(autoincrement())
-    name String //Наименование категории
-    time Int //Время боя
-    created_at  DateTime  @default(now())
-    updated_at  DateTime  @updatedAt
+    id           Int           @id @default(autoincrement())
+    name         String // Наименование категории
+    time         Int // Время боя
+    created_at   DateTime      @default(now())
+    updated_at   DateTime      @updatedAt
+    competitions Competition[]
+    athletes     Athlete[]
+    standings    Standing[]
+}
+
+// Соревнование
+model Game {
+    id           Int           @id @default(autoincrement())
+    name         String? //Название соревнования.
+    startDate    DateTime? // Дата начала
+    endDate      DateTime? // Дата окночания
+    status       String // Статус соревнования
+    competitions Competition[] // Дисциплины соревнования
+    created_at   DateTime      @default(now())
+    updated_at   DateTime      @updatedAt
+}
+
+// Турнирная таблица
+model Standing {
+    id         Int        @id @default(autoincrement())
+    duels      Duel[] // Поединки
+    categoryId Int // Категория
+    categories Category[]
+    created_at DateTime   @default(now())
+    updated_at DateTime   @updatedAt
+}
+
+// Поединок
+model Duel {
+    id          Int      @id @default(autoincrement())
+    onePlayerId Int // Первый участник
+    onePlayer   Athlete  @relation(fields: [onePlayerId], references: [id], name: "onePlayers")
+    twoPlayerId Int // Второй участник
+    twoPlayer   Athlete  @relation(fields: [twoPlayerId], references: [id], name: "twoPlayers")
+    winnerId    Int // Победитель
+    winner      Athlete  @relation(fields: [winnerId], references: [id], name: "winners")
+    standingId  Int // Ткртнирная таблица
+    standing    Standing @relation(fields: [standingId], references: [id])
+    created_at  DateTime @default(now())
+    updated_at  DateTime @updatedAt
 }

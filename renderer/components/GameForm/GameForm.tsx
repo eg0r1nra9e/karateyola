@@ -1,22 +1,20 @@
 import { Divider, Steps } from 'antd'
-import React, { FC, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 
 import { ApartmentOutlined, ProfileOutlined, TeamOutlined, TrophyOutlined } from '@ant-design/icons'
+import { Athlete, Category, Competition } from '@prisma/client'
 
 import { GameAthletesFormContainer } from '../../containers/GameAthletesFormContainer/GameAthletesFormContainer'
 import { GameFormStandingsContainer } from '../../containers/GameFormStandingsContainer/GameFormStandingsContainer'
-import { IAthlete } from '../../types/IAthlete'
-import { ICompetition } from '../../types/ICompetition'
-import { ICategory } from '../../types/ICategory'
-import { IGame } from '../../types/IGame'
+import { GameWithAll } from '../../types/GameWithAll'
 import { GameCompetitionsForm } from '../GameCompetitionsForm/GameCompetitionsForm'
 import { GameGeneralInformationForm } from '../GameGeneralInformationForm/GameGeneralInformationForm'
 
 interface IGameFormProps {
-  game?: IGame
-  competitions: ICompetition[]
-  categories: ICategory[]
-  athletes: IAthlete[]
+  game?: GameWithAll
+  competitions: Competition[]
+  categories: Category[]
+  athletes: Athlete[]
   onSave: (values: any) => void
   onFinish: (values: any) => void
 }
@@ -25,34 +23,37 @@ export const GameForm: FC<IGameFormProps> = (props) => {
   const { game, competitions, categories, athletes, onSave, onFinish } = props
 
   const [currentGame, setCurrentGame] = useState(game)
+  useEffect(() => {
+    setCurrentGame(game)
+  }, [game])
 
-  const [current, setCurrent] = useState(0)
+  const [currentStep, setCurrentStep] = useState(0)
 
-  const onFinishGeneralForm = (game: IGame) => {
+  const onFinishGeneralForm = (updateGame: GameWithAll) => {
     setCurrentGame({
       ...currentGame,
-      ...game,
+      ...updateGame,
     })
-    setCurrent(1)
+    setCurrentStep(1)
   }
 
-  const onFinishCompetitionsForm = (game: IGame) => {
+  const onFinishCompetitionsForm = (updateGame: GameWithAll) => {
     setCurrentGame({
       ...currentGame,
-      ...game,
+      ...updateGame,
     })
-    setCurrent(2)
+    setCurrentStep(2)
   }
 
-  const onFinishAthletesForm = (game: IGame) => {
+  const onFinishAthletesForm = (updateGame: GameWithAll) => {
     const newGame = {
       ...currentGame,
-      ...game,
+      ...updateGame,
     }
 
     setCurrentGame(newGame)
     onSave(newGame)
-    setCurrent(3)
+    setCurrentStep(3)
   }
 
   const onFinishForm = () => {
@@ -73,7 +74,7 @@ export const GameForm: FC<IGameFormProps> = (props) => {
         categories={categories}
         onFinish={onFinishCompetitionsForm}
         onBack={() => {
-          setCurrent(0)
+          setCurrentStep(0)
         }}
       />
     </>,
@@ -84,7 +85,7 @@ export const GameForm: FC<IGameFormProps> = (props) => {
         game={currentGame}
         onFinish={onFinishAthletesForm}
         onBack={() => {
-          setCurrent(1)
+          setCurrentStep(1)
         }}
       />
     </>,
@@ -95,7 +96,7 @@ export const GameForm: FC<IGameFormProps> = (props) => {
         game={currentGame}
         onFinish={onFinishForm}
         onBack={() => {
-          setCurrent(2)
+          setCurrentStep(2)
         }}
       />
     </>,
@@ -103,14 +104,14 @@ export const GameForm: FC<IGameFormProps> = (props) => {
 
   return (
     <>
-      <Steps current={current}>
+      <Steps current={currentStep}>
         <Steps.Step title="Общая информация" icon={<TrophyOutlined />} />
         <Steps.Step title="Дисциплины" icon={<ProfileOutlined />} />
         <Steps.Step title="Спортсмены" icon={<TeamOutlined />} />
         <Steps.Step title="Турнирная таблица" icon={<ApartmentOutlined />} />
       </Steps>
       <Divider />
-      {forms[current]}
+      {forms[currentStep]}
     </>
   )
 }

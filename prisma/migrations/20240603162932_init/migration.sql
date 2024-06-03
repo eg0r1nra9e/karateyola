@@ -1,0 +1,10 @@
+-- CreateTable
+CREATE TABLE "Duel" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "onePlayerId" INTEGER NOT NULL,
+    "twoPlayerId" INTEGER NOT NULL,
+    "winnerId" INTEGER NOT NULL,
+    CONSTRAINT "Duel_onePlayerId_fkey" FOREIGN KEY ("onePlayerId") REFERENCES "Athlete" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT "Duel_twoPlayerId_fkey" FOREIGN KEY ("twoPlayerId") REFERENCES "Athlete" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT "Duel_winnerId_fkey" FOREIGN KEY ("winnerId") REFERENCES "Athlete" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+);

@@ -1,13 +1,10 @@
 import { useRouter } from 'next/router'
-import { FC } from 'react'
+import { FC, useEffect, useState } from 'react'
 
+import { Athlete, Category, Competition } from '@prisma/client'
+import dayjs from 'dayjs'
 import { GameForm } from '../../components/GameForm/GameForm'
-import { useAppDispatch, useAppSelector } from '../../store/hooks'
-import { selectCategories } from '../../store/slices/categoriesSlice'
-import { selectAthletes } from '../../store/slices/athletesSlice'
-import { selectCompetitions } from '../../store/slices/competitionsSlice'
-import { addGame, editGame, selectGame } from '../../store/slices/gamesSlice'
-import { IGame } from '../../types/IGame'
+import { GameWithAll } from '../../types/GameWithAll'
 
 interface IGameFormProps {
   gameId?: string
@@ -17,26 +14,70 @@ export const GameFormContainer: FC<IGameFormProps> = (props) => {
   const { gameId } = props
   const { push } = useRouter()
 
-  const dispatch = useAppDispatch()
+  const [game, setGame] = useState<GameWithAll>()
+  const [competitions, setCompetitions] = useState<Competition[]>()
+  const [categories, setCategories] = useState<Category[]>()
+  const [athletes, setAthletes] = useState<Athlete[]>()
 
-  const game = useAppSelector((state) => selectGame(state, gameId))
-  const competitions = useAppSelector(selectCompetitions)
-  const categories = useAppSelector(selectCategories)
-  const athletes = useAppSelector(selectAthletes)
+  const fetchData = async () => {
+    const tasks = [
+      async () => {
+        const resCompetitions = await fetch('/api/competitions')
+        const competitions: Competition[] = await resCompetitions.json()
+        setCompetitions(competitions)
+      },
+      async () => {
+        const resCategories = await fetch('/api/categories')
+        const categories: Category[] = await resCategories.json()
+        setCategories(categories)
+      },
+      async () => {
+        const resAthletes = await fetch('/api/athletes')
+        const athletes: Athlete[] = await resAthletes.json()
+        setAthletes(athletes)
+      },
 
-  const onFinish = (game: IGame) => {
-    game.dates = game.dates.map((date: any) => {
-      if (date && date.toDate && typeof date.toDate == 'function') {
-        return date.toDate().toString()
-      }
-    })
-
-    if (!gameId) {
-      dispatch(addGame(game))
-    } else {
-      dispatch(editGame(game))
-    }
+      async () => {
+        if (gameId) {
+          const resGame = await fetch(`/api/games/${gameId}`)
+          const game: GameWithAll = await resGame.json()
+          setGame(game)
+        }
+      },
+    ]
+    await Promise.all(tasks.map((p) => p()))
   }
+
+  const onFinish = async (game: GameWithAll & { dates: dayjs.Dayjs[] }) => {
+    const newGame = {
+      ...game,
+      startDate: game.dates[0],
+      endDate: game.dates[1],
+    }
+    if (!gameId) {
+      await fetch('/api/games/create', {
+        body: JSON.stringify(newGame),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        method: 'POST',
+      })
+    } else {
+      await fetch(`/api/games/${gameId}`, {
+        body: JSON.stringify(newGame),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        method: 'PUT',
+      })
+    }
+
+    push('/games/')
+  }
+
+  useEffect(() => {
+    fetchData()
+  }, [])
 
   return (
     <GameForm

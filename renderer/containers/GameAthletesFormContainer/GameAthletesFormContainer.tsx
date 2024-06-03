@@ -1,17 +1,16 @@
 import { Button, Divider, Space, Tabs } from 'antd'
 import { FC, useState } from 'react'
 
-import { GameAthletesTable } from '../../components/GameAthletesTable/GameAthletesTable'
+import { Category } from '@prisma/client'
 import { useAppSelector } from '../../store/hooks'
 import { selectAthletes } from '../../store/slices/athletesSlice'
+import { selectCategories } from '../../store/slices/categoriesSlice'
 import { selectCompetitions } from '../../store/slices/competitionsSlice'
 import { selectTeams } from '../../store/slices/teamsSlice'
-import { ICategory } from '../../types/ICategory'
-import { IGame } from '../../types/IGame'
-import { selectCategories } from '../../store/slices/categoriesSlice'
+import { GameWithAll } from '../../types/GameWithAll'
 
 interface IGameAthletesFormContainerProps {
-  game: IGame
+  game: GameWithAll
   onFinish: (values: any) => void
   onBack: (values: any) => void
 }
@@ -27,34 +26,31 @@ export const GameAthletesFormContainer: FC<IGameAthletesFormContainerProps> = (p
 
   const items = []
 
-  const onChange = (category: ICategory, athletesIds: string[]) => {
-    if (!category.athletes?.length) {
-      category.athletes = []
-    }
-
-    category.athletes = []
-
-    category.athletes = [...athletesIds]
-
-    setCurrentGame({ ...currentGame })
+  const onChange = (category: Category, athletesIds: string[]) => {
+    // if (!category.athletes?.length) {
+    //   category.athletes = []
+    // }
+    // category.athletes = []
+    // category.athletes = [...athletesIds]
+    // setCurrentGame({ ...currentGame })
   }
 
   const getCategoryName = (categoryId) => {
     return categories.find((category) => category.id === categoryId)?.name
   }
 
-  currentGame?.competitions.forEach((competition) => {
-    const competitionName = competitions?.find((c) => c.id === competition.id)?.name
-    if (competition?.categories?.length) {
-      competition?.categories.forEach((category) => {
-        items.push({
-          key: competitionName + ': ' + getCategoryName(category?.id),
-          label: competitionName + ': ' + getCategoryName(category?.id),
-          children: <GameAthletesTable category={category} athletes={athletes} teams={teams} onChange={onChange} />,
-        })
-      })
-    }
-  })
+  // currentGame?.competitions.forEach((competition) => {
+  //   const competitionName = competitions?.find((c) => c.id === competition.id)?.name
+  //   if (competition?.categories?.length) {
+  //     competition?.categories.forEach((category) => {
+  //       items.push({
+  //         key: competitionName + ': ' + getCategoryName(category?.id),
+  //         label: competitionName + ': ' + getCategoryName(category?.id),
+  //         children: <GameAthletesTable category={category} athletes={athletes} teams={teams} onChange={onChange} />,
+  //       })
+  //     })
+  //   }
+  // })
 
   return (
     <>

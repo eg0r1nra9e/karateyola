@@ -1,16 +1,15 @@
 import { Button, Divider, Space, Tabs } from 'antd'
 import { FC, useState } from 'react'
 
-import { GameDuelsComponent } from '../../components/GameDuelsComponent/GameDuelsComponent'
 import { useAppSelector } from '../../store/hooks'
 import { selectAthletes } from '../../store/slices/athletesSlice'
-import { selectCompetitions } from '../../store/slices/competitionsSlice'
 import { selectCategories } from '../../store/slices/categoriesSlice'
+import { selectCompetitions } from '../../store/slices/competitionsSlice'
 import { selectTeams } from '../../store/slices/teamsSlice'
-import { IGame } from '../../types/IGame'
+import { GameWithAll } from '../../types/GameWithAll'
 
 interface IGameFormStandingsContainerProps {
-  game: IGame
+  game: GameWithAll
   onFinish: (values: any) => void
   onBack: (values: any) => void
 }
@@ -29,21 +28,21 @@ export const GameFormStandingsContainer: FC<IGameFormStandingsContainerProps> = 
     return categories.find((category) => category.id === categoryId)?.name
   }
 
-  currentGame?.competitions.forEach((competition) => {
-    const competitionName = competitions?.find((c) => c.id === competition.id)?.name
-    if (competition?.categories?.length) {
-      competition?.categories.forEach((category) => {
-        if (!category?.standings?.length) {
-          return null
-        }
-        items.push({
-          key: competitionName + ': ' + getCategoryName(category?.id),
-          label: competitionName + ': ' + getCategoryName(category?.id),
-          children: <GameDuelsComponent athletes={athletes} teams={teams} standings={category.standings} />,
-        })
-      })
-    }
-  })
+  // currentGame?.competitions.forEach((competition) => {
+  //   const competitionName = competitions?.find((c) => c.id === competition.id)?.name
+  //   if (competition?.categories?.length) {
+  //     competition?.categories.forEach((category) => {
+  //       if (!category?.standings?.length) {
+  //         return null
+  //       }
+  //       items.push({
+  //         key: competitionName + ': ' + getCategoryName(category?.id),
+  //         label: competitionName + ': ' + getCategoryName(category?.id),
+  //         children: <GameDuelsComponent athletes={athletes} teams={teams} standings={category.standings} />,
+  //       })
+  //     })
+  //   }
+  // })
 
   return (
     <>
