@@ -9,7 +9,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   try {
     const games = await prisma.game.findMany({
       include: {
-        competitions: {
+        gameCompetition: {
           include: {
             gameCategories: {
               include: {
