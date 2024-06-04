@@ -98,7 +98,7 @@ model GameCategory {
     gameCompetition   GameCompetition @relation(fields: [gameCompetitionId], references: [id])
     categoryId        Int?
     category          Category?       @relation(fields: [categoryId], references: [id])
-    standing          Standing[]
+    standings         Standing[]
     created_at        DateTime        @default(now())
     updated_at        DateTime        @updatedAt
 }
