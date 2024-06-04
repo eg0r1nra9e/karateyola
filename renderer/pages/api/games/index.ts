@@ -11,7 +11,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       include: {
         competitions: {
           include: {
-            categories: {
+            gameCategories: {
               include: {
                 standings: {
                   include: {
