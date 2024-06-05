@@ -38,12 +38,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
           include: {
             competitions: {
               include: {
-                competition: {
-                  select: {
-                    id: true,
-                    name: true,
-                  },
-                },
+                competition: true,
                 categories: {
                   include: {
                     category: {
@@ -54,13 +49,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                     },
                     athletes: {
                       include: {
-                        athlete: {
-                          select: {
-                            id: true,
-                            lastName: true,
-                            firstName: true,
-                          },
-                        },
+                        athlete: true,
                       },
                     },
                     standings: {

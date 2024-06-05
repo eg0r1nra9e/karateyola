@@ -31,14 +31,13 @@ export const GameCompetitionsForm: FC<IGameCompetitionsFormProps> = (props) => {
 
   const initialValues = {
     ...game,
-    competitions: game?.competitions?.map((competition) => {
-      return (
-        {
+    competitions: game?.competitions?.map(
+      (competition) =>
+        ({
           id: competition.competitionId,
           categories: competition?.categories?.map((category) => ({ id: category.categoryId })) ?? [],
-        } ?? []
-      )
-    }),
+        }) ?? [],
+    ),
   }
   return (
     <Form
