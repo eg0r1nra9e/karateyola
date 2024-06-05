@@ -10,19 +10,19 @@ const prisma = new PrismaClient()
 export default async function handler(req: NextApiRequest, res: NextApiResponse<any>) {
   const { name, startDate, endDate, status, competitions } = req.body as GameWithAll
 
-  const connectCompetitions =
+  const createCompetitions =
     competitions?.map((competition) => {
-      competition.categories
-      const connectCategories =
+      const createCategories =
         competition.categories.map((category) => {
           return {
-            id: category.id,
-            category,
+            categoryId: category.id,
           }
         }) ?? []
       return {
-        id: competition.id,
-        competition,
+        competitionId: competition.id,
+        categories: {
+          create: createCategories,
+        },
       }
     }) ?? []
 
@@ -34,7 +34,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         endDate,
         status,
         competitions: {
-          connect: connectCompetitions,
+          create: createCompetitions,
         },
       },
     })

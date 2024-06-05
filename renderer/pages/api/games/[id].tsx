@@ -10,29 +10,59 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   const gameId = +req.query.id
   const { name, startDate, endDate, status, competitions } = req.body as GameWithAll
 
-  const connectCompetitions =
+  const createCompetitions =
     competitions?.map((competition) => {
+      const createCategories =
+        competition.categories.map((category) => {
+          return {
+            categoryId: category.id,
+          }
+        }) ?? []
       return {
-        id: competition.id,
+        competitionId: competition.id,
+        categories: {
+          create: createCategories,
+        },
       }
     }) ?? []
 
-  console.log(connectCompetitions)
-
-  let competition
+  let game
 
   try {
     switch (req.method) {
       case 'GET':
-        competition = await prisma.game.findUnique({
+        game = await prisma.game.findUnique({
           where: {
             id: gameId,
           },
           include: {
             competitions: {
               include: {
+                competition: {
+                  select: {
+                    id: true,
+                    name: true,
+                  },
+                },
                 categories: {
                   include: {
+                    category: {
+                      select: {
+                        id: true,
+                        name: true,
+                      },
+                    },
+                    athletes: {
+                      include: {
+                        athlete: {
+                          select: {
+                            id: true,
+                            lastName: true,
+                            firstName: true,
+                          },
+                        },
+                      },
+                    },
                     standings: {
                       include: {
                         duels: {
@@ -50,10 +80,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
             },
           },
         })
-        res.status(200).json(competition)
+        res.status(200).json(game)
         break
       case 'PUT':
-        competition = await prisma.game.update({
+        game = await prisma.game.update({
           where: { id: Number(gameId) },
 
           data: {
@@ -62,17 +92,33 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
             endDate,
             status,
             competitions: {
-              set: [],
-              connect: connectCompetitions,
+              deleteMany: {},
+              create: createCompetitions,
             },
           },
         })
-        res.status(200).json(competition)
+        res.status(200).json(game)
         break
       case 'DELETE':
-        competition = await prisma.game.delete({
-          where: { id: Number(gameId) },
+        const competitions = await prisma.gameCompetition.findMany({
+          where: { gameId: Number(gameId) },
+          select: {
+            id: true,
+          },
         })
+
+        await prisma.$transaction([
+          // prisma.gameCategory.deleteMany({
+          //   where: { competitionId: competitions },
+          // }),
+          // prisma.gameCompetition.deleteMany({
+          //   where: { gameId: Number(gameId) },
+          // }),
+          prisma.game.deleteMany({
+            where: { id: Number(gameId) },
+          }),
+        ])
+
         res.status(200).json({ message: 'Note updated' })
         break
       default:

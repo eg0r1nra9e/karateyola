@@ -60,8 +60,8 @@ export const GamesContainer = () => {
       dataIndex: 'competitions',
       key: 'competitions',
       render: (_, game) =>
-        game.competitions.map((competition) => {
-          return <div key={competition.id}>{competition.name}</div>
+        game.competitions.map((c) => {
+          return <div key={c.competition.id}>{c.competition.name}</div>
         }),
     },
     {

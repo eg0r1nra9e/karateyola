@@ -33,19 +33,20 @@ model Team {
 
 // Спортсмен
 model Athlete {
-    id          Int      @id @default(autoincrement())
+    id          Int           @id @default(autoincrement())
     lastName    String // Фамилия спортсмена
     firstName   String // Имя спортсмена
     dateOfBirth DateTime // Дата рождения спортсмена
     teamId      Int? // Идентификатор команды
-    team        Team?    @relation(fields: [teamId], references: [id])
+    team        Team?         @relation(fields: [teamId], references: [id])
     gender      String // Пол спортсмена
     weight      Int // Вес спортсмена
-    created_at  DateTime @default(now())
-    updated_at  DateTime @updatedAt
-    onePlayers  Duel[]   @relation(name: "onePlayers")
-    twoPlayers  Duel[]   @relation(name: "twoPlayers")
-    winners     Duel[]   @relation(name: "winners")
+    created_at  DateTime      @default(now())
+    updated_at  DateTime      @updatedAt
+    onePlayers  Duel[]        @relation(name: "onePlayers")
+    twoPlayers  Duel[]        @relation(name: "twoPlayers")
+    winners     Duel[]        @relation(name: "winners")
+    gameAthlete GameAthlete[]
 
     @@unique([firstName, lastName, dateOfBirth, teamId])
 }
@@ -71,46 +72,64 @@ model Category {
 
 // Соревнование
 model Game {
-    id               Int               @id @default(autoincrement())
-    name             String? //Название соревнования.
-    startDate        DateTime? // Дата начала
-    endDate          DateTime? // Дата окночания
-    status           String // Статус соревнования
-    gameCompetitions GameCompetition[] // Дисциплины соревнования
-    created_at       DateTime          @default(now())
-    updated_at       DateTime          @updatedAt
+    id           Int               @id @default(autoincrement())
+    name         String? //Название соревнования.
+    startDate    DateTime? // Дата начала
+    endDate      DateTime? // Дата окночания
+    status       String // Статус соревнования
+    competitions GameCompetition[] // Дисциплины соревнования
+    created_at   DateTime          @default(now())
+    updated_at   DateTime          @updatedAt
 }
 
 // Дисциплина конкретной игры
 model GameCompetition {
-    id             Int            @id @default(autoincrement())
-    gameId         Int
-    game           Game           @relation(fields: [gameId], references: [id])
-    competition    Competition?   @relation(fields: [competitionId], references: [id])
-    competitionId  Int?
-    gameCategories GameCategory[]
+    id            Int            @id @default(autoincrement())
+    gameId        Int
+    game          Game           @relation(fields: [gameId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    competition   Competition?   @relation(fields: [competitionId], references: [id])
+    competitionId Int?
+    categories    GameCategory[]
+
+    @@unique([gameId, competitionId])
 }
 
 // Категория конкретной дисциплины конкретной игры
 model GameCategory {
-    id                Int             @id @default(autoincrement())
-    gameCompetitionId Int
-    gameCompetition   GameCompetition @relation(fields: [gameCompetitionId], references: [id])
-    categoryId        Int?
-    category          Category?       @relation(fields: [categoryId], references: [id])
-    standings         Standing[]
-    created_at        DateTime        @default(now())
-    updated_at        DateTime        @updatedAt
+    id            Int             @id @default(autoincrement())
+    competitionId Int
+    competition   GameCompetition @relation(fields: [competitionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    categoryId    Int?
+    category      Category?       @relation(fields: [categoryId], references: [id])
+    standings     Standing[]
+    created_at    DateTime        @default(now())
+    updated_at    DateTime        @updatedAt
+    athletes      GameAthlete[]
+
+    @@unique([competitionId, categoryId])
+}
+
+// Спортсмены, учавствующие в соревнованиях
+model GameAthlete {
+    id         Int          @id @default(autoincrement())
+    categoryId Int // Категория
+    category   GameCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    athleteId  Int // Первый участник
+    athlete    Athlete      @relation(fields: [athleteId], references: [id])
+    created_at DateTime     @default(now())
+    updated_at DateTime     @updatedAt
+
+    @@unique([categoryId, athleteId])
 }
 
 // Турнирная таблица
 model Standing {
-    id           Int          @id @default(autoincrement())
-    duels        Duel[] // Поединки
-    categoryId   Int // Категория
-    gameCategory GameCategory @relation(fields: [categoryId], references: [id])
-    created_at   DateTime     @default(now())
-    updated_at   DateTime     @updatedAt
+    id         Int          @id @default(autoincrement())
+    duels      Duel[] // Поединки
+    categoryId Int // Категория
+    category   GameCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    created_at DateTime     @default(now())
+    updated_at DateTime     @updatedAt
 }
 
 // Поединок
@@ -123,7 +142,7 @@ model Duel {
     winnerId    Int // Победитель
     winner      Athlete  @relation(fields: [winnerId], references: [id], name: "winners")
     standingId  Int // Ткртнирная таблица
-    standing    Standing @relation(fields: [standingId], references: [id])
+    standing    Standing @relation(fields: [standingId], references: [id], onDelete: Cascade, onUpdate: Cascade)
     created_at  DateTime @default(now())
     updated_at  DateTime @updatedAt
 }
