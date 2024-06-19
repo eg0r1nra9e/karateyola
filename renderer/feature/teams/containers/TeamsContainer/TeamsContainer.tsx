@@ -1,0 +1,66 @@
+import { Button, Table } from 'antd'
+import { ColumnsType } from 'antd/es/table'
+import Link from 'next/link'
+import { useEffect, useState } from 'react'
+
+import { MinusOutlined } from '@ant-design/icons'
+
+import { TeamWithCity } from '../../../../types/TeamWithCity'
+
+export const TeamsContainer = () => {
+  const [teams, setTeams] = useState<TeamWithCity[]>([])
+
+  const fetchData = async () => {
+    const res = await fetch('/api/teams')
+    const data = await res.json()
+    setTeams(data)
+  }
+
+  const deleteTeam = async (teamId: number) => {
+    await fetch(`api/teams/${teamId}`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      method: 'DELETE',
+    })
+
+    const newTeams = [...teams.filter((team) => team.id !== teamId)]
+    setTeams(newTeams)
+  }
+
+  useEffect(() => {
+    fetchData()
+  }, [])
+
+  const columns: ColumnsType<TeamWithCity> = [
+    {
+      title: 'Название',
+      dataIndex: 'name',
+      key: 'name',
+      render: (_, team) => <Link href={`/teams/edit/${team.id}`}>{team.name}</Link>,
+      sorter: (a, b) => a.name.localeCompare(b.name),
+    },
+    {
+      title: 'Город',
+      dataIndex: 'city',
+      key: 'city',
+      render: (_, team) => (team.city?.city ? `${team.city?.city}` : ''),
+      sorter: (a, b) => a.city.city.localeCompare(b.city.city),
+    },
+    {
+      title: '',
+      key: 'action',
+      render: (_, team) => (
+        <Button type="primary" danger onClick={() => deleteTeam(team.id)} icon={<MinusOutlined />}>
+          Удалить
+        </Button>
+      ),
+    },
+  ]
+
+  return (
+    <>
+      <Table dataSource={teams} columns={columns} rowKey="id" />
+    </>
+  )
+}

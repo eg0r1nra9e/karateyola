@@ -1,6 +1,6 @@
 import { NextPage } from 'next'
 
-import { AthleteFormContainer } from '../../../containers/AthleteFormContainer/AthleteFormContainer'
+import { AthleteFormContainer } from '../../../feature/athletes/containers/AthleteFormContainer/AthleteFormContainer'
 
 const AthleteAdd: NextPage = () => {
   return (

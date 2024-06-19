@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import React from 'react'
 
-import { DashBoardContainer } from '../containers/DashBoardContainer/DashBoardContainer'
+import { DashBoardContainer } from '../feature/dashboard/containers/DashBoardContainer/DashBoardContainer'
 
 const Home = () => {
   return (

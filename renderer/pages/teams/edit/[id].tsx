@@ -1,7 +1,7 @@
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
 
-import { TeamFormContainer } from '../../../containers/TeamFormContainer/TeamFormContainer'
+import { TeamFormContainer } from '../../../feature/teams/containers/TeamFormContainer/TeamFormContainer'
 
 const TeamEdit: NextPage = () => {
   const router = useRouter()

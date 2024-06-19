@@ -1,7 +1,7 @@
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
 
-import { CompetitionFormContainer } from '../../../containers/CompetitionFormContainer/CompetitionFormContainer'
+import { CompetitionFormContainer } from '../../../feature/competitions/containers/CompetitionFormContainer/CompetitionFormContainer'
 
 const CompetitionEdit: NextPage = () => {
   const router = useRouter()

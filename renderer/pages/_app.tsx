@@ -6,15 +6,15 @@ import ru from 'antd/locale/ru_RU'
 import dayjs from 'dayjs'
 import Head from 'next/head'
 import { Provider } from 'react-redux'
-
-import { MainLayout } from '../layouts/MainLayout/MainLayout'
-import { createStore } from '../store/store'
-import { readData, saveData } from '../utils/file'
-
-import { Store } from '@reduxjs/toolkit'
-import type { AppProps } from 'next/app'
 import { initMessageListener } from 'redux-state-sync'
 
+import { Store } from '@reduxjs/toolkit'
+
+import { MainLayout } from '../shared/layouts/MainLayout/MainLayout'
+import { readData, saveData } from '../shared/utils/file'
+import { createStore } from '../store/store'
+
+import type { AppProps } from 'next/app'
 dayjs.locale('ru')
 
 // global store, used only at client

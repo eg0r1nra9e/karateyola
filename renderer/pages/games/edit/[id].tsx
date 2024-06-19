@@ -1,7 +1,7 @@
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
 
-import { GameFormContainer } from '../../../containers/GameFormContainer/GameFormContainer'
+import { GameFormContainer } from '../../../feature/games/containers/GameFormContainer/GameFormContainer'
 
 const GameEdit: NextPage = () => {
   const router = useRouter()

@@ -1,6 +1,6 @@
 import { NextPage } from 'next'
 
-import { CategoryFormContainer } from '../../../containers/CategoryFormContainer/CategoryFormContainer'
+import { CategoryFormContainer } from '../../../feature/categories/containers/CategoryFormContainer/CategoryFormContainer'
 
 const CategoryAdd: NextPage = () => {
   return (

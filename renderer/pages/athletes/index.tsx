@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 import { PlusOutlined } from '@ant-design/icons'
 
-import { AthletesContainer } from '../../containers/AthletesContainer/AthleteContainer'
+import { AthletesContainer } from '../../feature/athletes/containers/AthletesContainer/AthleteContainer'
 
 const Athletes: NextPage = () => {
   return (

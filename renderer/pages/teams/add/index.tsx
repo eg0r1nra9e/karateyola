@@ -1,6 +1,6 @@
 import { NextPage } from 'next'
 
-import { TeamFormContainer } from '../../../containers/TeamFormContainer/TeamFormContainer'
+import { TeamFormContainer } from '../../../feature/teams/containers/TeamFormContainer/TeamFormContainer'
 
 const TeamAdd: NextPage = () => {
   return (

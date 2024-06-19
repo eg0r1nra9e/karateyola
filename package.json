@@ -14,7 +14,8 @@
     "dist": "npm run build && electron-builder",
     "dist:debug": "lldb ./dist/mac/electron-quick-start-typescript.app",
     "dist:unpack": "npx asar extract ./dist/mac/electron-quick-start-typescript.app/Contents/Resources/app.asar ./dist/unpack",
-    "type-check": "tsc"
+    "type-check": "tsc",
+    "prisma-init": "npx prisma migrate dev --name init"
   },
   "dependencies": {
     "@ant-design/icons": "^5.2.6",

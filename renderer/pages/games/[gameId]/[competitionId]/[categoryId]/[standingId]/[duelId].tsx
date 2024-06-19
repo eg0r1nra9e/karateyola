@@ -1,7 +1,7 @@
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
 
-import { DuelContainer } from '../../../../../../containers/DuelContainer/DuelContainer'
+import { DuelContainer } from '../../../../../../feature/duel/containers/DuelContainer/DuelContainer'
 
 const Duel: NextPage = () => {
   const router = useRouter()

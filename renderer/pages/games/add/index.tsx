@@ -1,6 +1,6 @@
 import { NextPage } from 'next'
 
-import { GameFormContainer } from '../../../containers/GameFormContainer/GameFormContainer'
+import { GameFormContainer } from '../../../feature/games/containers/GameFormContainer/GameFormContainer'
 
 const GameAdd: NextPage = () => {
   return (

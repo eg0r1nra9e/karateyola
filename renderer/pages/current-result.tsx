@@ -1,6 +1,6 @@
 import { NextPage } from 'next'
 
-import { DuelResultContainer } from '../containers/DuelResultContainer/DuelResultContainer'
+import { DuelResultContainer } from '../feature/duel/containers/DuelResultContainer/DuelResultContainer'
 
 const Duel: NextPage = () => {
   return <DuelResultContainer />

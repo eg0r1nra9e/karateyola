@@ -1,7 +1,7 @@
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
 
-import { CategoryFormContainer } from '../../../containers/CategoryFormContainer/CategoryFormContainer'
+import { CategoryFormContainer } from '../../../feature/categories/containers/CategoryFormContainer/CategoryFormContainer'
 
 const CategoryEdit: NextPage = () => {
   const router = useRouter()

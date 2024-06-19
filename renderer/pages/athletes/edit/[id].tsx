@@ -1,7 +1,7 @@
 import { NextPage } from 'next'
 import { useRouter } from 'next/router'
 
-import { AthleteFormContainer } from '../../../containers/AthleteFormContainer/AthleteFormContainer'
+import { AthleteFormContainer } from '../../../feature/athletes/containers/AthleteFormContainer/AthleteFormContainer'
 
 const AthleteEdit: NextPage = () => {
   const router = useRouter()

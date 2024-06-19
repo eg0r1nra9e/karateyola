@@ -1,6 +1,6 @@
 import { NextPage } from 'next'
 
-import { CompetitionFormContainer } from '../../../containers/CompetitionFormContainer/CompetitionFormContainer'
+import { CompetitionFormContainer } from '../../../feature/competitions/containers/CompetitionFormContainer/CompetitionFormContainer'
 
 const CompetitionAdd: NextPage = () => {
   return (
