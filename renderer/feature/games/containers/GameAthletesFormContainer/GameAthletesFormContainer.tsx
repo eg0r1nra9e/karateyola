@@ -13,11 +13,10 @@ interface IGameAthletesFormContainerProps {
   categories: Category[]
   athletes: AthleteWithTeamAndCity[]
   onFinish: (values: any) => void
-  onBack: (values: any) => void
 }
 
 export const GameAthletesFormContainer: FC<IGameAthletesFormContainerProps> = (props) => {
-  const { game, competitions, categories, athletes, onFinish, onBack } = props
+  const { game, competitions, categories, athletes, onFinish } = props
 
   const [currentGame, setCurrentGame] = useState(game)
 
@@ -59,10 +58,7 @@ export const GameAthletesFormContainer: FC<IGameAthletesFormContainerProps> = (p
       <Divider />
       <Space size={8}>
         <Button type="primary" htmlType="submit" onClick={() => onFinish(currentGame)}>
-          Продолжить
-        </Button>
-        <Button htmlType="button" onClick={onBack}>
-          Назад
+          Сохранить
         </Button>
       </Space>
     </>

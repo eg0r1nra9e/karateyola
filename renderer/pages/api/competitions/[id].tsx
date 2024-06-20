@@ -21,6 +21,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         })
         res.status(200).json(competition)
         break
+
       case 'PUT':
         competition = await prisma.competition.update({
           where: { id: Number(competitionId) },
@@ -30,12 +31,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         })
         res.status(200).json(competition)
         break
+
       case 'DELETE':
         competition = await prisma.competition.delete({
           where: { id: Number(competitionId) },
         })
         res.status(200).json({ message: 'Note updated' })
         break
+
       default:
         res.setHeader('Allow', ['GET', 'POST', 'PUT', 'DELETE'])
         res.status(405).end(`Method ${req.method} Not Allowed`)

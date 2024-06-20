@@ -8,23 +8,7 @@ import { GameWithAll } from '../../../types/GameWithAll'
 const prisma = new PrismaClient()
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<any>) {
-  const { name, startDate, endDate, status, competitions } = req.body as GameWithAll
-
-  const createCompetitions =
-    competitions?.map((competition) => {
-      const createCategories =
-        competition.categories.map((category) => {
-          return {
-            categoryId: category.id,
-          }
-        }) ?? []
-      return {
-        competitionId: competition.id,
-        categories: {
-          create: createCategories,
-        },
-      }
-    }) ?? []
+  const { name, startDate, endDate, status } = req.body as GameWithAll
 
   try {
     const game = await prisma.game.create({
@@ -33,9 +17,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         startDate,
         endDate,
         status,
-        competitions: {
-          create: createCompetitions,
-        },
       },
     })
     res.status(200).json(game)

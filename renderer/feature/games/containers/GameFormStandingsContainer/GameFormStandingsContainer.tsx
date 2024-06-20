@@ -11,11 +11,10 @@ import { GameWithAll } from '../../../../types/GameWithAll'
 interface IGameFormStandingsContainerProps {
   game: GameWithAll
   onFinish: (values: any) => void
-  onBack: (values: any) => void
 }
 
 export const GameFormStandingsContainer: FC<IGameFormStandingsContainerProps> = (props) => {
-  const { game, onFinish, onBack } = props
+  const { game, onFinish } = props
   const athletes = useAppSelector(selectAthletes)
   const teams = useAppSelector(selectTeams)
   const competitions = useAppSelector(selectCompetitions)
@@ -51,9 +50,6 @@ export const GameFormStandingsContainer: FC<IGameFormStandingsContainerProps> = 
       <Space size={8}>
         <Button type="primary" htmlType="submit" onClick={() => onFinish(currentGame)}>
           Завершить
-        </Button>
-        <Button htmlType="button" onClick={onBack}>
-          Назад
         </Button>
       </Space>
     </>

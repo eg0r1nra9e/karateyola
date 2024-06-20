@@ -1,7 +1,9 @@
+import { App } from 'antd'
 import { useRouter } from 'next/router'
 import { FC, useEffect, useState } from 'react'
 
 import { Competition } from '@prisma/client'
+
 import { CompetitionForm } from '../../components/CompetitionForm/CompetitionForm'
 
 interface ICompetitionFormProps {
@@ -12,6 +14,7 @@ export const CompetitionFormContainer: FC<ICompetitionFormProps> = (props) => {
   const { competitionId } = props
 
   const { push } = useRouter()
+  const { notification } = App.useApp()
 
   const [competition, setCompetition] = useState<Competition>()
 
@@ -24,21 +27,32 @@ export const CompetitionFormContainer: FC<ICompetitionFormProps> = (props) => {
   }
 
   const onFinish = async (team: Competition) => {
-    if (!competitionId) {
-      await fetch('/api/competitions/create', {
-        body: JSON.stringify(team),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        method: 'POST',
+    try {
+      if (!competitionId) {
+        await fetch('/api/competitions/create', {
+          body: JSON.stringify(team),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          method: 'POST',
+        })
+      } else {
+        await fetch(`/api/competitions/${competitionId}`, {
+          body: JSON.stringify(team),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          method: 'PUT',
+        })
+      }
+      notification.success({
+        message: `Сохранение`,
+        description: 'Дисциплина сохранена',
       })
-    } else {
-      await fetch(`/api/competitions/${competitionId}`, {
-        body: JSON.stringify(team),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        method: 'PUT',
+    } catch (error) {
+      notification.error({
+        message: `Сохранение`,
+        description: 'При сохранении произошла ошибка.',
       })
     }
 
@@ -49,5 +63,9 @@ export const CompetitionFormContainer: FC<ICompetitionFormProps> = (props) => {
     fetchData()
   }, [])
 
-  return <CompetitionForm competition={competition} onFinish={onFinish} />
+  return (
+    <>
+      <CompetitionForm competition={competition} onFinish={onFinish} />
+    </>
+  )
 }

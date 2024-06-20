@@ -1,3 +1,4 @@
+import { App } from 'antd'
 import { useRouter } from 'next/router'
 import { FC, useEffect, useState } from 'react'
 
@@ -13,6 +14,7 @@ interface IAthleteFormProps {
 export const AthleteFormContainer: FC<IAthleteFormProps> = (props) => {
   const { athleteId } = props
   const { push } = useRouter()
+  const { notification } = App.useApp()
 
   const [athlete, setAthlete] = useState<AthleteWithTeamAndCity>()
   const [teams, setTeams] = useState<Team[]>([])
@@ -36,21 +38,32 @@ export const AthleteFormContainer: FC<IAthleteFormProps> = (props) => {
   }
 
   const onFinish = async (athlete: AthleteWithTeamAndCity) => {
-    if (!athleteId) {
-      await fetch('/api/athletes/create', {
-        body: JSON.stringify(athlete),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        method: 'POST',
+    try {
+      if (!athleteId) {
+        await fetch('/api/athletes/create', {
+          body: JSON.stringify(athlete),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          method: 'POST',
+        })
+      } else {
+        await fetch(`/api/athletes/${athleteId}`, {
+          body: JSON.stringify(athlete),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          method: 'PUT',
+        })
+      }
+      notification.success({
+        message: `Сохранение`,
+        description: 'Спортсмен сохранен',
       })
-    } else {
-      await fetch(`/api/athletes/${athleteId}`, {
-        body: JSON.stringify(athlete),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        method: 'PUT',
+    } catch (error) {
+      notification.error({
+        message: `Сохранение`,
+        description: 'При сохранении произошла ошибка.',
       })
     }
 
@@ -61,5 +74,9 @@ export const AthleteFormContainer: FC<IAthleteFormProps> = (props) => {
     fetchData()
   }, [])
 
-  return <AthleteForm athlete={athlete} teams={teams} onFinish={onFinish} />
+  return (
+    <>
+      <AthleteForm athlete={athlete} teams={teams} onFinish={onFinish} />
+    </>
+  )
 }

@@ -1,18 +1,20 @@
-import { Divider, Steps, Typography } from 'antd'
+import { Tabs, Typography } from 'antd'
 import { FC, useEffect, useState } from 'react'
 
-import { ApartmentOutlined, ProfileOutlined, TeamOutlined, TrophyOutlined } from '@ant-design/icons'
 import { Category, Competition } from '@prisma/client'
 
 import { AthleteWithTeamAndCity } from '../../../../types/AthleteWithTeamAndCity'
+import { GameCompetitionWithCategory } from '../../../../types/GameCompetitionWithAthlete'
 import { GameWithAll } from '../../../../types/GameWithAll'
 import { GameAthletesFormContainer } from '../../containers/GameAthletesFormContainer/GameAthletesFormContainer'
+import { GameCompetitionsFormContainer } from '../../containers/GameCompetitionsFormContainer/GameCompetitionsFormContainer'
 import { GameFormStandingsContainer } from '../../containers/GameFormStandingsContainer/GameFormStandingsContainer'
-import { GameCompetitionsForm } from '../GameCompetitionsForm/GameCompetitionsForm'
-import { GameGeneralInformationForm } from '../GameGeneralInformationForm/GameGeneralInformationForm'
+import { GameGeneralInformationFormContainer } from '../../containers/GameGeneralInformationFormContainer/GameGeneralInformationFormContainer'
 
 interface IGameFormProps {
+  gameId?: number
   game?: GameWithAll
+  gameCompetitions: GameCompetitionWithCategory[]
   competitions: Competition[]
   categories: Category[]
   athletes: AthleteWithTeamAndCity[]
@@ -21,30 +23,19 @@ interface IGameFormProps {
 }
 
 export const GameForm: FC<IGameFormProps> = (props) => {
-  const { game, competitions, categories, athletes, onSave, onFinish } = props
+  const { gameId, game, competitions, categories, gameCompetitions, athletes, onSave, onFinish } = props
 
   const [currentGame, setCurrentGame] = useState(game)
+
+  const [currentGameId, setCurrentGameId] = useState(gameId)
+
   useEffect(() => {
     setCurrentGame(game)
   }, [game])
 
-  const [currentStep, setCurrentStep] = useState(0)
-
-  const onFinishGeneralForm = (updateGame: GameWithAll) => {
-    setCurrentGame({
-      ...currentGame,
-      ...updateGame,
-    })
-    setCurrentStep(1)
-  }
-
-  const onFinishCompetitionsForm = (updateGame: GameWithAll) => {
-    setCurrentGame({
-      ...currentGame,
-      ...updateGame,
-    })
-    setCurrentStep(2)
-  }
+  useEffect(() => {
+    setCurrentGameId(gameId)
+  }, [gameId])
 
   const onFinishAthletesForm = (updateGame: GameWithAll) => {
     const newGame = {
@@ -54,30 +45,76 @@ export const GameForm: FC<IGameFormProps> = (props) => {
 
     setCurrentGame(newGame)
     onSave(newGame)
-    setCurrentStep(3)
   }
 
   const onFinishForm = () => {
     onFinish(currentGame)
   }
 
+  const items = [
+    {
+      key: '1',
+      label: 'Общая информация',
+      children: (
+        <>
+          <Typography.Title level={2}>Общая информация</Typography.Title>
+          <GameGeneralInformationFormContainer key="gameGeneralInformationForm" gameId={currentGameId} />
+        </>
+      ),
+    },
+  ]
+
+  if (gameId) {
+    items.push(
+      ...[
+        {
+          key: '2',
+          label: 'Дисциплины и категории',
+          children: (
+            <>
+              <h2>Дисциплины и категории</h2>
+              <GameCompetitionsFormContainer gameId={currentGameId}></GameCompetitionsFormContainer>
+            </>
+          ),
+        },
+        {
+          key: '3',
+          label: 'Спортсмены',
+          children: (
+            <>
+              <h2>Спортсмены</h2>
+              <GameAthletesFormContainer
+                key="gameAthletesFormContainer"
+                game={currentGame}
+                competitions={competitions}
+                categories={categories}
+                athletes={athletes}
+                onFinish={onFinishAthletesForm}
+              />
+            </>
+          ),
+        },
+        {
+          key: '4',
+          label: 'Турнирная таблица',
+          children: (
+            <>
+              <h2>Турнирная таблица</h2>
+              <GameFormStandingsContainer key="gameStandingsContainer" game={currentGame} onFinish={onFinishForm} />
+            </>
+          ),
+        },
+      ],
+    )
+  }
   const forms = [
     <>
       <Typography.Title level={2}>Общая информация</Typography.Title>
-      <GameGeneralInformationForm key="gameGeneralInformationForm" game={currentGame} onFinish={onFinishGeneralForm} />
+      <GameGeneralInformationFormContainer key="gameGeneralInformationForm" gameId={currentGameId} />
     </>,
     <>
-      <h2>Дисциплины</h2>
-      <GameCompetitionsForm
-        key="gameCompetitionsForm"
-        game={currentGame}
-        competitions={competitions}
-        categories={categories}
-        onFinish={onFinishCompetitionsForm}
-        onBack={() => {
-          setCurrentStep(0)
-        }}
-      />
+      <h2>Дисциплины и категории</h2>
+      <GameCompetitionsFormContainer gameId={currentGameId}></GameCompetitionsFormContainer>
     </>,
     <>
       <h2>Спортсмены</h2>
@@ -88,34 +125,17 @@ export const GameForm: FC<IGameFormProps> = (props) => {
         categories={categories}
         athletes={athletes}
         onFinish={onFinishAthletesForm}
-        onBack={() => {
-          setCurrentStep(1)
-        }}
       />
     </>,
     <>
       <h2>Турнирная таблица</h2>
-      <GameFormStandingsContainer
-        key="gameStandingsContainer"
-        game={currentGame}
-        onFinish={onFinishForm}
-        onBack={() => {
-          setCurrentStep(2)
-        }}
-      />
+      <GameFormStandingsContainer key="gameStandingsContainer" game={currentGame} onFinish={onFinishForm} />
     </>,
   ]
 
   return (
     <>
-      <Steps current={currentStep}>
-        <Steps.Step title="Общая информация" icon={<TrophyOutlined />} />
-        <Steps.Step title="Дисциплины" icon={<ProfileOutlined />} />
-        <Steps.Step title="Спортсмены" icon={<TeamOutlined />} />
-        <Steps.Step title="Турнирная таблица" icon={<ApartmentOutlined />} />
-      </Steps>
-      <Divider />
-      {forms[currentStep]}
+      <Tabs items={items}></Tabs>
     </>
   )
 }

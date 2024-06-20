@@ -8,23 +8,7 @@ const prisma = new PrismaClient()
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<any>) {
   const gameId = +req.query.id
-  const { name, startDate, endDate, status, competitions } = req.body as GameWithAll
-
-  const createCompetitions =
-    competitions?.map((competition) => {
-      const createCategories =
-        competition.categories.map((category) => {
-          return {
-            categoryId: category.id,
-          }
-        }) ?? []
-      return {
-        competitionId: competition.id,
-        categories: {
-          create: createCategories,
-        },
-      }
-    }) ?? []
+  const { name, startDate, endDate, status } = req.body as GameWithAll
 
   let game
 
@@ -35,81 +19,30 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
           where: {
             id: gameId,
           },
-          include: {
-            competitions: {
-              include: {
-                competition: true,
-                categories: {
-                  include: {
-                    category: {
-                      select: {
-                        id: true,
-                        name: true,
-                      },
-                    },
-                    athletes: {
-                      include: {
-                        athlete: true,
-                      },
-                    },
-                    standings: {
-                      include: {
-                        duels: {
-                          include: {
-                            onePlayer: true,
-                            twoPlayer: true,
-                            winner: true,
-                          },
-                        },
-                      },
-                    },
-                  },
-                },
-              },
-            },
-          },
         })
         res.status(200).json(game)
         break
+
       case 'PUT':
         game = await prisma.game.update({
           where: { id: Number(gameId) },
-
           data: {
             name,
             startDate,
             endDate,
             status,
-            competitions: {
-              deleteMany: {},
-              create: createCompetitions,
-            },
           },
         })
         res.status(200).json(game)
         break
+
       case 'DELETE':
-        const competitions = await prisma.gameCompetition.findMany({
-          where: { gameId: Number(gameId) },
-          select: {
-            id: true,
-          },
+        await prisma.game.deleteMany({
+          where: { id: Number(gameId) },
         })
-
-        await prisma.$transaction([
-          // prisma.gameCategory.deleteMany({
-          //   where: { competitionId: competitions },
-          // }),
-          // prisma.gameCompetition.deleteMany({
-          //   where: { gameId: Number(gameId) },
-          // }),
-          prisma.game.deleteMany({
-            where: { id: Number(gameId) },
-          }),
-        ])
-
         res.status(200).json({ message: 'Note updated' })
         break
+
       default:
         res.setHeader('Allow', ['GET', 'POST', 'PUT', 'DELETE'])
         res.status(405).end(`Method ${req.method} Not Allowed`)

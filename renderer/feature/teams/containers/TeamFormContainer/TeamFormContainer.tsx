@@ -1,3 +1,4 @@
+import { App } from 'antd'
 import { useRouter } from 'next/router'
 import { FC, useEffect, useState } from 'react'
 
@@ -13,6 +14,8 @@ interface ITeamFormProps {
 export const TeamFormContainer: FC<ITeamFormProps> = (props) => {
   const { teamId } = props
   const { push } = useRouter()
+
+  const { notification } = App.useApp()
 
   const [team, setTeam] = useState<TeamWithCity>()
   const [cities, setCities] = useState<City[]>([])
@@ -36,21 +39,33 @@ export const TeamFormContainer: FC<ITeamFormProps> = (props) => {
   }
 
   const onFinish = async (team: TeamWithCity) => {
-    if (!teamId) {
-      await fetch('/api/teams/create', {
-        body: JSON.stringify(team),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        method: 'POST',
+    try {
+      if (!teamId) {
+        await fetch('/api/teams/create', {
+          body: JSON.stringify(team),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          method: 'POST',
+        })
+      } else {
+        await fetch(`/api/teams/${teamId}`, {
+          body: JSON.stringify(team),
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          method: 'PUT',
+        })
+      }
+
+      notification.success({
+        message: `Сохранение`,
+        description: 'Команда сохранена',
       })
-    } else {
-      await fetch(`/api/teams/${teamId}`, {
-        body: JSON.stringify(team),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        method: 'PUT',
+    } catch (error) {
+      notification.error({
+        message: `Сохранение`,
+        description: 'При сохранении произошла ошибка.',
       })
     }
 
@@ -61,5 +76,9 @@ export const TeamFormContainer: FC<ITeamFormProps> = (props) => {
     fetchData()
   }, [])
 
-  return <TeamForm team={team} cities={cities} onFinish={onFinish} />
+  return (
+    <>
+      <TeamForm team={team} cities={cities} onFinish={onFinish} />
+    </>
+  )
 }

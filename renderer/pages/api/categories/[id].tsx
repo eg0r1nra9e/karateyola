@@ -21,6 +21,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         })
         res.status(200).json(category)
         break
+
       case 'PUT':
         category = await prisma.category.update({
           where: { id: Number(categoryId) },
@@ -31,12 +32,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         })
         res.status(200).json(category)
         break
+
       case 'DELETE':
         category = await prisma.category.delete({
           where: { id: Number(categoryId) },
         })
         res.status(200).json({ message: 'Note updated' })
         break
+
       default:
         res.setHeader('Allow', ['GET', 'POST', 'PUT', 'DELETE'])
         res.status(405).end(`Method ${req.method} Not Allowed`)

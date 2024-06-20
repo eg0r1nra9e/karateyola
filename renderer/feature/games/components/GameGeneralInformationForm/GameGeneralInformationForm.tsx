@@ -61,7 +61,7 @@ export const GameGeneralInformationForm: FC<IGameGeneralInformationFormProps> = 
       <Divider />
       <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
         <Button type="primary" htmlType="submit">
-          Продолжить
+          Сохранить
         </Button>
       </Form.Item>
     </Form>
