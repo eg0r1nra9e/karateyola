@@ -3,9 +3,9 @@ import { ColumnsType } from 'antd/es/table'
 import dayjs from 'dayjs'
 import Link from 'next/link'
 
-import { MinusOutlined } from '@ant-design/icons'
 
 import { useEffect, useState } from 'react'
+import { DeleteButton } from '../../../../shared/ui/DeleteButton/DeleteButton'
 import { GameWithAll } from '../../../../types/GameWithAll'
 
 export const GamesContainer = () => {
@@ -73,10 +73,14 @@ export const GamesContainer = () => {
     {
       title: '',
       key: 'delete',
+      fixed: 'right',
+      width: 100,
       render: (_, game) => (
-        <Button type="primary" danger onClick={() => deleteGame(game.id)} icon={<MinusOutlined />}>
-          Удалить
-        </Button>
+        <DeleteButton
+          title="Удалить соревнование"
+          description="Вы уверены, что хотите удалить это соревнование?"
+          onClick={() => deleteGame(game.id)}
+        ></DeleteButton>
       ),
     },
   ]

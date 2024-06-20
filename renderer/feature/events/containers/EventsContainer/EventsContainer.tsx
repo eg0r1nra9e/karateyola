@@ -2,16 +2,17 @@ import { Button, Table } from 'antd'
 import { ColumnsType } from 'antd/es/table'
 import dayjs from 'dayjs'
 import Link from 'next/link'
-
-import { ApartmentOutlined, MinusOutlined, ThunderboltOutlined } from '@ant-design/icons'
-
 import { useRouter } from 'next/router'
+
+import { ApartmentOutlined, ThunderboltOutlined } from '@ant-design/icons'
+
+import { DeleteButton } from '../../../../shared/ui/DeleteButton/DeleteButton'
 import { useAppDispatch, useAppSelector } from '../../../../store/hooks'
 import { selectCompetitions } from '../../../../store/slices/competitionsSlice'
 import { endGame, removeGame, selectGames, startGame } from '../../../../store/slices/gamesSlice'
 import { IGame } from '../../../../types/IGame'
 
-export const DashBoardContainer = () => {
+export const EventsContainer = () => {
   const games = useAppSelector(selectGames)
   const dispatch = useAppDispatch()
   const competitions = useAppSelector(selectCompetitions)
@@ -106,11 +107,15 @@ export const DashBoardContainer = () => {
     },
     {
       title: '',
-      key: 'action',
+      key: 'delete',
+      fixed: 'right',
+      width: 100,
       render: (_, game) => (
-        <Button type="primary" danger onClick={() => deleteGame(game.id)} icon={<MinusOutlined />}>
-          Удалить
-        </Button>
+        <DeleteButton
+          title="Удалить соревнование"
+          description="Вы уверены, что хотите удалить это соревнование?"
+          onClick={() => deleteGame(game.id)}
+        ></DeleteButton>
       ),
     },
   ]

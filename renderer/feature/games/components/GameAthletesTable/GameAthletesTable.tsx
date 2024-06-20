@@ -78,7 +78,6 @@ export const GameAthletesTable: FC<IGameAthletesContainerProps> = (props) => {
     }),
   )
 
-  debugger
   const rowSelection = {
     selectedRowKeys: category.athletes?.map((athlete) => athlete.id) ?? [],
     onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {

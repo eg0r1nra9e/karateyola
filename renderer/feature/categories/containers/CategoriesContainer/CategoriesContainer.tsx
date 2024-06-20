@@ -1,11 +1,11 @@
-import { Button, Table } from 'antd'
+import { Table } from 'antd'
 import { ColumnsType } from 'antd/es/table'
 import Link from 'next/link'
-
-import { MinusOutlined } from '@ant-design/icons'
+import { useEffect, useState } from 'react'
 
 import { Category } from '@prisma/client'
-import { useEffect, useState } from 'react'
+
+import { DeleteButton } from '../../../../shared/ui/DeleteButton/DeleteButton'
 
 export const CategoriesContainer = () => {
   const [categories, setCategories] = useState([])
@@ -48,11 +48,15 @@ export const CategoriesContainer = () => {
     },
     {
       title: '',
-      key: 'action',
+      key: 'delete',
+      fixed: 'right',
+      width: 100,
       render: (_, category) => (
-        <Button type="primary" danger onClick={() => deleteCategory(category.id)} icon={<MinusOutlined />}>
-          Удалить
-        </Button>
+        <DeleteButton
+          title="Удалить категорию"
+          description="Вы уверены, что хотите удалить эту категорию?"
+          onClick={() => deleteCategory(category.id)}
+        ></DeleteButton>
       ),
     },
   ]

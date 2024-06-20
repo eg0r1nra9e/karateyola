@@ -19,7 +19,6 @@ interface IGameAthletesFormContainerProps {
 export const GameAthletesFormContainer: FC<IGameAthletesFormContainerProps> = (props) => {
   const { game, competitions, categories, athletes, onFinish, onBack } = props
 
-  debugger
   const [currentGame, setCurrentGame] = useState(game)
 
   const items = []
@@ -38,8 +37,6 @@ export const GameAthletesFormContainer: FC<IGameAthletesFormContainerProps> = (p
   const getCategoryName = (categoryId) => {
     return categories.find((category) => category.id === categoryId)?.name
   }
-
-  debugger
 
   currentGame?.competitions.forEach((competition) => {
     const competitionName = competitions?.find((c) => c.id === competition.id)?.name

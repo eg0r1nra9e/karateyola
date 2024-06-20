@@ -1,4 +1,4 @@
-import { Divider, Steps } from 'antd'
+import { Divider, Steps, Typography } from 'antd'
 import { FC, useEffect, useState } from 'react'
 
 import { ApartmentOutlined, ProfileOutlined, TeamOutlined, TrophyOutlined } from '@ant-design/icons'
@@ -25,7 +25,6 @@ export const GameForm: FC<IGameFormProps> = (props) => {
 
   const [currentGame, setCurrentGame] = useState(game)
   useEffect(() => {
-    debugger
     setCurrentGame(game)
   }, [game])
 
@@ -48,7 +47,6 @@ export const GameForm: FC<IGameFormProps> = (props) => {
   }
 
   const onFinishAthletesForm = (updateGame: GameWithAll) => {
-    debugger
     const newGame = {
       ...currentGame,
       ...updateGame,
@@ -63,14 +61,9 @@ export const GameForm: FC<IGameFormProps> = (props) => {
     onFinish(currentGame)
   }
 
-  if (!currentGame) {
-    return null
-  }
-
-  debugger
   const forms = [
     <>
-      <h2>Общая информация</h2>
+      <Typography.Title level={2}>Общая информация</Typography.Title>
       <GameGeneralInformationForm key="gameGeneralInformationForm" game={currentGame} onFinish={onFinishGeneralForm} />
     </>,
     <>

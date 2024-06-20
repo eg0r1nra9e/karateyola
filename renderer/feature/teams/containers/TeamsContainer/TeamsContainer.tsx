@@ -1,10 +1,9 @@
-import { Button, Table } from 'antd'
+import { Table } from 'antd'
 import { ColumnsType } from 'antd/es/table'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
-import { MinusOutlined } from '@ant-design/icons'
-
+import { DeleteButton } from '../../../../shared/ui/DeleteButton/DeleteButton'
 import { TeamWithCity } from '../../../../types/TeamWithCity'
 
 export const TeamsContainer = () => {
@@ -49,11 +48,15 @@ export const TeamsContainer = () => {
     },
     {
       title: '',
-      key: 'action',
+      key: 'delete',
+      fixed: 'right',
+      width: 100,
       render: (_, team) => (
-        <Button type="primary" danger onClick={() => deleteTeam(team.id)} icon={<MinusOutlined />}>
-          Удалить
-        </Button>
+        <DeleteButton
+          title="Удалить команду"
+          description="Вы уверены, что хотите удалить эту команду?"
+          onClick={() => deleteTeam(team.id)}
+        ></DeleteButton>
       ),
     },
   ]

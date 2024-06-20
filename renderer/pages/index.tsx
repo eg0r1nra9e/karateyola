@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import React from 'react'
 
-import { DashBoardContainer } from '../feature/dashboard/containers/DashBoardContainer/DashBoardContainer'
+import { EventsContainer } from '../feature/events/containers/EventsContainer/EventsContainer'
 
 const Home = () => {
   return (
@@ -10,7 +10,7 @@ const Home = () => {
         <title>Управление соревнованиями</title>
       </Head>
 
-      <DashBoardContainer />
+      <EventsContainer />
     </React.Fragment>
   )
 }

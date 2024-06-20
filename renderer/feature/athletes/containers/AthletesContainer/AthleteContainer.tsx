@@ -1,11 +1,10 @@
-import { Button, Table } from 'antd'
+import { Table } from 'antd'
 import { ColumnsType } from 'antd/es/table'
 import dayjs from 'dayjs'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
-import { MinusOutlined } from '@ant-design/icons'
-
+import { DeleteButton } from '../../../../shared/ui/DeleteButton/DeleteButton'
 import { AthleteWithTeamAndCity } from '../../../../types/AthleteWithTeamAndCity'
 
 export const AthletesContainer = () => {
@@ -75,16 +74,15 @@ export const AthletesContainer = () => {
     },
     {
       title: '',
-      key: 'action',
+      key: 'delete',
+      fixed: 'right',
+      width: 100,
       render: (_, athlete) => (
-        <Button
-          type="primary"
-          danger
+        <DeleteButton
+          title="Удалить спортсмена"
+          description="Вы уверены, что хотите удалить этого спортсмена?"
           onClick={() => deleteAthlete(athlete.id)}
-          icon={<MinusOutlined className="athleteSocialIcon" />}
-        >
-          Удалить
-        </Button>
+        ></DeleteButton>
       ),
     },
   ]

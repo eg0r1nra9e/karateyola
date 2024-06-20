@@ -1,10 +1,11 @@
-import { Button, Table } from 'antd'
+import { Table } from 'antd'
 import { ColumnsType } from 'antd/es/table'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 
-import { MinusOutlined } from '@ant-design/icons'
 import { Competition } from '@prisma/client'
+
+import { DeleteButton } from '../../../../shared/ui/DeleteButton/DeleteButton'
 
 export const CompetitionsContainer = () => {
   const [competitions, setCompetitions] = useState([])
@@ -41,11 +42,15 @@ export const CompetitionsContainer = () => {
     },
     {
       title: '',
-      key: 'action',
+      key: 'delete',
+      fixed: 'right',
+      width: 100,
       render: (_, competition) => (
-        <Button type="primary" danger onClick={() => deleteCompetition(competition.id)} icon={<MinusOutlined />}>
-          Удалить
-        </Button>
+        <DeleteButton
+          title="Удалить дисциплину"
+          description="Вы уверены, что хотите удалить эту дисциплину?"
+          onClick={() => deleteCompetition(competition.id)}
+        ></DeleteButton>
       ),
     },
   ]
