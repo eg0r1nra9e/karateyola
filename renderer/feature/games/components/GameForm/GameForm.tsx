@@ -83,7 +83,7 @@ export const GameForm: FC<IGameFormProps> = (props) => {
           children: (
             <>
               <h2>Спортсмены</h2>
-              <GameAthletesFormContainer gameId={currentGameId} key="gameAthletesFormContainer" game={currentGame} />
+              <GameAthletesFormContainer gameId={currentGameId} key="gameAthletesFormContainer" />
             </>
           ),
         },
@@ -100,35 +100,10 @@ export const GameForm: FC<IGameFormProps> = (props) => {
       ],
     )
   }
-  const forms = [
-    <>
-      <Typography.Title level={2}>Общая информация</Typography.Title>
-      <GameGeneralInformationFormContainer key="gameGeneralInformationForm" gameId={currentGameId} />
-    </>,
-    <>
-      <h2>Дисциплины и категории</h2>
-      <GameCompetitionsFormContainer gameId={currentGameId}></GameCompetitionsFormContainer>
-    </>,
-    <>
-      <h2>Спортсмены</h2>
-      <GameAthletesFormContainer
-        key="gameAthletesFormContainer"
-        game={currentGame}
-        competitions={competitions}
-        categories={categories}
-        athletes={athletes}
-        onFinish={onFinishAthletesForm}
-      />
-    </>,
-    <>
-      <h2>Турнирная таблица</h2>
-      <GameFormStandingsContainer key="gameStandingsContainer" game={currentGame} onFinish={onFinishForm} />
-    </>,
-  ]
 
   return (
     <>
-      <Tabs items={items}></Tabs>
+      <Tabs items={items} destroyInactiveTabPane={true}></Tabs>
     </>
   )
 }

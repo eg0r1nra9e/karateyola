@@ -4,23 +4,19 @@ import { FC, useEffect, useState } from 'react'
 import { GameAthlete } from '@prisma/client'
 import { AthleteWithTeamAndCity } from '../../../../types/AthleteWithTeamAndCity'
 import { GameCompetitionWithCategoryAndAthletes } from '../../../../types/GameCompetitionWithCategoryAndAthletes'
-import { GameWithAll } from '../../../../types/GameWithAll'
 import { GameAthletesTable } from '../../components/GameAthletesTable/GameAthletesTable'
 
 interface IGameAthletesFormContainerProps {
   gameId?: number
-  game: GameWithAll
 }
 
 export const GameAthletesFormContainer: FC<IGameAthletesFormContainerProps> = (props) => {
-  const { gameId, game } = props
+  const { gameId } = props
 
   const { notification } = App.useApp()
 
   const [gameCompetitions, setGameCompetitions] = useState<GameCompetitionWithCategoryAndAthletes[]>([])
   const [athletes, setAthletes] = useState<AthleteWithTeamAndCity[]>()
-
-  const [currentGame, setCurrentGame] = useState(game)
 
   const fetchData = async () => {
     const tasks = [
@@ -77,8 +73,6 @@ export const GameAthletesFormContainer: FC<IGameAthletesFormContainerProps> = (p
   })
 
   const onFinish = async () => {
-    debugger
-
     const currentGameAthletes: GameAthlete[] = []
 
     gameCompetitions.forEach((gameCompetition) => {
@@ -122,7 +116,7 @@ export const GameAthletesFormContainer: FC<IGameAthletesFormContainerProps> = (p
       <Tabs defaultActiveKey="1" items={items} indicator={{ size: (origin) => origin - 16 }} />
       <Divider />
       <Space size={8}>
-        <Button type="primary" htmlType="submit" onClick={() => onFinish(currentGame)}>
+        <Button type="primary" htmlType="submit" onClick={() => onFinish()}>
           Сохранить
         </Button>
       </Space>
