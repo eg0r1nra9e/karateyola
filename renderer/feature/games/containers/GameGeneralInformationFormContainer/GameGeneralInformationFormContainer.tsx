@@ -32,7 +32,7 @@ export const GameGeneralInformationFormContainer: FC<IGameFormProps> = (props) =
     await Promise.all(tasks.map((p) => p()))
   }
 
-  const onFinishGeneralForm = async (game: GameWithAll & { dates: dayjs.Dayjs[] }) => {
+  const onFinish = async (game: GameWithAll & { dates: dayjs.Dayjs[] }) => {
     const newGame = {
       ...game,
       startDate: game.dates[0],
@@ -83,7 +83,7 @@ export const GameGeneralInformationFormContainer: FC<IGameFormProps> = (props) =
 
   return (
     <>
-      <GameGeneralInformationForm game={game} onFinish={onFinishGeneralForm}></GameGeneralInformationForm>
+      <GameGeneralInformationForm game={game} onFinish={onFinish}></GameGeneralInformationForm>
     </>
   )
 }

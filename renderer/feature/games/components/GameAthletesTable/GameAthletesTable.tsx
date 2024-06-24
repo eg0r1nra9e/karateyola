@@ -3,17 +3,17 @@ import { ColumnsType } from 'antd/es/table'
 import Link from 'next/link'
 import { FC } from 'react'
 
-import { Athlete, GameCompetition } from '@prisma/client'
+import { Athlete, GameAthlete } from '@prisma/client'
 
 import { AthleteWithTeamAndCity } from '../../../../types/AthleteWithTeamAndCity'
-import { GameCategoryWithAthlete } from '../../../../types/GameCategoryWithAthlete'
 
 interface IGameAthletesContainerProps {
-  competition: GameCompetition
-  category: GameCategoryWithAthlete
+  gameCompetitionId: number
+  gameCategoryId: number
+  gameAthletes: GameAthlete[]
   athletes: AthleteWithTeamAndCity[]
 
-  onChange: (competitionId: number, categoryId: number, athletesIds: number[]) => void
+  onChange: (gameCompetitionId: number, gameCategoryId: number, athletesIds: number[]) => void
 }
 
 interface DataType extends Athlete {
@@ -23,7 +23,7 @@ interface DataType extends Athlete {
 }
 
 export const GameAthletesTable: FC<IGameAthletesContainerProps> = (props) => {
-  const { competition, category, athletes, onChange } = props
+  const { gameCompetitionId, gameCategoryId, gameAthletes, athletes, onChange } = props
 
   const columns: ColumnsType<DataType> = [
     {
@@ -69,7 +69,7 @@ export const GameAthletesTable: FC<IGameAthletesContainerProps> = (props) => {
     return ((new Date().getTime() - new Date(date).getTime()) / (24 * 3600 * 365.25 * 1000)) | 0
   }
 
-  const data: DataType[] = athletes.map(
+  const data: DataType[] = athletes?.map(
     (athlete): DataType => ({
       ...athlete,
       key: athlete.id,
@@ -79,25 +79,27 @@ export const GameAthletesTable: FC<IGameAthletesContainerProps> = (props) => {
   )
 
   const rowSelection = {
-    selectedRowKeys: category.athletes?.map((athlete) => athlete.id) ?? [],
+    selectedRowKeys: gameAthletes?.map((athlete) => athlete.athleteId) ?? [],
     onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
       onChange(
-        competition.id,
-        category.id,
+        gameCompetitionId,
+        gameCategoryId,
         selectedRowKeys.map((key) => +key.toString()),
       )
     },
   }
 
   return (
-    <Table
-      rowSelection={{
-        type: 'checkbox',
-        ...rowSelection,
-      }}
-      columns={columns}
-      dataSource={data}
-      rowKey="id"
-    />
+    <>
+      <Table
+        rowSelection={{
+          type: 'checkbox',
+          ...rowSelection,
+        }}
+        columns={columns}
+        dataSource={data}
+        rowKey="id"
+      />
+    </>
   )
 }

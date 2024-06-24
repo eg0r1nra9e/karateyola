@@ -4,14 +4,14 @@ import { FC, useEffect } from 'react'
 import { Category, Competition } from '@prisma/client'
 
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons'
-import { GameCompetitionWithCategory } from '../../../../types/GameCompetitionWithAthlete'
+import { GameCompetitionWithCategoryAndAthletes } from '../../../../types/GameCompetitionWithCategoryAndAthletes'
 
 type FieldType = {
-  competitions: GameCompetitionWithCategory[]
+  competitions: GameCompetitionWithCategoryAndAthletes[]
 }
 
 interface IGameCompetitionsFormProps {
-  gameCompetitions: GameCompetitionWithCategory[]
+  gameCompetitions: GameCompetitionWithCategoryAndAthletes[]
   competitions: Competition[]
   categories: Category[]
   onFinish: (values: any) => void

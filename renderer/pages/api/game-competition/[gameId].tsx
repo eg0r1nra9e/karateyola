@@ -2,13 +2,13 @@ import log from 'electron-log'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 import { PrismaClient } from '@prisma/client'
-import { GameCompetitionWithCategory } from '../../../types/GameCompetitionWithAthlete'
+import { GameCompetitionWithCategoryAndAthletes } from '../../../types/GameCompetitionWithCategoryAndAthletes'
 
 const prisma = new PrismaClient()
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<any>) {
   const gameId = Number(req.query.gameId)
-  const competitions = req.body as GameCompetitionWithCategory[]
+  const competitions = req.body as GameCompetitionWithCategoryAndAthletes[]
 
   console.log(competitions)
   let gameCompetitions
@@ -18,9 +18,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         gameCompetitions = await prisma.gameCompetition.findMany({
           where: { gameId: Number(gameId) },
           include: {
+            competition: true,
             categories: {
               include: {
                 category: true,
+                athletes: true,
               },
             },
           },

@@ -1,56 +1,121 @@
-import { Button, Divider, Space, Tabs } from 'antd'
-import { FC, useState } from 'react'
+import { App, Button, Divider, Space, Tabs } from 'antd'
+import { FC, useEffect, useState } from 'react'
 
-import { Category, Competition } from '@prisma/client'
-
+import { GameAthlete } from '@prisma/client'
 import { AthleteWithTeamAndCity } from '../../../../types/AthleteWithTeamAndCity'
+import { GameCompetitionWithCategoryAndAthletes } from '../../../../types/GameCompetitionWithCategoryAndAthletes'
 import { GameWithAll } from '../../../../types/GameWithAll'
 import { GameAthletesTable } from '../../components/GameAthletesTable/GameAthletesTable'
 
 interface IGameAthletesFormContainerProps {
+  gameId?: number
   game: GameWithAll
-  competitions: Competition[]
-  categories: Category[]
-  athletes: AthleteWithTeamAndCity[]
-  onFinish: (values: any) => void
 }
 
 export const GameAthletesFormContainer: FC<IGameAthletesFormContainerProps> = (props) => {
-  const { game, competitions, categories, athletes, onFinish } = props
+  const { gameId, game } = props
+
+  const { notification } = App.useApp()
+
+  const [gameCompetitions, setGameCompetitions] = useState<GameCompetitionWithCategoryAndAthletes[]>([])
+  const [athletes, setAthletes] = useState<AthleteWithTeamAndCity[]>()
 
   const [currentGame, setCurrentGame] = useState(game)
 
+  const fetchData = async () => {
+    const tasks = [
+      async () => {
+        if (gameId) {
+          const resGameCompetitions = await fetch(`/api/game-competition/${gameId}`)
+          const gameCompetition: GameCompetitionWithCategoryAndAthletes[] = await resGameCompetitions.json()
+          setGameCompetitions(gameCompetition)
+        }
+      },
+      async () => {
+        const resAthletes = await fetch('/api/athletes')
+        const athletes: AthleteWithTeamAndCity[] = await resAthletes.json()
+        setAthletes(athletes)
+      },
+    ]
+    await Promise.all(tasks.map((p) => p()))
+  }
+
   const items = []
 
-  const onChange = (competitionId: number, categoryId: Number, athletesIds: number[]) => {
-    const newGame = { ...currentGame }
-    const competition = newGame.competitions.find((competition) => competition.id === competitionId)
-    const category = competition.categories.find((category) => category.id === categoryId)
+  const onChange = (gameCompetitionId: number, gameCategoryId: number, athletesIds: number[]) => {
+    const currentGameCompetitions = [...gameCompetitions]
+    const gameCompetition = currentGameCompetitions.find((competition) => competition.id === gameCompetitionId)
+    const gameCategory = gameCompetition.categories.find((category) => category.id === gameCategoryId)
+    gameCategory.athletes = athletesIds.map(
+      (athlete) =>
+        ({
+          athleteId: athlete,
+        }) as GameAthlete,
+    )
 
-    const athletes = athletesIds.map((athlete) => ({ id: athlete }) as any)
-    category.athletes = athletes
-
-    setCurrentGame({ ...currentGame })
+    setGameCompetitions([...currentGameCompetitions])
   }
 
-  const getCategoryName = (categoryId) => {
-    return categories.find((category) => category.id === categoryId)?.name
-  }
-
-  currentGame?.competitions.forEach((competition) => {
-    const competitionName = competitions?.find((c) => c.id === competition.id)?.name
-    if (competition?.categories?.length) {
-      competition?.categories.forEach((category) => {
+  gameCompetitions?.forEach((gameCompetition) => {
+    if (gameCompetition?.categories?.length) {
+      gameCompetition?.categories.forEach((gameCategory) => {
         items.push({
-          key: competitionName + ': ' + getCategoryName(category?.id),
-          label: competitionName + ': ' + getCategoryName(category?.id),
+          key: gameCategory.id,
+          label: gameCompetition.competition.name + ': ' + gameCategory.category.name,
           children: (
-            <GameAthletesTable competition={competition} category={category} athletes={athletes} onChange={onChange} />
+            <GameAthletesTable
+              gameCompetitionId={gameCompetition.id}
+              gameCategoryId={gameCategory.id}
+              gameAthletes={gameCategory.athletes}
+              athletes={athletes}
+              onChange={onChange}
+            />
           ),
         })
       })
     }
   })
+
+  const onFinish = async () => {
+    debugger
+
+    const currentGameAthletes: GameAthlete[] = []
+
+    gameCompetitions.forEach((gameCompetition) => {
+      gameCompetition.categories.forEach((gameCategory) => {
+        gameCategory.athletes.map((athlete) => {
+          currentGameAthletes.push({
+            categoryId: gameCategory.id,
+            athleteId: athlete.athleteId,
+          } as GameAthlete)
+        })
+      })
+    })
+
+    try {
+      const result = await fetch('/api/game-athletes/create', {
+        body: JSON.stringify(currentGameAthletes),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        method: 'POST',
+      })
+
+      notification.success({
+        message: `Сохранение`,
+        description: 'Спортсмены сохранены',
+      })
+    } catch (error) {
+      notification.error({
+        message: `Сохранение`,
+        description: 'При сохранении произошла ошибка.',
+      })
+    }
+  }
+
+  useEffect(() => {
+    fetchData()
+  }, [])
 
   return (
     <>

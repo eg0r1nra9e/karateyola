@@ -4,7 +4,7 @@ import { FC, useEffect, useState } from 'react'
 import { Category, Competition } from '@prisma/client'
 
 import { AthleteWithTeamAndCity } from '../../../../types/AthleteWithTeamAndCity'
-import { GameCompetitionWithCategory } from '../../../../types/GameCompetitionWithAthlete'
+import { GameCompetitionWithCategoryAndAthletes } from '../../../../types/GameCompetitionWithCategoryAndAthletes'
 import { GameWithAll } from '../../../../types/GameWithAll'
 import { GameAthletesFormContainer } from '../../containers/GameAthletesFormContainer/GameAthletesFormContainer'
 import { GameCompetitionsFormContainer } from '../../containers/GameCompetitionsFormContainer/GameCompetitionsFormContainer'
@@ -14,7 +14,7 @@ import { GameGeneralInformationFormContainer } from '../../containers/GameGenera
 interface IGameFormProps {
   gameId?: number
   game?: GameWithAll
-  gameCompetitions: GameCompetitionWithCategory[]
+  gameCompetitions: GameCompetitionWithCategoryAndAthletes[]
   competitions: Competition[]
   categories: Category[]
   athletes: AthleteWithTeamAndCity[]
@@ -83,14 +83,7 @@ export const GameForm: FC<IGameFormProps> = (props) => {
           children: (
             <>
               <h2>Спортсмены</h2>
-              <GameAthletesFormContainer
-                key="gameAthletesFormContainer"
-                game={currentGame}
-                competitions={competitions}
-                categories={categories}
-                athletes={athletes}
-                onFinish={onFinishAthletesForm}
-              />
+              <GameAthletesFormContainer gameId={currentGameId} key="gameAthletesFormContainer" game={currentGame} />
             </>
           ),
         },

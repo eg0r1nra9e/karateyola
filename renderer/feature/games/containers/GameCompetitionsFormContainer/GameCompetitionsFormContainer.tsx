@@ -3,7 +3,7 @@ import { FC, useEffect, useState } from 'react'
 
 import { Category, Competition } from '@prisma/client'
 
-import { GameCompetitionWithCategory } from '../../../../types/GameCompetitionWithAthlete'
+import { GameCompetitionWithCategoryAndAthletes } from '../../../../types/GameCompetitionWithCategoryAndAthletes'
 import { GameWithAll } from '../../../../types/GameWithAll'
 import { GameCompetitionsForm } from '../../components/GameCompetitionsForm/GameCompetitionsForm'
 
@@ -18,7 +18,7 @@ export const GameCompetitionsFormContainer: FC<IGameFormProps> = (props) => {
 
   const [competitions, setCompetitions] = useState<Competition[]>([])
   const [categories, setCategories] = useState<Category[]>([])
-  const [gameCompetitions, setGameCompetitions] = useState<GameCompetitionWithCategory[]>([])
+  const [gameCompetitions, setGameCompetitions] = useState<GameCompetitionWithCategoryAndAthletes[]>([])
 
   const fetchData = async () => {
     const tasks = [
@@ -36,7 +36,7 @@ export const GameCompetitionsFormContainer: FC<IGameFormProps> = (props) => {
       async () => {
         if (gameId) {
           const resGameCompetitions = await fetch(`/api/game-competition/${gameId}`)
-          const gameCompetition: GameCompetitionWithCategory[] = await resGameCompetitions.json()
+          const gameCompetition: GameCompetitionWithCategoryAndAthletes[] = await resGameCompetitions.json()
           setGameCompetitions(gameCompetition)
         }
       },
