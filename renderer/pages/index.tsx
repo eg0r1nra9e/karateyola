@@ -1,20 +1,13 @@
-import Head from 'next/head'
-import React from 'react'
-
-import { EventsContainer } from '../feature/events/containers/EventsContainer/EventsContainer'
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
 
 const Home = () => {
-  return (
-    <React.Fragment>
-      <Head>
-        <title>Управление соревнованиями</title>
-      </Head>
+  const { push } = useRouter()
 
-      <h1>События</h1>
-
-      <EventsContainer />
-    </React.Fragment>
-  )
+  useEffect(() => {
+    push('/events')
+  }, [push])
+  return null
 }
 
 export default Home

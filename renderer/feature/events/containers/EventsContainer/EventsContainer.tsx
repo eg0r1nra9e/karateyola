@@ -1,122 +1,60 @@
-import { Button, Table } from 'antd'
+import { Table } from 'antd'
 import { ColumnsType } from 'antd/es/table'
 import dayjs from 'dayjs'
 import Link from 'next/link'
-import { useRouter } from 'next/router'
 
-import { ApartmentOutlined, ThunderboltOutlined } from '@ant-design/icons'
-
-import { DeleteButton } from '../../../../shared/ui/DeleteButton/DeleteButton'
-import { useAppDispatch, useAppSelector } from '../../../../store/hooks'
-import { selectCompetitions } from '../../../../store/slices/competitionsSlice'
-import { endGame, removeGame, selectGames, startGame } from '../../../../store/slices/gamesSlice'
-import { IGame } from '../../../../types/IGame'
+import { useEffect, useState } from 'react'
+import { GameWithAll } from '../../../../types/GameWithAll'
 
 export const EventsContainer = () => {
-  const games = useAppSelector(selectGames)
-  const dispatch = useAppDispatch()
-  const competitions = useAppSelector(selectCompetitions)
-  const { push } = useRouter()
+  const [games, setGames] = useState<GameWithAll[]>([])
 
-  const deleteGame = (gameId: string) => {
-    dispatch(removeGame(gameId))
+  const fetchData = async () => {
+    const res = await fetch('/api/games')
+    const data = await res.json()
+    setGames(data)
   }
 
-  const start = (gameId: string) => {
-    dispatch(startGame(gameId))
-    push(`/games/${gameId}`)
-  }
+  useEffect(() => {
+    fetchData()
+  }, [])
 
-  const end = (gameId: string) => {
-    dispatch(endGame(gameId))
-  }
-
-  const gameAction = (game: IGame) => {
-    if (game.status === 'ожидает начала') {
-      return (
-        <Button type="primary" onClick={() => start(game.id)} icon={<ApartmentOutlined />}>
-          Начать соревнование
-        </Button>
-      )
-    }
-
-    if (game.status === 'идет') {
-      return (
-        <Button type="primary" onClick={() => end(game.id)} icon={<ThunderboltOutlined />}>
-          Закончить
-        </Button>
-      )
-    }
-
-    return null
-  }
-
-  const gameCompetitions = (game: IGame) => {
-    if (!game.competitions || !game.competitions.length) {
-      return null
-    }
-
-    return game.competitions.map((competition) => {
-      const competitionName = competitions.find((c) => c.id === competition.id)?.name
-      return <div key={competition.id}>{competitionName}</div>
-    })
-  }
-
-  const gameDates = (game: IGame) => {
-    if (!game?.dates || !game?.dates?.length) {
-      return null
-    }
-
-    return (
-      <>
-        {dayjs(game?.dates[0]).format('DD.MM.YYYY').toString()}-{dayjs(game?.dates[1]).format('DD.MM.YYYY').toString()}
-      </>
-    )
-  }
-
-  const columns: ColumnsType<IGame> = [
+  const columns: ColumnsType<GameWithAll> = [
     {
       title: 'Название',
       dataIndex: 'name',
       key: 'name',
-      render: (_, game) => <Link href={`/games/${game.id}`}>{game.name}</Link>,
-      sorter: (a, b) => a.name.length - b.name.length,
+      render: (_, game) => <Link href={`/events/${game.id}`}>{game.name}</Link>,
+      sorter: (a, b) => a.name.localeCompare(b.name),
     },
     {
       title: 'Дата начала',
       dataIndex: 'dates',
       key: 'dates',
-      render: (_, game) => gameDates(game),
+      render: (_, game) => dayjs(game?.startDate).format('DD.MM.YYYY').toString(),
+      sorter: (a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime(),
+    },
+    {
+      title: 'Дата окончания',
+      dataIndex: 'dates',
+      key: 'dates',
+      render: (_, game) => dayjs(game?.endDate).format('DD.MM.YYYY').toString(),
+      sorter: (a, b) => new Date(a.endDate).getTime() - new Date(b.endDate).getTime(),
     },
     {
       title: 'Дисциплины',
       dataIndex: 'competitions',
       key: 'competitions',
-      render: (_, game) => gameCompetitions(game),
+      render: (_, game) =>
+        game.competitions.map((c) => {
+          return <div key={c.competition.id}>{c.competition.name}</div>
+        }),
     },
     {
       title: 'Статус',
       dataIndex: 'status',
       key: 'status',
       sorter: (a, b) => a.status.length - b.status.length,
-    },
-    {
-      title: '',
-      key: 'action',
-      render: (_, game) => gameAction(game),
-    },
-    {
-      title: '',
-      key: 'delete',
-      fixed: 'right',
-      width: 100,
-      render: (_, game) => (
-        <DeleteButton
-          title="Удалить соревнование"
-          description="Вы уверены, что хотите удалить это соревнование?"
-          onClick={() => deleteGame(game.id)}
-        ></DeleteButton>
-      ),
     },
   ]
 

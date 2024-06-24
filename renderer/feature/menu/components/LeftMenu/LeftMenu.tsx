@@ -7,8 +7,8 @@ import { BarsOutlined, HomeOutlined, TeamOutlined, TrophyOutlined, UserOutlined 
 
 const menu = [
   {
-    label: <Link href="/">События</Link>,
-    key: '',
+    label: <Link href="/events">События</Link>,
+    key: 'events' || '',
     icon: <HomeOutlined />,
   },
   {

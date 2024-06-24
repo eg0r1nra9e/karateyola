@@ -3,29 +3,14 @@ import { useRouter } from 'next/router'
 import * as path from 'path'
 import { FC, useEffect, useState } from 'react'
 
-import { useAppDispatch, useAppSelector } from '../../../../store/hooks'
-import { selectAthletes } from '../../../../store/slices/athletesSlice'
-import { selectCategories } from '../../../../store/slices/categoriesSlice'
-import { selectCompetitions } from '../../../../store/slices/competitionsSlice'
-import {
-  addBenefitOne,
-  addBenefitTwo,
-  addDuel,
-  addFailOne,
-  addFailTwo,
-  addScoreOne,
-  addScoreTwo,
-  endDuel,
-  selectCurrentDuel,
-  setTime,
-} from '../../../../store/slices/currentDuelSlice'
-import { selectGame, setWinner } from '../../../../store/slices/gamesSlice'
-import { selectTeams } from '../../../../store/slices/teamsSlice'
+import { useAppDispatch } from '../../../../store/hooks'
+
+import { addFailOne, addFailTwo, addScoreOne, addScoreTwo, setTime } from '../../../../store/slices/currentDuelSlice'
+import { DuelWithAll } from '../../../../types/DuelWithAll'
 import Player from '../../components/Player/Player'
 import { DuelResultContainer } from '../DuelResultContainer/DuelResultContainer'
 
 interface IDuelContainer {
-  gameId: string
   competitionId: string
   categoryId: string
   standingId: string
@@ -35,30 +20,39 @@ interface IDuelContainer {
 export const DuelContainer: FC<IDuelContainer> = (props) => {
   const { push } = useRouter()
 
-  const { gameId, competitionId, categoryId, standingId, duelId } = props
+  const { competitionId, categoryId, standingId, duelId } = props
 
-  const game = useAppSelector((state) => selectGame(state, gameId))
+  const [duel, setDuel] = useState<DuelWithAll>()
 
-  const competitions = useAppSelector(selectCompetitions)
-  const categories = useAppSelector(selectCategories)
-  const athletes = useAppSelector(selectAthletes)
-  const teams = useAppSelector(selectTeams)
+  const fetchData = async () => {
+    const tasks = [
+      async () => {
+        if (duelId) {
+          const resDuel = await fetch(`/api/duel/${duelId}`)
+          const duel: DuelWithAll = await resDuel.json()
+          setDuel(duel)
+        }
+      },
+    ]
+    await Promise.all(tasks.map((p) => p()))
+  }
 
-  const competition = competitions?.find((c) => c.id === competitionId)
-  const competitionName = competition?.name
+  // const game = useAppSelector((state) => selectGame(state, gameId))
 
-  const category = categories?.find((c) => c.id === categoryId)
-  const categoryName = category?.name
+  // const competitions = useAppSelector(selectCompetitions)
+  // const categories = useAppSelector(selectCategories)
+  // const athletes = useAppSelector(selectAthletes)
+  // const teams = useAppSelector(selectTeams)
 
-  const gameCompetitions = game?.competitions.find((c) => c.id === competitionId)
-  const gameCategories = gameCompetitions?.categories.find((c) => c.id === categoryId)
-  const standing = gameCategories?.standings.find((c) => c.id === standingId)
+  // const competition = competitions?.find((c) => c.id === competitionId)
+  // const competitionName = competition?.name
 
-  const duel = standing?.duels.find((c) => c.id === duelId)
+  // const category = categories?.find((c) => c.id === categoryId)
+  // const categoryName = category?.name
 
-  const currentDuel = useAppSelector(selectCurrentDuel)
+  // const duel = useAppSelector(selectduel)
 
-  const [timer, setTimer] = useState(category?.time)
+  const [timer, setTimer] = useState(duel?.standing?.gameCategory?.category?.time)
   const [timeInterval, setTimeInterval] = useState(null)
   const [isStartTimer, setIsStartTimer] = useState(false)
   const [isAdditionTime, setIsAdditionTime] = useState(false)
@@ -87,7 +81,7 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
     clearInterval(timeInterval)
   }
 
-  const resetTimer = (secund = category.time) => {
+  const resetTimer = (secund = duel?.standing?.gameCategory?.category?.time) => {
     setTimer(secund)
     setIsStartTimer(false)
     clearInterval(timeInterval)
@@ -95,57 +89,56 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
 
   // Определение победителя текущей дуэли.
   useEffect(() => {
-    if (!currentDuel || !currentDuel.playerOne || !currentDuel.playerTwo) {
+    if (!duel || !duel.onePlayer || !duel.twoPlayer) {
       return
     }
 
     // Первый спортсмен набрал 5 нарушений - он проиграл.
-    if (currentDuel.playerOne.fail === 5) {
-      dispatch(endDuel(currentDuel.playerTwo.athleteId))
-      beep()
-    }
+    // if (duel?.onePlayer?.fail === 5) {
+    //   dispatch(endDuel(duel?.twoPlayer?.athleteId))
+    //   beep()
+    // }
 
     // Второй спортсмен набрал 5 нарушений - он проиграл.
-    if (currentDuel.playerTwo.fail > 4) {
-      dispatch(endDuel(currentDuel.playerOne.athleteId))
-      beep()
-    }
+    // if (duel?.twoPlayer?.fail > 4) {
+    //   dispatch(endDuel(duel?.onePlayer?.athleteId))
+    //   beep()
+    // }
 
     // Первый спортсмен набрал 8 очков - он победил.
-    if (currentDuel.playerOne.score >= 8) {
-      dispatch(endDuel(currentDuel.playerOne.athleteId))
-      beep()
-    }
+    // if (duel?.onePlayer?.score >= 8) {
+    //   dispatch(endDuel(duel?.onePlayer?.athleteId))
+    //   beep()
+    // }
 
     // Второй спортсмен набрал 8 очков - он победил.
-    if (currentDuel.playerTwo.score >= 8) {
-      dispatch(endDuel(currentDuel.playerTwo.athleteId))
-      beep()
-    }
+    // if (duel?.twoPlayer?.score >= 8) {
+    //   dispatch(endDuel(duel?.twoPlayer?.athleteId))
+    //   beep()
+    // }
 
     // Время закончилось
     if (!timer) {
       // Разное количество очков, можем определить победителя.
-      if (currentDuel.playerOne.score !== currentDuel.playerTwo.score) {
-        const winner =
-          currentDuel.playerOne.score > currentDuel.playerTwo.score
-            ? currentDuel.playerOne.athleteId
-            : currentDuel.playerTwo.athleteId
-
-        dispatch(endDuel(winner))
-        beep()
-      } else {
-        if (currentDuel.playerOne.benefit !== 0) {
-          dispatch(endDuel(currentDuel.playerOne.athleteId))
-          beep()
-        }
-        if (currentDuel.playerTwo.benefit !== 0) {
-          dispatch(endDuel(currentDuel.playerTwo.athleteId))
-          beep()
-        }
-      }
+      // if (duel?.onePlayer?.score !== duel?.twoPlayer?.score) {
+      //   const winner =
+      //     duel?.onePlayer?.score > duel?.twoPlayer?.score
+      //       ? duel?.onePlayer?.athleteId
+      //       : duel?.twoPlayer?.athleteId
+      //   dispatch(endDuel(winner))
+      //   beep()
+      // } else {
+      //   if (duel?.onePlayer?.benefit !== 0) {
+      //     dispatch(endDuel(duel?.onePlayer?.athleteId))
+      //     beep()
+      //   }
+      //   if (duel?.twoPlayer?.benefit !== 0) {
+      //     dispatch(endDuel(duel?.twoPlayer?.athleteId))
+      //     beep()
+      //   }
+      // }
     }
-  }, [timer, currentDuel])
+  }, [timer, duel])
 
   useEffect(() => {
     if (timer) {
@@ -158,76 +151,65 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
       beep()
 
       // Основное время закончилось, очки никто не набрал - продолжить бой в дополнительное время.
-      if (currentDuel.playerOne.score === 0 && currentDuel.playerTwo.score === 0 && !isAdditionTime) {
-        setIsAdditionTime(true)
-        resetTimer(category.additionTime)
-        return
-      }
+      // if (duel?.onePlayer?.score === 0 && duel?.twoPlayer?.score === 0 && !isAdditionTime) {
+      //   setIsAdditionTime(true)
+      //   resetTimer(category?.additionTime)
+      //   return
+      // }
     }
   }, [timer])
 
-  useEffect(() => {
-    dispatch(
-      addDuel({
-        id: duelId,
-        competitionName,
-        categoryName,
-        timer: category.time,
-        playerOne: {
-          id: duel?.athletesId[0],
-          athleteId: duel?.athletesId[0],
-          benefit: 0,
-          fail: 0,
-          score: 0,
-        },
-        playerTwo: {
-          id: duel?.athletesId[1] || null,
-          athleteId: duel?.athletesId[1] || null,
-          benefit: 0,
-          fail: 0,
-          score: 0,
-        },
-        result: null,
-      }),
-    )
-  }, [duelId, dispatch, duel, categoryName, competitionName])
-
-  const getAthlete = (athleteId) => {
-    const athlete = athletes.find((a) => a.id === athleteId)
-    const team = teams.find((t) => t.id === athlete.teamId)
-    const athleteName = `${athlete.firstName} ${athlete.lastName}`
-    let athleteTeam = ''
-    if (team) {
-      athleteTeam = ` (${team?.name}, ${team.cityId})`
-    }
-    return `${athleteName}${athleteTeam}`
-  }
+  // useEffect(() => {
+  //   dispatch(
+  //     addDuel({
+  //       id: duelId,
+  //       competitionName,
+  //       categoryName,
+  //       timer: category.time,
+  //       onePlayer: {
+  //         id: duel?.athletesId[0],
+  //         athleteId: duel?.athletesId[0],
+  //         benefit: 0,
+  //         fail: 0,
+  //         score: 0,
+  //       },
+  //       twoPlayer: {
+  //         id: duel?.athletesId[1] || null,
+  //         athleteId: duel?.athletesId[1] || null,
+  //         benefit: 0,
+  //         fail: 0,
+  //         score: 0,
+  //       },
+  //       result: null,
+  //     }),
+  //   )
+  // }, [duelId, dispatch, duel, categoryName, competitionName])
 
   const clickAddBenefitOne = () => {
     pauseTimer()
-    if (currentDuel.playerTwo.benefit === 0 && currentDuel.playerOne.benefit === 0) {
-      dispatch(addBenefitOne(1))
-    }
+    // if (duel.twoPlayer.benefit === 0 && duel.onePlayer.benefit === 0) {
+    //   dispatch(addBenefitOne(1))
+    // }
   }
   const clickRemoveBenefitOne = () => {
     pauseTimer()
-    if (currentDuel.playerOne.benefit > 0) {
-      dispatch(addBenefitOne(-1))
-    }
+    // if (duel.onePlayer.benefit > 0) {
+    //   dispatch(addBenefitOne(-1))
+    // }
   }
 
   const clickAddBenefitTwo = () => {
     pauseTimer()
-    if (currentDuel.playerTwo.benefit === 0 && currentDuel.playerOne.benefit === 0) {
-      dispatch(addBenefitTwo(1))
-    }
+    // if (duel.twoPlayer.benefit === 0 && duel.onePlayer.benefit === 0) {
+    //   dispatch(addBenefitTwo(1))
+    // }
   }
 
   const clickRemoveBenefitTwo = () => {
     pauseTimer()
-    if (currentDuel.playerTwo.benefit > 0) {
-      dispatch(addBenefitTwo(-1))
-    }
+    // if (duel.twoPlayer.benefit > 0) {
+    //   dispatch(addBenefitTwo(-1))
+    // }
   }
 
   const clickCountOne = (count: number) => {
@@ -251,36 +233,46 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
   }
 
   const clickWinnerOne = () => {
-    dispatch(endDuel(currentDuel.playerOne.athleteId))
+    //dispatch(endDuel(duel.onePlayer.athleteId))
     beep()
   }
 
   const clickWinnerTwo = () => {
-    dispatch(endDuel(currentDuel.playerTwo.athleteId))
+    //dispatch(endDuel(duel.twoPlayer.athleteId))
     beep()
   }
 
   const endWinnerDuel = () => {
-    dispatch(
-      setWinner({
-        gameId,
-        competitionId,
-        categoryId,
-        standingId,
-        duelId,
-        athleteId: currentDuel.result,
-      }),
-    )
-    push('/games/' + gameId)
+    // dispatch(
+    //   setWinner({
+    //     gameId,
+    //     competitionId,
+    //     categoryId,
+    //     standingId,
+    //     duelId,
+    //     athleteId: duel.result,
+    //   }),
+    // )
+    // push('/games/' + gameId)
   }
+
+  useEffect(() => {
+    fetchData()
+  }, [])
 
   return (
     <>
-      <h1>{game?.name}</h1>
+      <h1>{duel?.standing?.gameCategory?.gameCompetition?.game?.name}</h1>
       <h2>
-        {competitionName}, {categoryName}
+        {duel?.standing?.gameCategory?.gameCompetition?.competition?.name},{' '}
+        {duel?.standing?.gameCategory?.category?.name}
       </h2>
-      <h3> Спортсмены: {duel?.athletesId?.map((a) => getAthlete(a)).join(', ')}</h3>
+      <h3>
+        {' '}
+        Спортсмены: {duel?.onePlayer?.firstName} {duel?.onePlayer?.lastName} {duel?.onePlayer?.team?.name}{' '}
+        {duel?.onePlayer?.team?.city?.city},{duel?.twoPlayer?.firstName} {duel?.twoPlayer?.lastName}{' '}
+        {duel?.twoPlayer?.team?.name} {duel?.twoPlayer?.team?.city?.city},
+      </h3>
       <Flex gap="middle">
         {!isStartTimer ? (
           <Button onClick={startTimer} style={{ width: '100%' }} type="primary">
@@ -296,11 +288,11 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
           Сбросить таймер
         </Button>
 
-        {currentDuel?.result ? (
+        {/* {duel?.result ? (
           <Button onClick={() => endWinnerDuel()} style={{ width: '100%' }} type="dashed" danger>
             Закончить поединок
           </Button>
-        ) : null}
+        ) : null} */}
       </Flex>
       <Divider />
       <Flex gap="middle">

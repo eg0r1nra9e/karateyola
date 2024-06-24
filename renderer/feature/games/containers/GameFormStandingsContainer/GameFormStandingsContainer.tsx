@@ -4,6 +4,7 @@ import { FC, useEffect, useState } from 'react'
 
 import { Duel } from '@prisma/client'
 import { GameCompetitionWithCategoryAndAthletes } from '../../../../types/GameCompetitionWithCategoryAndAthletes'
+import { StandingWithDuel } from '../../../../types/StandingWithDuel'
 import { GameDuelsComponent } from '../../components/GameDuelsComponent/GameDuelsComponent'
 
 interface IGameFormStandingsContainerProps {
@@ -37,7 +38,7 @@ export const GameFormStandingsContainer: FC<IGameFormStandingsContainerProps> = 
       items.push({
         key: gameCategory.id,
         label: gameCompetition.competition.name + ': ' + gameCategory.category.name,
-        children: <GameDuelsComponent standings={gameCategory.standings} />,
+        children: <GameDuelsComponent standings={gameCategory.standings as StandingWithDuel[]} />,
       })
     })
   })
