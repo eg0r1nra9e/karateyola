@@ -10,6 +10,8 @@ const Home = () => {
         <title>Управление соревнованиями</title>
       </Head>
 
+      <h1>События</h1>
+
       <EventsContainer />
     </React.Fragment>
   )

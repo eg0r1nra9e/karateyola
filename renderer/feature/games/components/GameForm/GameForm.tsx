@@ -1,11 +1,6 @@
 import { Tabs, Typography } from 'antd'
 import { FC, useEffect, useState } from 'react'
 
-import { Category, Competition } from '@prisma/client'
-
-import { AthleteWithTeamAndCity } from '../../../../types/AthleteWithTeamAndCity'
-import { GameCompetitionWithCategoryAndAthletes } from '../../../../types/GameCompetitionWithCategoryAndAthletes'
-import { GameWithAll } from '../../../../types/GameWithAll'
 import { GameAthletesFormContainer } from '../../containers/GameAthletesFormContainer/GameAthletesFormContainer'
 import { GameCompetitionsFormContainer } from '../../containers/GameCompetitionsFormContainer/GameCompetitionsFormContainer'
 import { GameFormStandingsContainer } from '../../containers/GameFormStandingsContainer/GameFormStandingsContainer'
@@ -13,43 +8,16 @@ import { GameGeneralInformationFormContainer } from '../../containers/GameGenera
 
 interface IGameFormProps {
   gameId?: number
-  game?: GameWithAll
-  gameCompetitions: GameCompetitionWithCategoryAndAthletes[]
-  competitions: Competition[]
-  categories: Category[]
-  athletes: AthleteWithTeamAndCity[]
-  onSave: (values: any) => void
-  onFinish: (values: any) => void
 }
 
 export const GameForm: FC<IGameFormProps> = (props) => {
-  const { gameId, game, competitions, categories, gameCompetitions, athletes, onSave, onFinish } = props
-
-  const [currentGame, setCurrentGame] = useState(game)
+  const { gameId } = props
 
   const [currentGameId, setCurrentGameId] = useState(gameId)
 
   useEffect(() => {
-    setCurrentGame(game)
-  }, [game])
-
-  useEffect(() => {
     setCurrentGameId(gameId)
   }, [gameId])
-
-  const onFinishAthletesForm = (updateGame: GameWithAll) => {
-    const newGame = {
-      ...currentGame,
-      ...updateGame,
-    }
-
-    setCurrentGame(newGame)
-    onSave(newGame)
-  }
-
-  const onFinishForm = () => {
-    onFinish(currentGame)
-  }
 
   const items = [
     {
@@ -93,7 +61,7 @@ export const GameForm: FC<IGameFormProps> = (props) => {
           children: (
             <>
               <h2>Турнирная таблица</h2>
-              <GameFormStandingsContainer key="gameStandingsContainer" game={currentGame} onFinish={onFinishForm} />
+              <GameFormStandingsContainer key="gameStandingsContainer" gameId={currentGameId} />
             </>
           ),
         },

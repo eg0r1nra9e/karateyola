@@ -1,31 +1,23 @@
 import { Button, Divider, Space, Tabs } from 'antd'
-import { FC, useState } from 'react'
-
-import { useAppSelector } from '../../../../store/hooks'
-import { selectAthletes } from '../../../../store/slices/athletesSlice'
-import { selectCategories } from '../../../../store/slices/categoriesSlice'
-import { selectCompetitions } from '../../../../store/slices/competitionsSlice'
-import { selectTeams } from '../../../../store/slices/teamsSlice'
-import { GameWithAll } from '../../../../types/GameWithAll'
+import { FC } from 'react'
 
 interface IGameFormStandingsContainerProps {
-  game: GameWithAll
-  onFinish: (values: any) => void
+  gameId?: number
 }
 
 export const GameFormStandingsContainer: FC<IGameFormStandingsContainerProps> = (props) => {
-  const { game, onFinish } = props
-  const athletes = useAppSelector(selectAthletes)
-  const teams = useAppSelector(selectTeams)
-  const competitions = useAppSelector(selectCompetitions)
-  const categories = useAppSelector(selectCategories)
-  const [currentGame, setCurrentGame] = useState(game)
+  const { gameId } = props
+  // const athletes = useAppSelector(selectAthletes)
+  // const teams = useAppSelector(selectTeams)
+  // const competitions = useAppSelector(selectCompetitions)
+  // const categories = useAppSelector(selectCategories)
+  // const [currentGame, setCurrentGame] = useState(game)
 
   const items = []
 
-  const getCategoryName = (categoryId) => {
-    return categories.find((category) => category.id === categoryId)?.name
-  }
+  // const getCategoryName = (categoryId) => {
+  //   return categories.find((category) => category.id === categoryId)?.name
+  // }
 
   // currentGame?.competitions.forEach((competition) => {
   //   const competitionName = competitions?.find((c) => c.id === competition.id)?.name

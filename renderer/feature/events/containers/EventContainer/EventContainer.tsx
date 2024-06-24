@@ -17,7 +17,7 @@ interface IGameFormProps {
   gameId?: string
 }
 
-export const GameContainer: FC<IGameFormProps> = (props) => {
+export const EventContainer: FC<IGameFormProps> = (props) => {
   const { gameId } = props
 
   const game = useAppSelector((state) => selectGame(state, gameId))
