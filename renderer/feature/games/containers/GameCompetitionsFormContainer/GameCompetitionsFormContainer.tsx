@@ -51,8 +51,10 @@ export const GameCompetitionsFormContainer: FC<IGameFormProps> = (props) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        method: 'PUT',
+        method: 'POST',
       })
+
+      fetchData()
 
       notification.success({
         message: `Сохранение`,

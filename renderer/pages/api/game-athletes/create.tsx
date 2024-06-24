@@ -12,7 +12,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
   try {
     const deleteGameCompetitions = gameAthlete.map((gameAthlete) => {
       return prisma.gameAthlete.deleteMany({
-        where: { categoryId: Number(gameAthlete.categoryId) },
+        where: { gameCategoryId: Number(gameAthlete.gameCategoryId) },
       })
     })
 

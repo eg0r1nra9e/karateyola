@@ -79,7 +79,7 @@ export const GameAthletesFormContainer: FC<IGameAthletesFormContainerProps> = (p
       gameCompetition.categories.forEach((gameCategory) => {
         gameCategory.athletes.map((athlete) => {
           currentGameAthletes.push({
-            categoryId: gameCategory.id,
+            gameCategoryId: gameCategory.id,
             athleteId: athlete.athleteId,
           } as GameAthlete)
         })
@@ -87,13 +87,15 @@ export const GameAthletesFormContainer: FC<IGameAthletesFormContainerProps> = (p
     })
 
     try {
-      const result = await fetch('/api/game-athletes/create', {
+      await fetch('/api/game-athletes/create', {
         body: JSON.stringify(currentGameAthletes),
         headers: {
           'Content-Type': 'application/json',
         },
         method: 'POST',
       })
+
+      fetchData()
 
       notification.success({
         message: `Сохранение`,
@@ -113,7 +115,7 @@ export const GameAthletesFormContainer: FC<IGameAthletesFormContainerProps> = (p
 
   return (
     <>
-      <Tabs defaultActiveKey="1" items={items} indicator={{ size: (origin) => origin - 16 }} />
+      <Tabs defaultActiveKey="1" items={items} />
       <Divider />
       <Space size={8}>
         <Button type="primary" htmlType="submit" onClick={() => onFinish()}>

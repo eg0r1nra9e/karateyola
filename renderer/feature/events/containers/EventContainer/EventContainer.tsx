@@ -99,7 +99,7 @@ export const EventContainer: FC<IGameFormProps> = (props) => {
       <h2>
         {dayjs(game?.dates[0]).format('DD.MM.YYYY')} - {dayjs(game?.dates[1]).format('DD.MM.YYYY')}
       </h2>
-      <Tabs defaultActiveKey="1" items={items} indicator={{ size: (origin) => origin - 16 }} />
+      <Tabs defaultActiveKey="1" items={items} />
     </>
   )
 }

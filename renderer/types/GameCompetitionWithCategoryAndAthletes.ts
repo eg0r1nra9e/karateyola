@@ -7,6 +7,24 @@ export const gameCompetitionWithCategoryAndAthletes = Prisma.validator<Prisma.Ga
       include: {
         category: true,
         athletes: true,
+        standings: {
+          include: {
+            duels: {
+              include: {
+                onePlayer: {
+                  include: {
+                    team: true,
+                  },
+                },
+                twoPlayer: {
+                  include: {
+                    team: true,
+                  },
+                },
+              },
+            },
+          },
+        },
       },
     },
   },

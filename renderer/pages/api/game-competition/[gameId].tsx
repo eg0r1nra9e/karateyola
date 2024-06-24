@@ -23,24 +23,40 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
               include: {
                 category: true,
                 athletes: true,
+                standings: {
+                  include: {
+                    duels: {
+                      include: {
+                        onePlayer: {
+                          include: {
+                            team: {
+                              include: {
+                                city: true,
+                              },
+                            },
+                          },
+                        },
+                        twoPlayer: {
+                          include: {
+                            team: {
+                              include: {
+                                city: true,
+                              },
+                            },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
               },
             },
           },
         })
         res.status(200).json(gameCompetitions)
         break
-      case 'PUT':
-        const newCompetitions = competitions.map((competition) => ({
-          gameId,
-          competitionId: competition.id,
-          categories: competition.categories.map((category) => ({
-            categoryId: category.id,
-          })),
-        }))
-
-        console.log(newCompetitions)
-
-        const updateCompetitions = competitions.map((competition) => {
+      case 'POST':
+        const createCompetitions = competitions.map((competition) => {
           return prisma.gameCompetition.create({
             data: {
               gameId,
@@ -58,7 +74,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
           prisma.gameCompetition.deleteMany({
             where: { gameId: Number(gameId) },
           }),
-          ...updateCompetitions,
+          ...createCompetitions,
         ])
 
         console.log(t1, t2)
