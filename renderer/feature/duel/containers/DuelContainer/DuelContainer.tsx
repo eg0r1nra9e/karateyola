@@ -22,7 +22,7 @@ import Player from '../../components/Player/Player'
 import { DuelResultContainer } from '../DuelResultContainer/DuelResultContainer'
 
 interface IDuelContainer {
-  duelId: string
+  duelId: number
 }
 
 export const DuelContainer: FC<IDuelContainer> = (props) => {

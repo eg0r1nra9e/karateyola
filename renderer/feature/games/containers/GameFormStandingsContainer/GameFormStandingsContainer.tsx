@@ -66,7 +66,7 @@ export const GameFormStandingsContainer: FC<IGameFormStandingsContainerProps> = 
         method: 'POST',
       })
 
-      fetchData()
+      await fetchData()
 
       notification.success({
         message: `Сохранение`,

@@ -2,7 +2,7 @@ import { AthleteWithTeamAndCity } from './AthleteWithTeamAndCity'
 import { IPlayer } from './IPlayer'
 
 export interface ICurrentDuel {
-  id?: string
+  id?: number
 
   /**
    * Первый участник.

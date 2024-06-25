@@ -7,14 +7,7 @@ const Duel: NextPage = () => {
   const router = useRouter()
   const { query } = router
 
-  return (
-    <DuelContainer
-      competitionId={query?.competitionId?.toString()}
-      categoryId={query?.categoryId?.toString()}
-      standingId={query?.standingId?.toString()}
-      duelId={query?.duelId?.toString()}
-    />
-  )
+  return <DuelContainer duelId={+query?.duelId} />
 }
 
 export default Duel

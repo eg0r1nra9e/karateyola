@@ -23,7 +23,7 @@ export const DuelResultContainer = () => {
     return (
       <Flex vertical>
         <Typography.Title level={1} style={{ marginTop: 0, width: '100%', fontSize: '10em' }}>
-          Победитель: {winner.firstName} {winner.lastName} {winner.team?.name} {winner.team?.city?.city}
+          Победитель: {winner?.firstName} {winner?.lastName} {winner?.team?.name} {winner?.team?.city?.city}
         </Typography.Title>
       </Flex>
     )

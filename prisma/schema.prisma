@@ -128,6 +128,7 @@ model Standing {
     duels          Duel[] // Поединки
     gameCategoryId Int
     gameCategory   GameCategory @relation(fields: [gameCategoryId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    close          Boolean?
     created_at     DateTime     @default(now())
     updated_at     DateTime     @updatedAt
 }
