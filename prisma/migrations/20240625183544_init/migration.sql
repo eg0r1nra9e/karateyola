@@ -100,15 +100,15 @@ CREATE TABLE "Standing" (
 -- CreateTable
 CREATE TABLE "Duel" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    "onePlayerId" INTEGER NOT NULL,
-    "twoPlayerId" INTEGER NOT NULL,
-    "winnerId" INTEGER NOT NULL,
+    "firstPlayerId" INTEGER NOT NULL,
+    "secondPlayerId" INTEGER,
+    "winnerId" INTEGER,
     "standingId" INTEGER NOT NULL,
     "created_at" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" DATETIME NOT NULL,
-    CONSTRAINT "Duel_onePlayerId_fkey" FOREIGN KEY ("onePlayerId") REFERENCES "Athlete" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
-    CONSTRAINT "Duel_twoPlayerId_fkey" FOREIGN KEY ("twoPlayerId") REFERENCES "Athlete" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
-    CONSTRAINT "Duel_winnerId_fkey" FOREIGN KEY ("winnerId") REFERENCES "Athlete" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT "Duel_firstPlayerId_fkey" FOREIGN KEY ("firstPlayerId") REFERENCES "Athlete" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT "Duel_secondPlayerId_fkey" FOREIGN KEY ("secondPlayerId") REFERENCES "Athlete" ("id") ON DELETE SET NULL ON UPDATE CASCADE,
+    CONSTRAINT "Duel_winnerId_fkey" FOREIGN KEY ("winnerId") REFERENCES "Athlete" ("id") ON DELETE SET NULL ON UPDATE CASCADE,
     CONSTRAINT "Duel_standingId_fkey" FOREIGN KEY ("standingId") REFERENCES "Standing" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 

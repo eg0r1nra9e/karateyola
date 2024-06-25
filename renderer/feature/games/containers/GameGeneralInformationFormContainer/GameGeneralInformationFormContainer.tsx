@@ -43,23 +43,26 @@ export const GameGeneralInformationFormContainer: FC<IGameFormProps> = (props) =
 
     try {
       if (!gameId) {
-        await fetch('/api/games/create', {
+        const result = await fetch('/api/games/create', {
           body: JSON.stringify(newGame),
           headers: {
             'Content-Type': 'application/json',
           },
           method: 'POST',
         })
+        currentGame = await result.json()
 
         push(`/games/edit/${currentGame.id}`)
       } else {
-        await fetch(`/api/games/${gameId}`, {
+        const result = await fetch(`/api/games/${gameId}`, {
           body: JSON.stringify(newGame),
           headers: {
             'Content-Type': 'application/json',
           },
           method: 'PUT',
         })
+
+        currentGame = await result.json()
       }
 
       fetchData()

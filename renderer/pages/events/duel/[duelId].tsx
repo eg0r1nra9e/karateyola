@@ -9,7 +9,6 @@ const Duel: NextPage = () => {
 
   return (
     <DuelContainer
-      gameId={query?.gameId?.toString()}
       competitionId={query?.competitionId?.toString()}
       categoryId={query?.categoryId?.toString()}
       standingId={query?.standingId?.toString()}

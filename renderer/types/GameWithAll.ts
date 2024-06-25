@@ -33,8 +33,8 @@ export const gameWithAll = Prisma.validator<Prisma.GameDefaultArgs>()({
               include: {
                 duels: {
                   include: {
-                    onePlayer: true,
-                    twoPlayer: true,
+                    firstPlayer: true,
+                    secondPlayer: true,
                     winner: true,
                   },
                 },

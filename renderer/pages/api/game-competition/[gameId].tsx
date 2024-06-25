@@ -27,7 +27,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                   include: {
                     duels: {
                       include: {
-                        onePlayer: {
+                        firstPlayer: {
                           include: {
                             team: {
                               include: {
@@ -36,7 +36,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                             },
                           },
                         },
-                        twoPlayer: {
+                        secondPlayer: {
                           include: {
                             team: {
                               include: {

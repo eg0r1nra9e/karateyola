@@ -1,7 +1,7 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-import { ICurrentDuel } from '../../types/ICurrentDuel';
-import { TAppState } from '../store';
+import { ICurrentDuel } from '../../types/ICurrentDuel'
+import { TAppState } from '../store'
 
 interface ICurrentDuelState {
   duel: ICurrentDuel
@@ -12,9 +12,9 @@ const initialState: ICurrentDuelState = {
     id: null,
     competitionName: null,
     categoryName: null,
-    playerOne: null,
-    playerTwo: null,
-    result: null,
+    firstPlayer: null,
+    secondPlayer: null,
+    winnerId: null,
     timer: 0,
   },
 }
@@ -27,22 +27,22 @@ export const currentDuelSlice = createSlice({
       state.duel = { ...state.duel, ...action.payload }
     },
     addFailOne: (state, action: PayloadAction<number>) => {
-      state.duel.playerOne.fail = state.duel.playerOne.fail + action.payload
+      state.duel.firstPlayer.fail = state.duel.firstPlayer.fail + action.payload
     },
     addFailTwo: (state, action: PayloadAction<number>) => {
-      state.duel.playerTwo.fail = state.duel.playerTwo.fail + action.payload
+      state.duel.secondPlayer.fail = state.duel.secondPlayer.fail + action.payload
     },
     addScoreOne: (state, action: PayloadAction<number>) => {
-      state.duel.playerOne.score = state.duel.playerOne.score + action.payload
+      state.duel.firstPlayer.score = state.duel.firstPlayer.score + action.payload
     },
     addScoreTwo: (state, action: PayloadAction<number>) => {
-      state.duel.playerTwo.score = state.duel.playerTwo.score + action.payload
+      state.duel.secondPlayer.score = state.duel.secondPlayer.score + action.payload
     },
     addBenefitOne: (state, action: PayloadAction<number>) => {
-      state.duel.playerOne.benefit = state.duel.playerOne.benefit + action.payload
+      state.duel.firstPlayer.benefit = state.duel.firstPlayer.benefit + action.payload
     },
     addBenefitTwo: (state, action: PayloadAction<number>) => {
-      state.duel.playerTwo.benefit = state.duel.playerTwo.benefit + action.payload
+      state.duel.secondPlayer.benefit = state.duel.secondPlayer.benefit + action.payload
     },
     setTime: (state, action: PayloadAction<number>) => {
       if (!state?.duel) {
@@ -50,8 +50,8 @@ export const currentDuelSlice = createSlice({
       }
       state.duel.timer = action.payload
     },
-    endDuel: (state, action: PayloadAction<string>) => {
-      state.duel.result = action.payload
+    endDuel: (state, action: PayloadAction<number>) => {
+      state.duel.winnerId = action.payload
     },
   },
 })

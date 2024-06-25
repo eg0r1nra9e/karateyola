@@ -4,7 +4,7 @@ export const standingWithDuel = Prisma.validator<Prisma.StandingDefaultArgs>()({
   include: {
     duels: {
       include: {
-        onePlayer: {
+        firstPlayer: {
           include: {
             team: {
               include: {
@@ -13,7 +13,7 @@ export const standingWithDuel = Prisma.validator<Prisma.StandingDefaultArgs>()({
             },
           },
         },
-        twoPlayer: {
+        secondPlayer: {
           include: {
             team: {
               include: {

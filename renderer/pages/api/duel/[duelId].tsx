@@ -1,16 +1,14 @@
 import log from 'electron-log'
 import { NextApiRequest, NextApiResponse } from 'next'
 
-import { PrismaClient } from '@prisma/client'
-import { GameCompetitionWithCategoryAndAthletes } from '../../../types/GameCompetitionWithCategoryAndAthletes'
+import { Duel, PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<any>) {
   const duelId = Number(req.query.duelId)
-  const competitions = req.body as GameCompetitionWithCategoryAndAthletes[]
+  const currentDuel = req.body as Duel
 
-  console.log(competitions)
   let duel
   try {
     switch (req.method) {
@@ -18,7 +16,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         duel = await prisma.duel.findUnique({
           where: { id: duelId },
           include: {
-            onePlayer: {
+            firstPlayer: {
               include: {
                 team: {
                   include: {
@@ -27,7 +25,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                 },
               },
             },
-            twoPlayer: {
+            secondPlayer: {
               include: {
                 team: {
                   include: {
@@ -55,31 +53,16 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         })
         res.status(200).json(duel)
         break
-      case 'POST':
-        // const createCompetitions = competitions.map((competition) => {
-        //   return prisma.gameCompetition.create({
-        //     data: {
-        //       gameId,
-        //       competitionId: competition.id,
-        //       categories: {
-        //         create: competition.categories.map((category) => ({
-        //           categoryId: category.id,
-        //         })),
-        //       },
-        //     },
-        //   })
-        // })
-
-        // const [t1, t2] = await prisma.$transaction([
-        //   prisma.gameCompetition.deleteMany({
-        //     where: { gameId: Number(gameId) },
-        //   }),
-        //   ...createCompetitions,
-        // ])
-
-        // console.log(t1, t2)
-
-        // res.status(200).json(gameCompetitions)
+      case 'PUT':
+        duel = await prisma.duel.update({
+          where: { id: Number(duelId) },
+          data: {
+            firstPlayerId: currentDuel.firstPlayerId,
+            secondPlayerId: currentDuel.secondPlayerId,
+            winnerId: currentDuel.winnerId,
+          },
+        })
+        res.status(200).json(duel)
         break
       default:
         res.setHeader('Allow', ['GET', 'PUT'])

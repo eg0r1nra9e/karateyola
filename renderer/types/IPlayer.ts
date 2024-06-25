@@ -1,7 +1,4 @@
-import { IBase } from './IBase'
-
-export interface IPlayer extends IBase {
-  athleteId?: string
+export interface IPlayer {
   score?: number
   fail?: number
   benefit?: number

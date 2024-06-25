@@ -23,8 +23,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
           gameCategoryId: standing.gameCategoryId,
           duels: {
             create: standing.duels.map((duel) => ({
-              onePlayerId: duel.onePlayerId,
-              twoPlayerId: duel.twoPlayerId,
+              firstPlayerId: duel.firstPlayerId,
+              secondPlayerId: duel.secondPlayerId,
             })),
           },
         },

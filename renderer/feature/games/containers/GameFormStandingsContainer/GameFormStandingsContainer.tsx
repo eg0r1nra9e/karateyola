@@ -1,8 +1,7 @@
 import { App, Button, Divider, Space, Tabs } from 'antd'
-import { chunk, shuffle, uniq } from 'lodash'
 import { FC, useEffect, useState } from 'react'
+import { playoff } from '../../../../shared/utils/sports-draw'
 
-import { Duel } from '@prisma/client'
 import { GameCompetitionWithCategoryAndAthletes } from '../../../../types/GameCompetitionWithCategoryAndAthletes'
 import { StandingWithDuel } from '../../../../types/StandingWithDuel'
 import { GameDuelsComponent } from '../../components/GameDuelsComponent/GameDuelsComponent'
@@ -49,14 +48,7 @@ export const GameFormStandingsContainer: FC<IGameFormStandingsContainerProps> = 
     gameCompetitions?.forEach((gameCompetition) => {
       gameCompetition?.categories.forEach((gameCategory) => {
         const athletes = gameCategory?.athletes.map((athlete) => athlete.athleteId)
-        const randomDuels = [...chunk(shuffle(uniq(athletes)), 2)]
-        let duels: Duel[] = randomDuels.map(
-          (duel) =>
-            ({
-              onePlayerId: duel[0],
-              twoPlayerId: duel[1] ?? null,
-            }) as Duel,
-        )
+        let duels = playoff(athletes)
 
         standings.push({
           gameCategoryId: gameCategory.id,

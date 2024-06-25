@@ -33,20 +33,20 @@ model Team {
 
 // Спортсмен
 model Athlete {
-    id          Int           @id @default(autoincrement())
-    lastName    String // Фамилия спортсмена
-    firstName   String // Имя спортсмена
-    dateOfBirth DateTime // Дата рождения спортсмена
-    teamId      Int? // Идентификатор команды
-    team        Team?         @relation(fields: [teamId], references: [id])
-    gender      String // Пол спортсмена
-    weight      Int // Вес спортсмена
-    created_at  DateTime      @default(now())
-    updated_at  DateTime      @updatedAt
-    onePlayers  Duel[]        @relation(name: "onePlayers")
-    twoPlayers  Duel[]        @relation(name: "twoPlayers")
-    winners     Duel[]        @relation(name: "winners")
-    gameAthlete GameAthlete[]
+    id            Int           @id @default(autoincrement())
+    lastName      String // Фамилия спортсмена
+    firstName     String // Имя спортсмена
+    dateOfBirth   DateTime // Дата рождения спортсмена
+    teamId        Int? // Идентификатор команды
+    team          Team?         @relation(fields: [teamId], references: [id])
+    gender        String // Пол спортсмена
+    weight        Int // Вес спортсмена
+    created_at    DateTime      @default(now())
+    updated_at    DateTime      @updatedAt
+    firstPlayers  Duel[]        @relation(name: "firstPlayers")
+    secondPlayers Duel[]        @relation(name: "secondPlayers")
+    winners       Duel[]        @relation(name: "winners")
+    gameAthlete   GameAthlete[]
 
     @@unique([firstName, lastName, dateOfBirth, teamId])
 }
@@ -134,15 +134,15 @@ model Standing {
 
 // Поединок
 model Duel {
-    id          Int      @id @default(autoincrement())
-    onePlayerId Int // Первый участник
-    onePlayer   Athlete  @relation(fields: [onePlayerId], references: [id], name: "onePlayers")
-    twoPlayerId Int? // Второй участник
-    twoPlayer   Athlete? @relation(fields: [twoPlayerId], references: [id], name: "twoPlayers")
-    winnerId    Int? // Победитель
-    winner      Athlete? @relation(fields: [winnerId], references: [id], name: "winners")
-    standingId  Int // Турнирная таблица
-    standing    Standing @relation(fields: [standingId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-    created_at  DateTime @default(now())
-    updated_at  DateTime @updatedAt
+    id             Int      @id @default(autoincrement())
+    firstPlayerId  Int // Первый участник
+    firstPlayer    Athlete  @relation(fields: [firstPlayerId], references: [id], name: "firstPlayers")
+    secondPlayerId Int? // Второй участник
+    secondPlayer   Athlete? @relation(fields: [secondPlayerId], references: [id], name: "secondPlayers")
+    winnerId       Int? // Победитель
+    winner         Athlete? @relation(fields: [winnerId], references: [id], name: "winners")
+    standingId     Int // Турнирная таблица
+    standing       Standing @relation(fields: [standingId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+    created_at     DateTime @default(now())
+    updated_at     DateTime @updatedAt
 }

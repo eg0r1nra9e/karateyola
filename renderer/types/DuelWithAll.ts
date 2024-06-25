@@ -2,7 +2,7 @@ import { Prisma } from '@prisma/client'
 
 export const duelWithAll = Prisma.validator<Prisma.DuelDefaultArgs>()({
   include: {
-    onePlayer: {
+    firstPlayer: {
       include: {
         team: {
           include: {
@@ -11,7 +11,7 @@ export const duelWithAll = Prisma.validator<Prisma.DuelDefaultArgs>()({
         },
       },
     },
-    twoPlayer: {
+    secondPlayer: {
       include: {
         team: {
           include: {

@@ -1,21 +1,23 @@
-import { IBase } from './IBase'
+import { AthleteWithTeamAndCity } from './AthleteWithTeamAndCity'
 import { IPlayer } from './IPlayer'
 
-export interface ICurrentDuel extends IBase {
+export interface ICurrentDuel {
+  id?: string
+
   /**
    * Первый участник.
    */
-  playerOne?: IPlayer
+  firstPlayer?: AthleteWithTeamAndCity & IPlayer
 
   /**
    * Второй участник.
    */
-  playerTwo?: IPlayer
+  secondPlayer?: AthleteWithTeamAndCity & IPlayer
 
   /**
    * Результаты.
    */
-  result?: any
+  winnerId?: number
 
   /**
    * Наименование дисциплины.

@@ -11,12 +11,12 @@ export const gameCompetitionWithCategoryAndAthletes = Prisma.validator<Prisma.Ga
           include: {
             duels: {
               include: {
-                onePlayer: {
+                firstPlayer: {
                   include: {
                     team: true,
                   },
                 },
-                twoPlayer: {
+                secondPlayer: {
                   include: {
                     team: true,
                   },

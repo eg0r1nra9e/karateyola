@@ -1,8 +1,8 @@
 export interface IWinner {
-  gameId: string
-  competitionId: string
-  categoryId: string
-  standingId: string
-  duelId: string
-  athleteId: string
+  gameId: number
+  competitionId: number
+  categoryId: number
+  standingId: number
+  duelId: number
+  athleteId: number
 }

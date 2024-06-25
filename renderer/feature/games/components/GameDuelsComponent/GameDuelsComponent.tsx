@@ -20,13 +20,13 @@ export const GameDuelsComponent: FC<IGameDuelsComponentProps> = (props) => {
         <Card key={standing?.id}>
           {standing?.duels?.map((duel) => (
             <Card key={duel?.id}>
-              <Card key={duel.onePlayerId}>
-                {duel.onePlayer.firstName} {duel.onePlayer.lastName} {duel.onePlayer.team?.name}{' '}
-                {duel.onePlayer.team?.city?.city}
+              <Card key={duel.firstPlayerId}>
+                {duel.firstPlayer.firstName} {duel.firstPlayer.lastName} {duel.firstPlayer.team?.name}{' '}
+                {duel.firstPlayer.team?.city?.city}
               </Card>
-              <Card key={duel.twoPlayerId}>
-                {duel.twoPlayer?.firstName} {duel.twoPlayer?.lastName} {duel.twoPlayer?.team?.name}{' '}
-                {duel.twoPlayer?.team?.city?.city}
+              <Card key={duel.secondPlayerId}>
+                {duel.secondPlayer?.firstName} {duel.secondPlayer?.lastName} {duel.secondPlayer?.team?.name}{' '}
+                {duel.secondPlayer?.team?.city?.city}
               </Card>
             </Card>
           ))}
