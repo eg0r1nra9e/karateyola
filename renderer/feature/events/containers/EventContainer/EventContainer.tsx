@@ -1,4 +1,4 @@
-import { App, Button, Card, Flex, Tabs } from 'antd'
+import { App, Button, Card, Flex, Tabs, Typography } from 'antd'
 import dayjs from 'dayjs'
 import Link from 'next/link'
 import { FC, useEffect, useState } from 'react'
@@ -53,23 +53,43 @@ export const EventContainer: FC<IGameFormProps> = (props) => {
     ]
   }
 
-  const getStandings = (standings: StandingWithDuel[]) =>
+  const getStandings = (categoryId: number, standings: StandingWithDuel[]) =>
     standings.map((standing) => {
+      // Проверка закончился ли текущий круг
+      const duelsCount = standing?.duels?.length
+      const winners = standing?.duels?.filter((duel) => duel.winnerId).map((duel) => duel.winnerId)
+
       return (
         <Card key={standing?.id}>
+          {!standing.close && duelsCount && winners && duelsCount === winners.length ? (
+            <Button
+              type="primary"
+              onClick={() => {
+                newStanding(categoryId, standing, winners)
+              }}
+            >
+              Следующий круг
+            </Button>
+          ) : null}
           {standing?.duels?.map((duel) => (
             <Card
               key={duel?.id}
               actions={!duel.winnerId && duel.firstPlayerId && duel.secondPlayerId && getActions(duel.id)}
             >
               <Card key={duel.firstPlayerId}>
-                {duel.firstPlayer.firstName} {duel.firstPlayer.lastName} {duel.firstPlayer.team?.name}{' '}
-                {duel.firstPlayer.team?.city?.city}
+                <Typography.Text
+                  type={duel.winnerId === duel.firstPlayer.id || !duel.secondPlayerId ? 'success' : 'secondary'}
+                >
+                  {duel.firstPlayer.firstName} {duel.firstPlayer.lastName} {duel.firstPlayer.team?.name}{' '}
+                  {duel.firstPlayer.team?.city?.city}
+                </Typography.Text>
               </Card>
               {duel.secondPlayerId ? (
                 <Card key={duel.secondPlayerId}>
-                  {duel.secondPlayer?.firstName} {duel.secondPlayer?.lastName} {duel.secondPlayer?.team?.name}{' '}
-                  {duel.secondPlayer?.team?.city?.city}
+                  <Typography.Text type={duel.winnerId === duel.secondPlayer.id ? 'success' : 'secondary'}>
+                    {duel.secondPlayer?.firstName} {duel.secondPlayer?.lastName} {duel.secondPlayer?.team?.name}{' '}
+                    {duel.secondPlayer?.team?.city?.city}
+                  </Typography.Text>
                 </Card>
               ) : null}
             </Card>
@@ -117,24 +137,10 @@ export const EventContainer: FC<IGameFormProps> = (props) => {
         return
       }
 
-      category?.standings.forEach(async (standing) => {
-        if (standing.close) {
-          return
-        }
-
-        // Проверка закончился ли текущий круг
-        const duelsCount = standing?.duels?.length
-        const winners = standing?.duels?.filter((duel) => duel.winnerId).map((duel) => duel.winnerId)
-
-        if (duelsCount && winners && duelsCount === winners.length) {
-          await newStanding(category.id, standing, winners)
-        }
-      })
-
       items.push({
         key: competition.competitionId + ': ' + category.categoryId,
         label: competition.competition.name + ': ' + category.category.name,
-        children: <Flex> {getStandings(category?.standings as StandingWithDuel[])}</Flex>,
+        children: <Flex> {getStandings(category.id, category?.standings as StandingWithDuel[])}</Flex>,
       })
     })
   })
