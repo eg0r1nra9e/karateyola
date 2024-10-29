@@ -19,7 +19,7 @@ import {
 } from '../../../../store/slices/currentDuelSlice'
 import { DuelWithAll } from '../../../../types/DuelWithAll'
 import Player from '../../components/Player/Player'
-import { DuelResultContainer } from '../DuelResultContainer/DuelResultContainer'
+import { DuelResultContainer1 } from '../DuelResultContainer/DuelResultContainer1'
 
 interface IDuelContainer {
   duelId: number
@@ -236,16 +236,9 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
             Пауза
           </Button>
         )}
-
         <Button onClick={() => resetTimer()} style={{ width: '100%' }} type="primary" danger>
           Сбросить таймер
         </Button>
-
-        {duel?.winnerId ? (
-          <Button onClick={() => endWinnerDuel()} style={{ width: '100%' }} type="dashed" danger>
-            Закончить поединок
-          </Button>
-        ) : null}
       </Flex>
       <Divider />
       <Flex gap="middle">
@@ -272,7 +265,7 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
       </Flex>
       <Divider />
       <Typography.Paragraph style={{ fontSize: '0.3em' }}>
-        <DuelResultContainer />
+        <DuelResultContainer1 />
       </Typography.Paragraph>
     </>
   )

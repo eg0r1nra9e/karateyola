@@ -5,7 +5,7 @@ import { useAppSelector } from '../../../../store/hooks'
 import { selectCurrentDuel } from '../../../../store/slices/currentDuelSlice'
 import { Violations } from '../../components/Violations/Violations'
 
-export const DuelResultContainer = () => {
+export const DuelResultContainer1 = () => {
   const [isBrowser, setIsBrowser] = useState(false)
 
   const currentDuel = useAppSelector(selectCurrentDuel)
