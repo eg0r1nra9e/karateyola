@@ -126,29 +126,29 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
   }, [duelId, duelData, dispatch])
 
   const clickAddBenefitOne = () => {
-    pauseTimer()
     if (duel.secondPlayer.benefit === 0 && duel.firstPlayer.benefit === 0) {
       dispatch(addBenefitOne(1))
+      pauseTimer()
     }
   }
   const clickRemoveBenefitOne = () => {
-    pauseTimer()
     if (duel.firstPlayer.benefit > 0) {
       dispatch(addBenefitOne(-1))
+      pauseTimer()
     }
   }
 
   const clickAddBenefitTwo = () => {
-    pauseTimer()
     if (duel.secondPlayer.benefit === 0 && duel.firstPlayer.benefit === 0) {
       dispatch(addBenefitTwo(1))
+      pauseTimer()
     }
   }
 
   const clickRemoveBenefitTwo = () => {
-    pauseTimer()
     if (duel.secondPlayer.benefit > 0) {
       dispatch(addBenefitTwo(-1))
+      pauseTimer()
     }
   }
 
@@ -238,6 +238,9 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
         )}
         <Button onClick={() => resetTimer()} style={{ width: '100%' }} type="primary" danger>
           Сбросить таймер
+        </Button>
+        <Button onClick={() => endWinnerDuel()} style={{ width: '100%' }}>
+          Закончить поединок
         </Button>
       </Flex>
       <Divider />
