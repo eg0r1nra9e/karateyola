@@ -19,7 +19,7 @@ import {
 } from '../../../../store/slices/currentDuelSlice'
 import { DuelWithAll } from '../../../../types/DuelWithAll'
 import Player from '../../components/Player/Player'
-import { DuelResultContainer1 } from '../DuelResultContainer/DuelResultContainer1'
+import { DuelResultContainer } from '../DuelResultContainer/DuelResultContainer'
 
 interface IDuelContainer {
   duelId: number
@@ -268,7 +268,7 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
       </Flex>
       <Divider />
       <Typography.Paragraph style={{ fontSize: '0.3em' }}>
-        <DuelResultContainer1 />
+        <DuelResultContainer type="first-second" />
       </Typography.Paragraph>
     </>
   )

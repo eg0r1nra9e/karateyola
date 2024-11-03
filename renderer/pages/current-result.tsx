@@ -1,9 +1,9 @@
 import { NextPage } from 'next'
 
-import { DuelResultContainer2 } from '../feature/duel/containers/DuelResultContainer/DuelResultContainer2'
+import { DuelResultContainer } from '../feature/duel/containers/DuelResultContainer/DuelResultContainer'
 
 const Duel: NextPage = () => {
-  return <DuelResultContainer2 />
+  return <DuelResultContainer type="second-first" />
 }
 
 export default Duel

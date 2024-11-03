@@ -1,11 +1,15 @@
 import { Flex, Typography } from 'antd'
-import { useEffect, useState } from 'react'
+import { FC, useEffect, useState } from 'react'
 
 import { useAppSelector } from '../../../../store/hooks'
 import { selectCurrentDuel } from '../../../../store/slices/currentDuelSlice'
 import { Violations } from '../../components/Violations/Violations'
 
-export const DuelResultContainer1 = () => {
+interface IDuelResultContainer {
+  type: 'first-second' | 'second-first'
+}
+
+export const DuelResultContainer: FC<IDuelResultContainer> = (props) => {
   const [isBrowser, setIsBrowser] = useState(false)
 
   const currentDuel = useAppSelector(selectCurrentDuel)
@@ -16,6 +20,9 @@ export const DuelResultContainer1 = () => {
 
   const minutesString = String(Math.floor(currentDuel?.timer / 60)).padStart(2, '0')
   const secondsString = String(currentDuel?.timer % 60).padStart(2, '0')
+
+  const leftPlayer = props.type === 'first-second' ? currentDuel?.firstPlayer : currentDuel?.secondPlayer
+  const rightPlayer = props.type === 'first-second' ? currentDuel?.secondPlayer : currentDuel?.firstPlayer
 
   if (currentDuel?.winnerId) {
     const winner =
@@ -44,48 +51,70 @@ export const DuelResultContainer1 = () => {
         </Typography.Title>
       </Flex>
       <Flex style={{ justifyContent: 'space-between' }}>
-        <Typography.Title level={1} style={{ marginTop: 0, width: '50%', fontSize: '3em' }} type="danger">
-          {currentDuel?.firstPlayer?.firstName} {currentDuel?.firstPlayer?.lastName}{' '}
-          {currentDuel?.firstPlayer?.team?.name} {currentDuel?.firstPlayer?.team?.city?.city}
+        <Typography.Title
+          level={1}
+          style={{ marginTop: 0, width: '50%', color: props.type === 'first-second' ? 'red' : 'blue', fontSize: '3em' }}
+        >
+          {leftPlayer?.firstName} {leftPlayer?.lastName} {leftPlayer?.team?.name} {leftPlayer?.team?.city?.city}
         </Typography.Title>
         <Typography.Title
           level={1}
-          style={{ margin: 1, width: '50%', color: 'blue', textAlign: 'right', fontSize: '3em' }}
+          style={{
+            marginTop: 0,
+            width: '50%',
+            color: props.type === 'first-second' ? 'blue' : 'red',
+            textAlign: 'right',
+            fontSize: '3em',
+          }}
         >
-          {currentDuel?.secondPlayer?.firstName} {currentDuel?.secondPlayer?.lastName}{' '}
-          {currentDuel?.secondPlayer?.team?.name} {currentDuel?.secondPlayer?.team?.city?.city}
+          {rightPlayer?.firstName} {rightPlayer?.lastName} {rightPlayer?.team?.name} {rightPlayer?.team?.city?.city}
         </Typography.Title>
       </Flex>
       <Flex style={{ justifyContent: 'space-between' }}>
         <Typography.Title
           level={1}
-          style={{ margin: 0, width: '25%', fontSize: '35em', whiteSpace: 'nowrap' }}
-          type="danger"
+          style={{
+            margin: 0,
+            width: '25%',
+            fontSize: '35em',
+            whiteSpace: 'nowrap',
+            color: props.type === 'first-second' ? 'red' : 'blue',
+          }}
         >
-          {currentDuel?.firstPlayer?.score}
-          {currentDuel?.firstPlayer?.benefit ? '`' : null}
+          {leftPlayer?.score}
+          {leftPlayer?.benefit ? '`' : null}
         </Typography.Title>
-        <Typography.Title level={1} style={{ margin: 0, width: '50%', textAlign: 'center', fontSize: '15em' }}>
+        <Typography.Title
+          level={1}
+          style={{ margin: 0, width: '50%', textAlign: 'center', fontSize: '15em', whiteSpace: 'nowrap' }}
+        >
           {minutesString} : {secondsString}
         </Typography.Title>
         <Typography.Title
           level={1}
-          style={{ margin: 0, width: '25%', color: 'blue', textAlign: 'right', fontSize: '35em', whiteSpace: 'nowrap' }}
+          style={{
+            margin: 0,
+            width: '25%',
+            textAlign: 'right',
+            fontSize: '35em',
+            whiteSpace: 'nowrap',
+            color: props.type === 'first-second' ? 'blue' : 'red',
+          }}
         >
-          {currentDuel?.secondPlayer?.benefit ? '`' : null}
-          {currentDuel?.secondPlayer?.score}
+          {rightPlayer?.benefit ? '`' : null}
+          {rightPlayer?.score}
         </Typography.Title>
       </Flex>
 
       <Flex style={{ justifyContent: 'space-between' }}>
         <div style={{ margin: 0, width: '40%' }}>
           <Flex>
-            <Violations type="Чуй" value={currentDuel?.firstPlayer?.fail} isDanger />
+            <Violations type="Чуй" value={leftPlayer?.fail} isDanger={props.type === 'first-second'} />
           </Flex>
         </div>
         <div style={{ margin: 0, width: '40%' }}></div>
         <div style={{ margin: 0, width: '40%' }}>
-          <Violations type="Чуй" value={currentDuel?.secondPlayer?.fail} />
+          <Violations type="Чуй" value={rightPlayer?.fail} isDanger={props.type === 'second-first'} />
         </div>
       </Flex>
       <Flex style={{ justifyContent: 'space-between' }}>&nbsp;</Flex>
