@@ -227,21 +227,27 @@ export const DuelContainer: FC<IDuelContainer> = (props) => {
         {duelData?.secondPlayer?.team?.city?.city},
       </h3>
       <Flex gap="middle">
-        {!isStartTimer ? (
-          <Button onClick={startTimer} style={{ width: '100%' }} type="primary">
-            Старт
+        {!duel.winnerId ? (
+          <>
+            {!isStartTimer ? (
+              <Button onClick={startTimer} style={{ width: '100%' }} type="primary">
+                Старт
+              </Button>
+            ) : (
+              <Button onClick={pauseTimer} style={{ width: '100%' }} type="primary">
+                Пауза
+              </Button>
+            )}
+            <Button onClick={() => resetTimer()} style={{ width: '100%' }} type="primary" danger>
+              Сбросить таймер
+            </Button>
+          </>
+        ) : null}
+        {duel.winnerId ? (
+          <Button onClick={() => endWinnerDuel()} style={{ width: '100%' }}>
+            Закончить поединок
           </Button>
-        ) : (
-          <Button onClick={pauseTimer} style={{ width: '100%' }} type="primary">
-            Пауза
-          </Button>
-        )}
-        <Button onClick={() => resetTimer()} style={{ width: '100%' }} type="primary" danger>
-          Сбросить таймер
-        </Button>
-        <Button onClick={() => endWinnerDuel()} style={{ width: '100%' }}>
-          Закончить поединок
-        </Button>
+        ) : null}
       </Flex>
       <Divider />
       <Flex gap="middle">
